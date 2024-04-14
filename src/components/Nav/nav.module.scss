@@ -1,0 +1,27 @@
+.wrapper {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	height: 57px;
+	border-top: 1px solid rgba(0, 0, 0, 0.15);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	background-color: #fff;
+}
+
+.item {
+	width: 100%;
+	text-align: center;
+	text-decoration: none;
+
+	* {
+		transition: 0.2s ease-in-out;
+	}
+
+	p {
+		font-size: 10px;
+		color: rgba(162, 172, 176, 1);
+	}
+}

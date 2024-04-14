@@ -1,8 +1,36 @@
+@font-face {
+	font-family: 'SF Pro Display';
+	src: url('./assets/fonts/sf/sf-pro-display_regular.woff2');
+	font-weight: 400;
+}
+
+@font-face {
+	font-family: 'SF Pro Display';
+	src: url('./assets/fonts/sf/sf-pro-display_semibold.woff2');
+	font-weight: 600;
+}
+
+@font-face {
+	font-family: 'SF Pro Display';
+	src: url('./assets/fonts/sf/sf-pro-display_bold.woff2');
+	font-weight: 700;
+}
+
+@font-face {
+	font-family: 'SF Pro Icons';
+	src: url('./assets/fonts/sf/sf-pro-icons_light.woff2');
+}
+
 * {
 	margin: 0;
 	padding: 0;
-	font-family: 'Almarai';
+	font-family: 'SF Pro Display', 'SF Pro Icons', sans-serif;
+
 	box-sizing: border-box;
+
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* Устанавливаем прозрачный цвет подсветки */
+	-webkit-tap-highlight-color: transparent; /* Для старых версий браузеров */
+	-webkit-tap-highlight-color: none; /* Для Internet Explorer */
 }
 
 a {
@@ -10,7 +38,7 @@ a {
 	color: #646cff;
 
 	&:hover {
-		color: #535bf2;
+		color: #545cf2;
 	}
 }
 
@@ -42,14 +70,9 @@ button {
 	cursor: pointer;
 	transition: border-color 0.25s;
 }
-button:hover {
-	border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-	outline: 4px auto -webkit-focus-ring-color;
-}
+
 
 .wrapper {
 	padding-inline: 20px;
+	padding-bottom: 77px;
 }
