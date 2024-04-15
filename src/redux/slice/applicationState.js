@@ -1,26 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-	modalIsOpen: false
+	product: {}
 };
 
 export const appSlice = createSlice({
 	name: 'appState',
 	initialState,
 	reducers: {
-		openDeliveryInfoModal: state => state.deliveryInfoModalIsOpen = true,
-		closeDeliveryInfoModal: state => state.deliveryInfoModalIsOpen = false,
-		openOrderDetailsModal: state => state.orderDetailsModalIsOpen = true,
-		closeOrderDetailsModal: state => state.orderDetailsModalIsOpen = false,
-
+		setProduct: (state, {payload}) => payload
 	},
 });
 
 export const { 
-	openDeliveryInfoModal,
-	closeDeliveryInfoModal,
-	openOrderDetailsModal,
-	closeOrderDetailsModal	
+	setProduct
 } = appSlice.actions;
 
 export default appSlice.reducer;

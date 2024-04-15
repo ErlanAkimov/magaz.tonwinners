@@ -1,48 +1,76 @@
 import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios'
 import { api_server } from '../../main';
+import axios from 'axios';
 
 const initialState = {
+	_id: '661c17375ec5674ee7cdb1df',
+	first_name: '',
+	last_name: '',
+	username: '',
+	language_code: 'ru',
+	is_premium: true,
+	allows_write_to_pm: true,
 	appLanguage: 'en',
 	likedProducts: [],
+	status: '',
+	orders: [],
+	wallets: [],
+	isInitial: true,
 	deliveryInfo: {
 		name: '',
 		country: '',
 		state: '',
 		city: '',
 		street: '',
-		ZIPcode: '',
+		zipcode: '',
+		saveData: true,
 		phoneNumber: 0,
 	},
-	orders: [],
 };
 
 export const userSlice = createSlice({
 	name: 'user',
 	initialState,
 	reducers: {
-		// Передается строка 'ru'/'en'
+		// deliveryInfoChange: (state, { payload }) => {
+
+		// },
+		changeInputValue: (state, { payload }) => {
+			state.deliveryInfo[payload.input] = payload.value
+		},
+
 		changeAppLanguage: (state, { payload }) => {
 			state.appLanguage = payload;
 		},
-
-		setUser: (state, { payload }) => {
-			return payload;
+		setUser:  (state, {payload}) => {
+			if (!payload.deliveryInfo.saveData) {
+				payload.deliveryInfo.name = ''
+				payload.deliveryInfo.country = ''
+				payload.deliveryInfo.state = ''
+				payload.deliveryInfo.city = ''
+				payload.deliveryInfo.street = ''
+				payload.deliveryInfo.zipcode = ''
+			}
+			console.log(payload)
+			return payload
 		},
-
 		likeToggler: (state, { payload }) => {
 			if (state.likedProducts.includes(payload)) {
-				console.log('содержит')
-				state.likedProducts = state.likedProducts.filter(a => a !== payload)
-				axios.get(`${api_server}/api/like?product_id=${payload}&user_id=${state.id}&command=${false}`)
+				state.likedProducts = state.likedProducts.filter((a) => a !== payload);
+				axios.get(`${api_server}/api/like?product_id=${payload}&user_id=${state.id}&command=${false}`);
 			} else {
-				state.likedProducts.push(payload)
-				axios.get(`${api_server}/api/like?product_id=${payload}&user_id=${state.id}&command=${true}`)
+				state.likedProducts.push(payload);
+				axios.get(`${api_server}/api/like?product_id=${payload}&user_id=${state.id}&command=${true}`);
 			}
-		}
+		},
+
+		saveDataChanger: (state) => {
+			axios.get(`${api_server}/api/save-data-change?id=${state.id}&flag=${!state.deliveryInfo.saveData}`)
+			state.deliveryInfo.saveData = !state.deliveryInfo.saveData;
+		},
 	},
 });
 
-export const { setUser, likeToggler} = userSlice.actions;
+export const { changeInputValue, setUser, likeToggler, saveDataChanger } = userSlice.actions;
 
 export default userSlice.reducer;

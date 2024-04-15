@@ -2,6 +2,8 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import Homepage from './pages/Homepage/Homepage';
 import GoToMiniApp from './pages/GoToMiniApp/GoToMiniApp';
+import { S } from './pages/StillDev';
+import Profile from './pages/Profile/Profile';
 
 export const router = createBrowserRouter([
 	{
@@ -10,17 +12,17 @@ export const router = createBrowserRouter([
 	},
 	{
 		path: '/categories',
-		element: <Homepage />,
+		element: <S />,
 	},
 
 	{
 		path: '/orders',
-		element: <Homepage />,
+		element: <S />,
 	},
 
 	{
 		path: '/profile',
-		element: <Homepage />,
+		element: <Profile />,
 	},
 ]);
 

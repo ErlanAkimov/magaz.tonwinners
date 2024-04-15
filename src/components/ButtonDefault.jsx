@@ -1,14 +1,19 @@
-export const ButtonDefault = ({ onClick, children, marginTop }) => {
+export const ButtonDefault = ({ onClick, children, propStyles }) => {
 	const style = {
 		height: 50,
-		width: '100%',
+		width: 'calc(100% - 20px)',
 		backgroundColor: 'rgba(0, 122, 255, 1)',
 		borderRadius: 8,
 		color: 'white',
 		fontSize: 17,
 		fontWeight: 600,
-		marginTop,
+		position: 'fixed',
+		bottom: 101,
+		left: 10,
+		zIndex: 100,
+		...propStyles
 	};
+
 	return (
 		<button onClick={onClick} style={style}>
 			{children}

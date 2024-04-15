@@ -5,15 +5,16 @@ import { useEffect, useState } from 'react';
 import { likeToggler } from '../../redux/slice/userSlice';
 
 export const Slider = ({ productData }) => {
-	const likedProducts = useSelector((state) => state.user.likedProducts);
-	const [like, setLike] = useState(false)
+	const user = useSelector((state) => state.user);
+	const [like, setLike] = useState(false);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		const s = likedProducts.filter(a => a === productData._id)
-		s.length === 0? setLike(false) : setLike(true)
-
-		}, [likedProducts])
+		if (user) {
+			const s = user.likedProducts.filter((a) => a === productData._id);
+			s.length === 0 ? setLike(false) : setLike(true);
+		}
+	}, [user]);
 
 	return (
 		<Swiper className={styles.swiper}>

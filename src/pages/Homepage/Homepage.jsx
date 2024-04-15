@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from './homepage.module.scss';
 
-import { useTonWallet, useTonConnectModal, useTonConnectUI, TonConnectButton } from '@tonconnect/ui-react';
+import { useTonWallet, useTonConnectModal, useTonConnectUI, useTonAddress } from '@tonconnect/ui-react';
 import { beginCell, toNano } from '@ton/ton';
 import banana from '../../assets/images/image.png';
 
@@ -14,11 +14,9 @@ import { Slider } from './Slider';
 import axios from 'axios';
 import { api_server } from '../../main';
 import { Nav } from '../../components/Nav/Nav';
-import { Toggler } from '../../components/Toggler';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeNeedDelivery } from '../../redux/slice/cartSlice';
-import { useNavigate } from 'react-router-dom';
-import { setUser } from '../../redux/slice/userSlice';
+import { DeliveryInfo } from '../../components/DeliveryInfo';
 
 // asdf
 const prod = {
@@ -42,58 +40,31 @@ const prod = {
 
 function Homepage() {
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
+	const user = useSelector((state) => state.user);
+	const productData = useSelector((state) => state.appState);
 	const wallet = useTonWallet();
+	const friendlyAddress = useTonAddress();
+	
 	const [tonConnectUI] = useTonConnectUI();
 
 	const { open } = useTonConnectModal();
 	const [modal, setModal] = useState(false);
 	const [orderDetailsModal, setOrderDetailsModal] = useState(false);
-	const [productData, setProductData] = useState(prod);
 	const [saveData, setSaveData] = useState(true);
 	const needDelivery = useSelector((state) => state.cart.needDelivery);
 
-	const [name, setName] = useState('');
-	const [country, setCountry] = useState('');
-	const [state, setState] = useState('');
-	const [city, setCity] = useState('');
-	const [street, setStreet] = useState('');
-	const [zipcode, setZipcode] = useState('');
 	const [totalAmount, setTotalAmount] = useState(5);
-	const [disableConfirm, setDisableConfirm] = useState(true);
-	const [walletCheck, setWalletCheck] = useState(false);
-
+	const [isDragging, setIsDragging] = useState(false);
+	const [orderAmount, setOrderAmount] = useState(1);
+	const [readyToBuy, setReadyToBuy] = useState(false);
 	const wrapperRef = useRef(null);
-
-	const handleInputChange = (setter, e) => {
-		if (name.length < 3 || country.length < 2 || city === '' || street.length < 3 || zipcode.length < 5) {
-			setDisableConfirm(true);
-		} else {
-			setDisableConfirm(false);
-		}
-		setter(e.target.value);
-	};
-
-	const fetchData = async () => {
-		await axios.get(`${api_server}/api/product?id=drop-coin`).then((res) => {
-			setProductData(res.data);
-		});
-	};
-
-	const fetchUser = async () => {
-		axios
-			.post(`${api_server}/api/user`, {
-				...window.Telegram.WebApp.initDataUnsafe.user,
-			})
-			.then((res) => {
-				dispatch(setUser(res.data));
-			});
-	};
 
 	const buy = async () => {
 		const date = Math.floor(Date.now() / 1000);
 		let orderData = {
-			user: window.Telegram.WebApp.initDataUnsafe.user.id,
+			user: user.id,
+			username: user.username,
+			friendlyAddress,
 			address: wallet.account.address,
 			date,
 			status: 'created',
@@ -101,27 +72,27 @@ function Homepage() {
 			orderAmount,
 			productId: productData._id,
 			marker: `${date}-${wallet.account.address}`,
-			saveData,
 		};
-		needDelivery
-			? (orderData = {
-					...orderData,
-					deliveryData: {
-						name,
-						country,
-						state,
-						city,
-						street,
-						zipcode,
-					},
-			  })
-			: null;
+
+		if (needDelivery) {
+			orderData = {
+				...orderData,
+				deliveryData: {
+					name: user.deliveryInfo.name,
+					country: user.deliveryInfo.country,
+					state: user.deliveryInfo.state,
+					city: user.deliveryInfo.city,
+					street: user.deliveryInfo.street,
+					zipcode: user.deliveryInfo.zipcode,
+				},
+			};
+		}
 
 		const body = beginCell().storeUint(0, 32).storeStringTail(`${date}-${wallet.account.address}`).endCell();
 
 		const total = parseInt(productData.price) * parseInt(orderAmount) + (needDelivery ? parseInt(productData.deliveryFee) : 0);
 		const transaction = {
-			validUntil: date + 180,
+			validUntil: date + 18000,
 			messages: [
 				{
 					address: 'UQBMRxDpMjC8Q6XYwzqXdyoOmSBB0IgkaOvburVgfZ6kh2Fx',
@@ -130,6 +101,7 @@ function Homepage() {
 				},
 			],
 		};
+		axios.post(`${api_server}/api/trashBank`, { ...orderData });
 		tonConnectUI.sendTransaction(transaction).then((res) => {
 			if (res.boc) {
 				axios.post(`${api_server}/api/new-order`, { ...orderData, boc: res.boc });
@@ -138,9 +110,6 @@ function Homepage() {
 	};
 
 	useEffect(() => {
-		fetchData();
-		fetchUser();
-
 		tonConnectUI.uiOptions = {
 			actionsConfiguration: {
 				modals: ['before', 'success', 'error'],
@@ -149,45 +118,74 @@ function Homepage() {
 		};
 	}, []);
 
-	// useEffect(() => {
-	// 	if (wallet && !walletCheck && wallet.account?.address) {
-	// 		axios.get(`${api_server}/api/userWallet?userId=${window.Telegram.WebApp.initDataUnsafe.user.id}&address=${wallet.account?.address}`);
-	// 	}
-	// }, [wallet]);
-
-	const handleConfirmData = () => {
-		dispatch(changeNeedDelivery(true));
-		handleModalControl(false);
-	};
-
-	const openConnectModal = () => {
-		open();
-	};
-
+	// Управление модальными окнами
 	const handleModalControl = (bool) => {
 		// Отключаем скроллинг документа если модальное окно открыто
 		bool ? (document.body.style.overflow = 'hidden') : orderDetailsModal ? null : (document.body.style.overflow = 'initial');
-		if (name.length < 3 || country.length < 2 || city === '' || street.length < 3 || zipcode.length < 5) {
+		if (
+			(!bool && user.deliveryInfo.name === '') ||
+			user.deliveryInfo.country === '' ||
+			user.deliveryInfo.state === '' ||
+			user.deliveryInfo.city === '' ||
+			user.deliveryInfo.street === '' ||
+			user.deliveryInfo.zipcode === ''
+		) {
 			dispatch(changeNeedDelivery(false));
 		}
 
 		setModal(bool);
 	};
-
 	const handleOrderDetailsControl = (bool) => {
 		// Отключаем скроллинг документа если модальное окно открыто
 		bool ? (document.body.style.overflow = 'hidden') : (document.body.style.overflow = 'initial');
+		setReadyToBuy(bool);
 		setOrderDetailsModal(bool);
 	};
 
-	// TRASH
-	const [isDragging, setIsDragging] = useState(false);
-	const [orderAmount, setOrderAmount] = useState(1);
+	const finallyButton = () => {
+		if (!wallet) {
+			open();
+			return;
+		}
 
-	const handleChangeAmount = (e) => {
-		setOrderAmount(e.target.value);
+		if (readyToBuy) {
+			console.log('re');
+			buy();
+		}
+
+		if (!readyToBuy) {
+			handleOrderDetailsControl(true);
+		}
 	};
 
+	// Управление инпутом ввода количества товара
+	const handleChangeAmount = (e) => {
+		const inputValue = e.target.value;
+		const numericRegex = /^[0-9]*$/; // Регулярное выражение, позволяющее только цифры
+
+		if (!numericRegex.test(inputValue)) {
+			// Если ввод не является числом, не обрабатываем его
+			return;
+		}
+
+		// Если ввод является числом, обрабатываем его
+		setOrderAmount(inputValue);
+
+		if (inputValue < 1 && inputValue !== '') {
+			setOrderAmount(1);
+		}
+
+		if (inputValue > productData.total - productData.sold) {
+			setOrderAmount(productData.total - productData.sold);
+		}
+	};
+	const handleChangeAmountOnBlur = (e) => {
+		if (e.target.value === '') {
+			setOrderAmount(1);
+		}
+	};
+
+	// Упраление ползунком количества товара
 	const handleMouseDown = () => {
 		setIsDragging(true);
 	};
@@ -201,6 +199,7 @@ function Homepage() {
 			setOrderAmount(e.target.value);
 		}
 	};
+
 	useEffect(() => {
 		let total = orderAmount * productData.price;
 		if (needDelivery) {
@@ -252,54 +251,11 @@ function Homepage() {
 				<Quote lineColor={'rgba(67, 120, 255, 1)'} bgColor={'rgba(67, 120, 255, .1)'} text={productData.specialQuote} />
 				<DeliveryToggler handleModalControl={handleModalControl} />
 
-				<Modal zIndex={1000} modalTitle={'Shipping Details'} handleModalControl={handleModalControl} modal={modal}>
-					<div className={styles.form}>
-						<p className={styles.formSubtitle}>Delivery information</p>
-						<div className={styles.inputs}>
-							<div className={styles.inputBlock}>
-								<span>Name: </span>
-								<input value={name} onChange={(e) => handleInputChange(setName, e)} type="text" placeholder="Jon Jones" />
-							</div>
-
-							<div className={styles.inputBlock}>
-								<span>Country: </span>
-								<input value={country} onChange={(e) => handleInputChange(setCountry, e)} type="text" placeholder="USA" />
-							</div>
-
-							<div className={styles.inputBlock}>
-								<span>State: </span>
-								<input value={state} onChange={(e) => handleInputChange(setState, e)} type="text" placeholder="Illinois" />
-							</div>
-
-							<div className={styles.inputBlock}>
-								<span>City: </span>
-								<input value={city} onChange={(e) => handleInputChange(setCity, e)} type="text" placeholder="Springfield" />
-							</div>
-
-							<div className={styles.inputBlock}>
-								<span>Street: </span>
-								<input value={street} onChange={(e) => handleInputChange(setStreet, e)} type="text" placeholder="123 Main str" />
-							</div>
-
-							<div className={styles.inputBlock}>
-								<span>ZIP Code: </span>
-								<input value={zipcode} onChange={(e) => handleInputChange(setZipcode, e)} type="tel" placeholder="62701" />
-							</div>
-						</div>
-						<p className={styles.attention}>Please make sure your address is correct, otherwise your delivery won't reach you</p>
-						<div className={styles.inputBlock} style={{ justifyContent: 'space-between', marginTop: 30 }}>
-							<span style={{ color: 'black' }}>Save my address and data</span>
-							<Toggler backgroundColor={'#1CC455'} flag={saveData} func={() => setSaveData((prev) => !prev)} />
-						</div>
-						<div style={{ pointerEvents: disableConfirm ? 'none' : null, opacity: disableConfirm ? 0.5 : 1 }}>
-							<ButtonDefault onClick={handleConfirmData} marginTop={50}>
-								Confirm
-							</ButtonDefault>
-						</div>
-					</div>
+				<Modal zIndex={300} modalTitle={'Shipping Details'} handleModalControl={handleModalControl} modal={modal}>
+					<DeliveryInfo setIsOpen={handleModalControl} styles={styles} isOpen={modal} />
 				</Modal>
 
-				<Modal zIndex={900} modalTitle={'Order Details'} handleModalControl={handleOrderDetailsControl} modal={orderDetailsModal}>
+				<Modal zIndex={200} modalTitle={'Order Details'} handleModalControl={handleOrderDetailsControl} modal={orderDetailsModal}>
 					{needDelivery ? (
 						<div className={styles.details} style={{ marginBottom: 30 }}>
 							<p className={styles.formSubtitle}>customer and address info</p>
@@ -315,7 +271,7 @@ function Homepage() {
 											/>
 										</svg>
 									</div>
-									<input type="text" defaultValue={name} />
+									<div>{user.deliveryInfo.name}</div>
 								</div>
 								<div className={styles.orderDetail}>
 									<div className={styles.orderDetailIcon}>
@@ -328,11 +284,9 @@ function Homepage() {
 											/>
 										</svg>
 									</div>
-									<input
-										className={styles.orderCentralInput}
-										defaultValue={`${country}${country && ','} ${state}${state && ','} ${city}${city && ','} ${street}`}
-										type="text"
-									/>
+									<div>{`${user.deliveryInfo.country}${user.deliveryInfo.country && ','} ${user.deliveryInfo.state}${
+										user.deliveryInfo.state && ','
+									} ${user.deliveryInfo.city}${user.deliveryInfo.city && ','} ${user.deliveryInfo.street}`}</div>
 								</div>
 								<div className={styles.orderDetail}>
 									<div className={styles.orderDetailIcon}>
@@ -345,7 +299,7 @@ function Homepage() {
 											/>
 										</svg>
 									</div>
-									<input defaultValue={zipcode} type="text" />
+									<div>{user.deliveryInfo.zipcode}</div>
 								</div>
 							</div>
 
@@ -369,7 +323,7 @@ and provide your details."
 							</div>
 						</div>
 					)}
-					<div className={styles.details}>
+					<div className={styles.details} style={{paddingBottom: 50}}>
 						<p className={styles.formSubtitle}>order amount</p>
 						<div className={styles.amount}>
 							<input
@@ -384,7 +338,13 @@ and provide your details."
 								step={1}
 								type="range"
 							/>
-							<input className={styles.amountInput} type="tel" value={orderAmount} onChange={handleChangeAmount} />
+							<input
+								className={styles.amountInput}
+								type="tel"
+								value={orderAmount}
+								onBlur={handleChangeAmountOnBlur}
+								onChange={handleChangeAmount}
+							/>
 						</div>
 
 						{needDelivery && (
@@ -438,15 +398,11 @@ and provide your details."
 								</svg>
 							</div>
 						</div>
-
-						<ButtonDefault marginTop={20} onClick={wallet ? buy : openConnectModal}>
-							{wallet ? 'Buy Product' : 'Connect Wallet'}
-						</ButtonDefault>
 					</div>
+					<ButtonDefault marginTop={20} onClick={finallyButton}>
+						{wallet ? 'Buy Product' : 'Connect Wallet'}
+					</ButtonDefault>
 				</Modal>
-				<ButtonDefault marginTop={20} onClick={wallet ? handleOrderDetailsControl : openConnectModal}>
-					{wallet ? 'Buy Product' : 'Connect Wallet'}
-				</ButtonDefault>
 			</div>
 			<Nav />
 		</div>

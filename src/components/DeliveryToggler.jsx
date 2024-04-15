@@ -3,20 +3,19 @@ import { changeNeedDelivery } from '../redux/slice/cartSlice';
 import { Toggler } from './Toggler';
 
 const text = {
-	ru: ['Да, мне нужна доставка', 'Мне не нужна доставка'],
-	en: ['Yes, i want delivery', "No, i don't need delivery"],
+	ru: "Нажмите, если хотите доставку",
+	en: "Activate, if you need to delivery",
 };
 
 export const DeliveryToggler = ({ handleModalControl, marginTop }) => {
 	const dispatch = useDispatch();
 	const needDelivery = useSelector((state) => state.cart.needDelivery);
 	const language = useSelector((state) => state.user.appLanguage);
-	const deliveryInfo = useSelector((state) => state.user.deliveryInfo);
 
 	const handleDeliveryToggle = () => {
 		dispatch(changeNeedDelivery());
 
-		if (!deliveryInfo.status && !needDelivery) {
+		if (!needDelivery) {
 			handleModalControl(true)
 		}
 	};
@@ -34,7 +33,7 @@ export const DeliveryToggler = ({ handleModalControl, marginTop }) => {
 				height: 46,
 			}}
 		>
-			<p style={{ fontSize: 17 }}>{needDelivery ? text[language][0] : text[language][1]}</p>
+			<p style={{ fontSize: 17, display: 'flex', alignItems: 'center', columnGap: 10 }}>{text[language]}</p>
 			<Toggler backgroundColor={'rgba(0, 122, 255, 1)'} func={handleDeliveryToggle} flag={needDelivery} />
 		</div>
 	);
