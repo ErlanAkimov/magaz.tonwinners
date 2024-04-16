@@ -17,6 +17,7 @@ function CustomProvider({ children }) {
 		const owner = searchParams.get('owner');
 		let body = {}
 		const newBodyForCheck = []
+		const oneMoreBody = []
 		if (owner) {
 			body.id = parseInt(owner)
 		}
