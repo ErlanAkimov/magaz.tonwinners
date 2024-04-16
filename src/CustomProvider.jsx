@@ -17,7 +17,7 @@ function CustomProvider({ children }) {
 		const owner = searchParams.get('owner');
 		let body = {}
 		if (owner) {
-			body.id = owner
+			body.id = parseInt(owner)
 		}
 
 		if (Object.keys(window.Telegram.WebApp.initDataUnsafe).length > 0) {
