@@ -43,6 +43,7 @@ const text = {
 
 export const DeliveryInfo = ({ styles, isOpen, setIsOpen }) => {
 	const user = useSelector(state => state.user)
+	const app = useSelector(state => state.appState);
 	const dispatch = useDispatch();
 
 	const [propStyles, setPropStyles] = useState({display: 'none'})
@@ -67,7 +68,6 @@ export const DeliveryInfo = ({ styles, isOpen, setIsOpen }) => {
 			zipcode: user.deliveryInfo.zipcode,
 			saveData: user.deliveryInfo.saveData
 		})
-
 		setIsOpen(false)
 	}
 
@@ -77,10 +77,10 @@ export const DeliveryInfo = ({ styles, isOpen, setIsOpen }) => {
 
 	useEffect(() => {
 		if (isOpen) {
-			setPropStyles({display: 'block'})
+			setPropStyles({display: 'block', zIndex: 1000 })
 		} else {
 			setTimeout(() => {
-				setPropStyles({display: 'none'})
+				setPropStyles({display: 'none', zIndex: 100})
 			}, 270)
 		}
 

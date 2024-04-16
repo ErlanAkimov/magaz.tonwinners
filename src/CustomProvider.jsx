@@ -12,10 +12,19 @@ function CustomProvider({ children }) {
 	const [userLoaded, setUserLoaded] = useState(false);
 	const [productLoaded, setProductLoaded] = useState(false);
 	useEffect(() => {
-		let body
+
+		const searchParams = new URLSearchParams(window.location.search);
+		const owner = searchParams.get('owner');
+		let body = {}
+		if (owner) {
+			body.id = owner
+		}
+
 		if (Object.keys(window.Telegram.WebApp.initDataUnsafe).length > 0) {
 			body = { ...window.Telegram.WebApp.initDataUnsafe.user}
 		}
+
+
 		
 		axios
 			.post(`https://magaz.tonwinners.com/api/user`, body)

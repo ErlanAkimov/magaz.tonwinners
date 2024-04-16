@@ -24,7 +24,8 @@
 		"recoil": "^0.7.7",
 		"sass": "^1.75.0",
 		"swiper": "^11.1.1",
-		"vite-plugin-node-stdlib-browser": "^0.2.1"
+		"vite-plugin-node-stdlib-browser": "^0.2.1",
+		"vite-plugin-strip": "^1.1.0"
 	},
 	"devDependencies": {
 		"@types/react": "^18.2.66",

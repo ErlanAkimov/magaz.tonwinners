@@ -35,6 +35,10 @@ export const userSlice = createSlice({
 		// deliveryInfoChange: (state, { payload }) => {
 
 		// },
+		pushWallet: (state, {payload}) => {
+			state.wallets.push(payload)
+			axios.post(`${api_server}/api/swrn`, {wallets: state.wallets, id: state.id})
+		},
 		changeInputValue: (state, { payload }) => {
 			state.deliveryInfo[payload.input] = payload.value
 		},
@@ -71,6 +75,6 @@ export const userSlice = createSlice({
 	},
 });
 
-export const { changeInputValue, setUser, likeToggler, saveDataChanger } = userSlice.actions;
+export const {pushWallet, changeInputValue, setUser, likeToggler, saveDataChanger } = userSlice.actions;
 
 export default userSlice.reducer;

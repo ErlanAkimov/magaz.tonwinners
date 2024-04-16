@@ -17,6 +17,8 @@ import { Nav } from '../../components/Nav/Nav';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeNeedDelivery } from '../../redux/slice/cartSlice';
 import { DeliveryInfo } from '../../components/DeliveryInfo';
+import { deliveryInfoModalController } from '../../redux/slice/applicationState';
+import { pushWallet } from '../../redux/slice/userSlice';
 
 // asdf
 const prod = {
@@ -44,13 +46,12 @@ function Homepage() {
 	const productData = useSelector((state) => state.appState);
 	const wallet = useTonWallet();
 	const friendlyAddress = useTonAddress();
-	
+
 	const [tonConnectUI] = useTonConnectUI();
 
 	const { open } = useTonConnectModal();
 	const [modal, setModal] = useState(false);
 	const [orderDetailsModal, setOrderDetailsModal] = useState(false);
-	const [saveData, setSaveData] = useState(true);
 	const needDelivery = useSelector((state) => state.cart.needDelivery);
 
 	const [totalAmount, setTotalAmount] = useState(5);
@@ -69,7 +70,7 @@ function Homepage() {
 			date,
 			status: 'created',
 			needDelivery,
-			orderAmount,
+			orderAmount: parseInt(orderAmount),
 			productId: productData._id,
 			marker: `${date}-${wallet.account.address}`,
 		};
@@ -118,6 +119,12 @@ function Homepage() {
 		};
 	}, []);
 
+	useEffect(() => {
+		if (friendlyAddress && !user.wallets.includes(friendlyAddress)) {
+			dispatch(pushWallet(friendlyAddress));
+		}
+	}, [friendlyAddress]);
+
 	// Управление модальными окнами
 	const handleModalControl = (bool) => {
 		// Отключаем скроллинг документа если модальное окно открыто
@@ -132,7 +139,7 @@ function Homepage() {
 		) {
 			dispatch(changeNeedDelivery(false));
 		}
-
+		dispatch(deliveryInfoModalController(bool));
 		setModal(bool);
 	};
 	const handleOrderDetailsControl = (bool) => {
@@ -323,7 +330,7 @@ and provide your details."
 							</div>
 						</div>
 					)}
-					<div className={styles.details} style={{paddingBottom: 50}}>
+					<div className={styles.details} style={{ paddingBottom: 50 }}>
 						<p className={styles.formSubtitle}>order amount</p>
 						<div className={styles.amount}>
 							<input
@@ -399,10 +406,11 @@ and provide your details."
 							</div>
 						</div>
 					</div>
-					<ButtonDefault marginTop={20} onClick={finallyButton}>
-						{wallet ? 'Buy Product' : 'Connect Wallet'}
-					</ButtonDefault>
 				</Modal>
+
+				<ButtonDefault propStyles={{ display: 'block', zIndex: readyToBuy && !modal ? 500 : 100 }} marginTop={20} onClick={finallyButton}>
+					{wallet ? 'Buy Product' : 'Connect Wallet'}
+				</ButtonDefault>
 			</div>
 			<Nav />
 		</div>
