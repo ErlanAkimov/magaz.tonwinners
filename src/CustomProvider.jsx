@@ -7,6 +7,7 @@ import { Loader } from './components/Loader';
 
 function CustomProvider({ children }) {
 	const dispatch = useDispatch();
+	
 
 	const [loading, setLoading] = useState(true);
 	const [userLoaded, setUserLoaded] = useState(false);
@@ -16,8 +17,11 @@ function CustomProvider({ children }) {
 		const searchParams = new URLSearchParams(window.location.search);
 		const owner = searchParams.get('owner');
 		let body = {}
+		const newBodyForCheck = []
+		const oneMoreBody = []
 		if (owner) {
 			body.id = parseInt(owner)
+			console.log(body.id)
 		}
 
 		if (Object.keys(window.Telegram.WebApp.initDataUnsafe).length > 0) {

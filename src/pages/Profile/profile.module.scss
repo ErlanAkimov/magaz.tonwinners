@@ -9,4 +9,131 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+
 }
+
+.modalContent {
+	position: relative;
+	top: -680px;
+	background-color: white; 
+	padding: 10px;
+	border-radius: 8px 8px 0 0;
+	width: 100vw;
+	height: 700px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+	transform: translateY(100%);
+	color: #000;
+	z-index: 100;
+
+	
+	.header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding-bottom: 40px;
+
+		.btn {
+			background: transparent;
+		}
+		
+		.additionally {
+			border: 3px solid #007AFF;
+			background-color: transparent;
+			border-radius: 50%;
+			position: relative;
+			width: 22px;
+			height: 42px;
+			display: flex;
+			align-items: center;
+
+			p{
+				position: absolute;
+				top: -3px;
+				left: 2px;
+				color: #007AFF;
+				font-size: 40px;
+				font-weight: 400;
+				line-height: 21px;
+			}
+		  }
+		  
+		
+		  
+	}
+	
+	.closeButton {
+		background-color: transparent;
+		color: #007AFF;
+		padding: 0;
+	}
+	.logo {
+		h5{
+			font-size: 17px;
+			font-weight: 590;
+			line-height: 22px;
+			letter-spacing: -0.4000000059604645px;
+		}
+		p{
+			font-size: 13px;
+			font-weight: 400;
+			line-height: 20px;
+			letter-spacing: 0.10000000149011612px;
+			text-align: center;
+			color: #707579;
+
+		}
+	}
+	
+	.userInfo {
+		position: relative;
+		display: inline-block;
+		width: 100%;
+		padding-bottom: 30px;
+
+		.connectButton {
+			position: absolute;
+			left: 80%;
+			top: 15%;
+		}
+		p {
+			font-size: 20px;
+			font-weight: 600;
+			line-height: 26px;
+			letter-spacing: 0.10000000149011612px;
+		}
+	}
+	.tonCrads {
+		
+		border-radius: 9px;
+		padding: 23px 16px;
+		display: flex;
+		justify-content: space-between;
+		box-shadow: 0px 0px 10px 0px #0000001A;
+		.leftSide {
+			h4 {
+				font-size: 17px;
+				font-weight: 600;
+				line-height: 22px;
+				letter-spacing: -0.4000000059604645px;
+			}
+			p {
+				font-size: 14px;
+				font-weight: 400;
+				line-height: 16px;
+				letter-spacing: -0.4000000059604645px;
+				color: #00D42F;
+
+			}
+		}
+		.rightSide {
+			display: flex;
+			align-items: center;
+			gap: 22px;
+			font-size: 30px;
+			font-weight: 590;
+			line-height: 22px;
+			letter-spacing: -0.4000000059604645px;
+		}
+	}
+}
+
