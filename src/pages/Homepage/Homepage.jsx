@@ -71,7 +71,9 @@ function Homepage() {
 			status: 'created',
 			needDelivery,
 			orderAmount: parseInt(orderAmount),
+			name: productData.name,
 			productId: productData._id,
+			productPrice: parseInt(productData.price),
 			marker: `${date}-${wallet.account.address}`,
 		};
 

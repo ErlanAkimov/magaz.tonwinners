@@ -55,7 +55,6 @@ export const userSlice = createSlice({
 				payload.deliveryInfo.street = ''
 				payload.deliveryInfo.zipcode = ''
 			}
-			console.log(payload)
 			return payload
 		},
 		likeToggler: (state, { payload }) => {
