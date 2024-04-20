@@ -21,6 +21,24 @@
 	src: url('./assets/fonts/sf/sf-pro-icons_light.woff2');
 }
 
+@font-face {
+	font-family: 'H_neue';
+	src: url('./assets/fonts/helvetica/HelveticaNeueCyr-Roman.woff2') format('woff2');
+	font-weight: 400;
+}
+
+@font-face {
+	font-family: 'H_neue';
+	src: url('./assets/fonts/helvetica/HelveticaNeueCyr-Medium.woff2') format('woff2');
+	font-weight: 500;
+}
+
+@font-face {
+	font-family: 'H_neue';
+	src: url('./assets/fonts/helvetica/HelveticaNeueCyr-Bold.woff2') format('woff2');
+	font-weight: 700;
+}
+
 * {
 	margin: 0;
 	padding: 0;
