@@ -8,6 +8,36 @@ import pods from '../../assets/images/pods.png';
 import phones from '../../assets/images/iphones.png';
 import sneak from '../../assets/images/sneakers.png';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
+import { Nav } from '../../components/Nav/Nav';
+
+const data = {
+	_id: 'drop-coin',
+	name: 'TON Drop coins',
+	description:
+		"Buy TON souvenir coins made of zinc alloy with a silver coating, and <strong>receive random drops</strong> in the wallet used for purchase. More coins mean more drops\n\n\tDon't miss the opportunity to get souvenirs at a low price",
+	type: 'souvenir',
+	price: 5,
+	total: 5000,
+	currency: "TON",
+	sold: 632,
+	deliverMin: 4,
+	deliverMax: 8,
+	specialQuote:
+		'We can ship souvenir coins globally, though delivery times may vary by location. For those purchasing coins solely for wallet drops, opt out of delivery; your wallet will still receive drops after payment.',
+	properties: [
+		{
+			weight: '6,5 g',
+		},
+		{
+			diameter: '36 mm',
+		},
+		{
+			thikness: '3,5 mm',
+		},
+	],
+	images: ['https://i.ibb.co/Yymtkb1/DROP-COINS-1.png', 'https://i.ibb.co/x2tM4j3/mainbanner2.png', 'https://i.ibb.co/C1Yw5qq/mainbanner1.png'],
+	deliveryFee: 5,
+};
 
 const cats = [
 	{
@@ -35,6 +65,7 @@ const cats = [
 function Homepage() {
 	return (
 		<div className={styles.wrapper}>
+			<Nav />
 			<Swiper className={styles.banner} spaceBetween={30}>
 				<SwiperSlide className={styles.bannerItem}>
 					<h2 className={styles.bannerTitle}>
@@ -61,11 +92,12 @@ function Homepage() {
 				})}
 			</div>
 
+			<h2 className={styles.catalogTitle}>New from MAGAZ</h2>
 			<div className={styles.catalog}>
-				<h2 className={styles.catalogTitle}>Neww from MAGAZ</h2>
-				<ProductCard data={{
-					name: 'dropcoin'
-				}} />
+				<ProductCard data={data} />
+				<ProductCard data={data} />
+				<ProductCard data={data} />
+				<ProductCard data={data} />
 			</div>
 		</div>
 	);

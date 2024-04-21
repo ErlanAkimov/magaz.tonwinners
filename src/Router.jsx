@@ -13,7 +13,7 @@ export const router = createBrowserRouter([
 	},
 	{
 		path: '/categories',
-		element: <S />,
+		element: <Productpage />,
 	},
 
 	{
