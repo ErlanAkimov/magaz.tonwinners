@@ -9,10 +9,49 @@
 }
 
 .swiperSlide {
+	aspect-ratio: 1;
 	img {
 		object-fit: cover;
 		width: 100%;
 	}
+}
+
+.orderNow {
+	padding: 0px 12px;
+	border-radius: 8px;
+	height: 42px;
+	font-size: 16px;
+	font-family: "H_neue";
+	color: white;
+	font-weight: 500;
+	background-color: rgba(41, 144, 255, 1);
+}
+
+.priceLine {
+	margin-top: 10px;
+	padding-inline: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	.price {
+		display: flex;
+		align-items: center;
+		column-gap: 4px;
+		font-size: 24px;
+		line-height: 16px;
+		font-weight: 700;
+	}
+}
+
+.delInfo {
+	margin-top: 4px;
+	display: flex;
+	align-items: center;
+	column-gap: 6px;
+
+	font-size: 14px;
+	line-height: 10px;
 }
 
 .title {
@@ -20,9 +59,20 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	padding-inline: 15px;
+
+	.magaz {
+		font-size: 16px;
+		font-weight: 500;
+		line-height: 28px;
+		font-family: 'ClashDisplay-medium';
+		text-transform: uppercase;
+		font-weight: 500;
+	}
 	h1 {
+		font-family: 'H_neue';
 		font-weight: 700;
-		font-size: 24px;
+		font-size: 16px;
 	}
 
 	span {
@@ -31,12 +81,7 @@
 	}
 
 	button {
-		padding: 0px 12px;
-		border-radius: 20px;
-		height: 42px;
-		color: white;
-		font-weight: 600;
-		background-color: rgba(41, 144, 255, 1);
+
 	}
 }
 
@@ -44,6 +89,7 @@
 	margin-top: 25px;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
+	padding-inline: 15px;
 	column-gap: 8px;
 
 	div {
@@ -74,6 +120,7 @@
 
 .description {
 	padding: 12px 16px;
+	margin-inline: 15px;
 	border-radius: 16px;
 	margin-top: 8px;
 	background-color: rgb(245, 245, 245);
@@ -98,6 +145,8 @@
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	column-gap: 8px;
+	padding-inline: 15px;
+	margin-bottom: 30px;
 
 	div {
 		display: flex;
@@ -362,4 +411,20 @@
 	aspect-ratio: 1;
 	margin: 0 auto;
 	margin-top: 13px;
+}
+
+
+.productLine {
+
+	.prodTitle {
+		font-weight: 500;
+		font-size: 14px;
+		line-height: 16px;
+		font-family: "H_neue";
+	}
+	margin-top: 30px;
+	padding-inline: 15px;
+	&Swiper {
+		margin-top: 10px;
+	}
 }

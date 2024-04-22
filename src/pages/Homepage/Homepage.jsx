@@ -9,35 +9,11 @@ import phones from '../../assets/images/iphones.png';
 import sneak from '../../assets/images/sneakers.png';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { Nav } from '../../components/Nav/Nav';
+import { ButtonDefault } from '../../components/ButtonDefault';
 
-const data = {
-	_id: 'drop-coin',
-	name: 'TON Drop coins',
-	description:
-		"Buy TON souvenir coins made of zinc alloy with a silver coating, and <strong>receive random drops</strong> in the wallet used for purchase. More coins mean more drops\n\n\tDon't miss the opportunity to get souvenirs at a low price",
-	type: 'souvenir',
-	price: 5,
-	total: 5000,
-	currency: "TON",
-	sold: 632,
-	deliverMin: 4,
-	deliverMax: 8,
-	specialQuote:
-		'We can ship souvenir coins globally, though delivery times may vary by location. For those purchasing coins solely for wallet drops, opt out of delivery; your wallet will still receive drops after payment.',
-	properties: [
-		{
-			weight: '6,5 g',
-		},
-		{
-			diameter: '36 mm',
-		},
-		{
-			thikness: '3,5 mm',
-		},
-	],
-	images: ['https://i.ibb.co/Yymtkb1/DROP-COINS-1.png', 'https://i.ibb.co/x2tM4j3/mainbanner2.png', 'https://i.ibb.co/C1Yw5qq/mainbanner1.png'],
-	deliveryFee: 5,
-};
+import { useTonConnectModal, useTonWallet } from '@tonconnect/ui-react';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 const cats = [
 	{
@@ -63,6 +39,14 @@ const cats = [
 ];
 
 function Homepage() {
+	const wallet = useTonWallet();
+	const { open } = useTonConnectModal();
+	const data = useSelector(state => state.products[0])
+
+	useEffect(() => {
+		console.log(data)
+	}, [])
+
 	return (
 		<div className={styles.wrapper}>
 			<Nav />
@@ -99,6 +83,10 @@ function Homepage() {
 				<ProductCard data={data} />
 				<ProductCard data={data} />
 			</div>
+			
+
+			{!wallet && <ButtonDefault onClick={open}>Connect wallet</ButtonDefault>}
+
 		</div>
 	);
 }

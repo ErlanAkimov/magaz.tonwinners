@@ -5,6 +5,7 @@ import Homepage from './pages/Homepage/Homepage';
 import GoToMiniApp from './pages/GoToMiniApp/GoToMiniApp';
 import { S } from './pages/StillDev';
 import Profile from './pages/Profile/Profile';
+import { Categoriespage } from './pages/Categories/Categoriespage';
 
 export const router = createBrowserRouter([
 	{
@@ -13,6 +14,10 @@ export const router = createBrowserRouter([
 	},
 	{
 		path: '/categories',
+		element: <Categoriespage />,
+	},
+	{
+		path: '/product/:product-id',
 		element: <Productpage />,
 	},
 

@@ -10,7 +10,7 @@ export const LikeToggler = ({ ...props }) => {
 
 	React.useEffect(() => {
 		if (user) {
-			const s = user.likedProducts.filter((a) => a === productData._id);
+			const s = user.likedProducts.filter((a) => a === props.productId);
 			s.length === 0 ? setLike(false) : setLike(true);
 		}
 	}, [user]);
@@ -18,7 +18,7 @@ export const LikeToggler = ({ ...props }) => {
 
 	return (
 		<div
-			onClick={(e) => dispatch(likeToggler(productData._id))}
+			onClick={(e) => dispatch(likeToggler(props.productId))}
 			style={{
 				width: Number(props.width),
 				borderRadius: 100,

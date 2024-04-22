@@ -51,14 +51,14 @@
 	-webkit-tap-highlight-color: none; /* Для Internet Explorer */
 }
 
-a {
+/* a {
 	font-weight: 500;
 	color: #646cff;
 
 	&:hover {
 		color: #545cf2;
 	}
-}
+} */
 
 body {
 	margin: 0;
@@ -66,6 +66,7 @@ body {
 	min-width: 320px;
 	min-height: 100vh;
 	background-color: #fff;
+	padding-bottom: 140px;
 
 	&::-webkit-scrollbar {
 		display: none;
@@ -91,6 +92,4 @@ button {
 
 
 .wrapper {
-	padding-inline: 20px;
-	padding-bottom: 77px;
 }

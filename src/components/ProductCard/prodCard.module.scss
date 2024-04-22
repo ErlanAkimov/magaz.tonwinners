@@ -43,4 +43,24 @@
 .price {
 	display: flex;
 	align-items: center;
+	column-gap: 6px;
+	margin-top: 10px;
+
+	p {
+		font-size: 18px;
+		font-weight: 700;
+		line-height: 16px;
+	}
 }
+
+.dCost {
+	display: flex;
+	margin-top: 4px;
+	column-gap: 4px;
+
+	p {
+		font-size: 10px;
+		line-height: 16px;
+		font-weight: 400;
+	}
+} 

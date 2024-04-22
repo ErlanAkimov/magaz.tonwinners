@@ -3,7 +3,7 @@ import styles from './nav.module.scss';
 import { Link } from 'react-router-dom';
 
 export const Nav = () => {
-	const [page, setPage] = useState('/');
+	const [page, setPage] = useState();
 	useEffect(() => {
 		setPage(window.location.pathname);
 	}, [window.location.pathname]);

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setUser } from './redux/slice/userSlice';
 import { setProduct } from './redux/slice/applicationState';
+import { Loader } from './components/Loader';
 
 function CustomProvider({ children }) {
 	const dispatch = useDispatch();
@@ -36,14 +37,14 @@ function CustomProvider({ children }) {
 	}, []);
 
 	useEffect(() => {
-		if (userLoaded && productLoaded) {
+		if (/* userLoaded && */ productLoaded) {
 			setTimeout(() => {
 				setLoading(false);
 			}, 300);
 		}
 	}, [userLoaded, productLoaded]);
 
-	// return <>{loading ? <Loader /> : children}</>;
+	return <>{loading ? <Loader /> : children}</>;
 	return <>{children}</>;
 }
 
