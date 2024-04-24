@@ -3,7 +3,6 @@ import styles from './productpage.module.scss';
 
 import { useTonWallet, useTonConnectModal, useTonConnectUI, useTonAddress } from '@tonconnect/ui-react';
 import { beginCell, toNano } from '@ton/ton';
-import banana from '../../assets/images/image.png';
 
 import { Quote } from '../../components/Quote';
 import Modal from '../../components/Modal/Modal';
@@ -414,7 +413,7 @@ function Productpage() {
 					) : (
 						<div className={styles.details}>
 							<div className={styles.banana}>
-								<img src={banana} alt="" />
+								<img src='https://i.ibb.co/YtW140P/Image.png' alt="" />
 							</div>
 
 							<Quote
