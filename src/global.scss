@@ -51,15 +51,6 @@
 	-webkit-tap-highlight-color: none; /* Для Internet Explorer */
 }
 
-/* a {
-	font-weight: 500;
-	color: #646cff;
-
-	&:hover {
-		color: #545cf2;
-	}
-} */
-
 body {
 	margin: 0;
 	max-width: 100vw;
@@ -88,8 +79,4 @@ button {
 	background-color: #1a1a1a;
 	cursor: pointer;
 	transition: border-color 0.25s;
-}
-
-
-.wrapper {
 }
