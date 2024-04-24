@@ -5,7 +5,7 @@ import Homepage from './pages/Homepage/Homepage';
 import GoToMiniApp from './pages/GoToMiniApp/GoToMiniApp';
 import Profile from './pages/Profile/Profile';
 import { Categoriespage } from './pages/Categories/Categoriespage';
-import { DeliveryInfo } from './pages/deliveryInfo/deliveryInfo';
+import { ChangeAddress } from './pages/ChangeAddress/ChangeAddress';
 
 
 
@@ -24,8 +24,13 @@ export const router = createBrowserRouter([
 	},
 
 	{
-		path: '/orders',
-		element: <DeliveryInfo />,
+		path: '/change-address',
+		element: <ChangeAddress />,
+	},
+
+	{
+		path: '/create-new-address',
+		element: <ChangeAddress />,
 	},
 
 	{
