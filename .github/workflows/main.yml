@@ -7,14 +7,11 @@ jobs:
     name: testing for deploy
     runs-on: ububntu-latest
   steps:
-    - name: checkout rep
-      uses: actions/checkout@v4
-    - name: setup node.js
-      uses: actions/setup-node@v4
-      with:
+    -  uses: actions/checkout@v4
+    -  uses: actions/setup-node@v4
+      with: 
         node-version: 20.10.0
     - name: installing deps
-      uses: npm i
+      run: npm i
     - name: building app
-      uses: npm run build
-      
+      run: npm run build
