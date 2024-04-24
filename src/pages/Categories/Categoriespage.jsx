@@ -4,7 +4,7 @@ import styles from './cat.module.scss';
 import { Link } from 'react-router-dom';
 import { Nav } from '../../components/Nav/Nav';
 import { BannerDefault } from '../../components/BannerDefault';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { ButtonDefault } from '../../components/ButtonDefault';
 import { useTonConnectModal, useTonWallet } from '@tonconnect/ui-react';
@@ -48,7 +48,24 @@ export const Categoriespage = () => {
 
 	const wallet = useTonWallet();
 	const { open } = useTonConnectModal();
+	useEffect(() => {
+		window.scrollTo(0,0)
+	}, [])
 
+	useEffect(() => {
+		if (pickedCategory) {
+
+			function cats () {
+				Telegram.WebApp.offEvent('backButtonClicked', cats)
+				window.scrollTo(0,0)
+				setPickedCategory(null)
+			}
+			window.Telegram.WebApp.BackButton.show()
+			Telegram.WebApp.onEvent('backButtonClicked', cats)
+		} else {
+			window.Telegram.WebApp.BackButton.hide()
+		}
+	}, [pickedCategory])
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.bread}>
@@ -89,7 +106,7 @@ export const Categoriespage = () => {
 				</div>
 			)}
 
-			{!wallet && <ButtonDefault onClick={open}>Connect wallet</ButtonDefault>}
+			{!wallet && <ButtonDefault onClick={open}>Connect Wallet</ButtonDefault>}
 
 			<BannerDefault
 				data={{

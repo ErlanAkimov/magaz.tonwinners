@@ -44,7 +44,8 @@ function Homepage() {
 	const data = useSelector(state => state.products[0])
 
 	useEffect(() => {
-		console.log(data)
+		window.scrollTo(0,0)
+		window.Telegram.WebApp.BackButton.hide()
 	}, [])
 
 	return (
@@ -85,7 +86,7 @@ function Homepage() {
 			</div>
 			
 
-			{!wallet && <ButtonDefault onClick={open}>Connect wallet</ButtonDefault>}
+			{!wallet && <ButtonDefault onClick={open}>Connect Wallet</ButtonDefault>}
 
 		</div>
 	);

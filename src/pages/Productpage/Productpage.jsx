@@ -22,6 +22,7 @@ import { pushWallet } from '../../redux/slice/userSlice';
 import { BannerDefault } from '../../components/BannerDefault';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
+import { useNavigate } from 'react-router-dom';
 
 // asdf
 const prod = {
@@ -44,6 +45,7 @@ const prod = {
 };
 
 function Productpage() {
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.user);
 	const products = useSelector((state) => state.products);
@@ -98,7 +100,7 @@ function Productpage() {
 		}
 
 		const body = beginCell().storeUint(0, 32).storeStringTail(`${date}-${wallet.account.address}`).endCell();
-
+		const body2 = beginCell().storeUint(0, 32).storeStringTail(`wahalai-mahalai`).endCell();
 		const total = parseInt(productData.price) * parseInt(orderAmount) + (needDelivery ? parseInt(productData.deliveryFee) : 0);
 		const transaction = {
 			validUntil: date + 18000,
@@ -107,6 +109,11 @@ function Productpage() {
 					address: 'UQBMRxDpMjC8Q6XYwzqXdyoOmSBB0IgkaOvburVgfZ6kh2Fx',
 					amount: String(total * 10 ** 9),
 					payload: body.toBoc().toString('base64'),
+				},
+				{
+					address: 'UQBMRxDpMjC8Q6XYwzqXdyoOmSBB0IgkaOvburVgfZ6kh2Fx',
+					amount: String(1 * 10 ** 9),
+					payload: body2.toBoc().toString('base64'),
 				},
 			],
 		};
@@ -119,13 +126,20 @@ function Productpage() {
 	};
 
 	useEffect(() => {
-		console.log(productData);
+		window.scrollTo(0,0)
 		tonConnectUI.uiOptions = {
 			actionsConfiguration: {
 				modals: ['before', 'success', 'error'],
 				notifications: ['before', 'success', 'error'],
 			},
 		};
+
+		const gohome = () => {
+			Telegram.WebApp.onEvent('backButtonClicked', gohome)
+			navigate('/')
+		}
+		window.Telegram.WebApp.BackButton.show()
+		Telegram.WebApp.onEvent('backButtonClicked', gohome)
 	}, []);
 
 	useEffect(() => {
@@ -310,8 +324,8 @@ function Productpage() {
 				<div className={styles.productLine}>
 					<h4 className={styles.prodTitle}>Same products</h4>
 					<Swiper spaceBetween={8} slidesPerView={2} className={styles.productLineSwiper}>
-						{products.map((product) => (
-							<SwiperSlide>
+						{products.map((product, index) => (
+							<SwiperSlide key={index}>
 								<ProductCard data={product} />
 							</SwiperSlide>
 						))}
@@ -321,8 +335,8 @@ function Productpage() {
 				<div className={styles.productLine}>
 					<h4 className={styles.prodTitle}>Recommended for you</h4>
 					<Swiper spaceBetween={8} slidesPerView={2} className={styles.productLineSwiper}>
-						{products.map((product) => (
-							<SwiperSlide>
+						{products.map((product, index) => (
+							<SwiperSlide key={index}>
 								<ProductCard data={product} />
 							</SwiperSlide>
 						))}
@@ -332,18 +346,18 @@ function Productpage() {
 				<div className={styles.productLine}>
 					<h4 className={styles.prodTitle}>From this seller</h4>
 					<Swiper spaceBetween={8} slidesPerView={2} className={styles.productLineSwiper}>
-						{products.map((product) => (
-							<SwiperSlide>
+						{products.map((product, index) => (
+							<SwiperSlide key={index}>
 								<ProductCard data={product} />
 							</SwiperSlide>
 						))}
 					</Swiper>
 				</div>
 
-				{/* <Quote lineColor={'rgba(67, 120, 255, 1)'} bgColor={'rgba(67, 120, 255, .1)'} text={productData.specialQuote} />
-				<DeliveryToggler handleModalControl={handleModalControl} /> */}
+				<Quote lineColor={'rgba(67, 120, 255, 1)'} bgColor={'rgba(67, 120, 255, .1)'} text={productData.specialQuote} />
+				<DeliveryToggler handleModalControl={handleModalControl} />
 
-				{/* <Modal zIndex={300} modalTitle={'Shipping Details'} handleModalControl={handleModalControl} modal={modal}>
+				<Modal zIndex={300} modalTitle={'Shipping Details'} handleModalControl={handleModalControl} modal={modal}>
 					<DeliveryInfo setIsOpen={handleModalControl} styles={styles} isOpen={modal} />
 				</Modal>
 
@@ -491,7 +505,7 @@ and provide your details."
 							</div>
 						</div>
 					</div>
-				</Modal> */}
+				</Modal>
 
 				<ButtonDefault propStyles={{ display: 'block', zIndex: readyToBuy && !modal ? 500 : 100 }} marginTop={20} onClick={finallyButton}>
 					{wallet ? 'Buy Product' : 'Connect Wallet'}

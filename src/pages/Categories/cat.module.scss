@@ -1,5 +1,7 @@
 .wrapper {
 	padding-bottom: 30px;
+	overflow: hidden;
+
 }
 
 .bread {
@@ -27,12 +29,13 @@
 
 .catList {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
 	column-gap: 4px;
+	grid-template-columns: repeat(3, 1fr);
 	row-gap: 10px;
-	padding-inline: 15px;
+	width: calc(100% - 30px);
 	margin-top: 10px;
 	margin-bottom: 30px;
+	margin-inline: 15px;
 }
 
 .cardLink {
@@ -51,7 +54,8 @@
 		justify-content: center;
 
 		img {
-			border-radius: 20px;
+			border-radius: 20px;object-fit: cover;width: 100%;
+			height: 100%;
 		}
 	}
 
