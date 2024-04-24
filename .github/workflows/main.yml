@@ -1,17 +1,17 @@
 name: test
-on: 
-  push: 
+on:
+  push:
     branches: [dev]
-jobs: 
+jobs:
   test:
     name: testing for deploy
-    runs-on: ububntu-latest
-  steps:
-    -  uses: actions/checkout@v4
-    -  uses: actions/setup-node@v4
-      with: 
-        node-version: 20.10.0
-    - name: installing deps
-      run: npm i
-    - name: building app
-      run: npm run build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.10.0'
+      - name: installing deps
+        run: npm i
+      - name: building app
+        run: npm run build
