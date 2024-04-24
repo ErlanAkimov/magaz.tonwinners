@@ -44,7 +44,10 @@ function CustomProvider({ children }) {
 		}
 	}, [userLoaded, productLoaded]);
 
-	return <>{loading ? <Loader /> : children}</>;
+	return <>
+		{loading ? <Loader /> : children}
+		
+	</>;
 	return <>{children}</>;
 }
 

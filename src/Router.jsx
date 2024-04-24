@@ -3,9 +3,11 @@ import { createBrowserRouter } from 'react-router-dom';
 import Productpage from './pages/Productpage/Productpage';
 import Homepage from './pages/Homepage/Homepage';
 import GoToMiniApp from './pages/GoToMiniApp/GoToMiniApp';
-import { S } from './pages/StillDev';
 import Profile from './pages/Profile/Profile';
 import { Categoriespage } from './pages/Categories/Categoriespage';
+import { DeliveryInfo } from './pages/deliveryInfo/deliveryInfo';
+
+
 
 export const router = createBrowserRouter([
 	{
@@ -23,7 +25,7 @@ export const router = createBrowserRouter([
 
 	{
 		path: '/orders',
-		element: <S />,
+		element: <DeliveryInfo />,
 	},
 
 	{

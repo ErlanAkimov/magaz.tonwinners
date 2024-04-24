@@ -11,7 +11,6 @@ export const Quote = ({ text, lineColor, bgColor }) => {
 				backgroundColor: bgColor,
 				position: 'relative',
 				marginTop: 30,
-				position: 'relative'
 			}}
 		>
 			<div

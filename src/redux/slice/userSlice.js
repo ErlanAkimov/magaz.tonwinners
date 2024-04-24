@@ -7,7 +7,7 @@ const initialState = {
 	first_name: '',
 	last_name: '',
 	username: '',
-	language_code: 'ru',
+	language_code: 'en',
 	is_premium: true,
 	allows_write_to_pm: true,
 	appLanguage: 'en',
