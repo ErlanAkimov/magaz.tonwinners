@@ -9,10 +9,10 @@ export const Slider = ({ productData }) => {
 		<Swiper className={styles.swiper}>
 			<LikeToggler top={20} right={20} width={38} />
 
-			{productData.images.map((banner, index) => {
+			{productData.images.map((image, index) => {
 				return (
 					<SwiperSlide key={index} className={styles.swiperSlide}>
-						<img src={banner} alt="banner image" />
+						<img src={image} alt="product image" />
 					</SwiperSlide>
 				);
 			})}

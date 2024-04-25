@@ -41,7 +41,7 @@ const cats = [
 function Homepage() {
 	const wallet = useTonWallet();
 	const { open } = useTonConnectModal();
-	const data = useSelector(state => state.products[0])
+	const productsList = useSelector(state => state.products.productsList)
 
 	useEffect(() => {
 		window.scrollTo(0,0)
@@ -67,7 +67,7 @@ function Homepage() {
 			<div className={styles.categories}>
 				{cats.map((cat) => {
 					return (
-						<div className={styles.catItems}>
+						<div key={cat.text} className={styles.catItems}>
 							<div className={styles.catImageBlock}>
 								<img src={cat.img} alt="" />
 							</div>
@@ -79,10 +79,9 @@ function Homepage() {
 
 			<h2 className={styles.catalogTitle}>New from MAGAZ</h2>
 			<div className={styles.catalog}>
-				<ProductCard data={data} />
-				<ProductCard data={data} />
-				<ProductCard data={data} />
-				<ProductCard data={data} />
+				{
+					productsList.map(data => <ProductCard data={data} />)
+				}
 			</div>
 			
 

@@ -4,6 +4,7 @@ import axios from 'axios';
 
 const initialState = {
 	_id: '661c17375ec5674ee7cdb1df',
+	id: 628122813,
 	first_name: '',
 	last_name: '',
 	username: '',
@@ -26,6 +27,38 @@ const initialState = {
 		saveData: true,
 		phoneNumber: 0,
 	},
+	cart: [
+
+	],
+	savedAddresses: [
+		{
+			id: 1,
+			name: 'Home address',
+			country: 'USA',
+			state: 'Florida',
+			city: 'Miami',
+			street: 'Lenin',
+			zip: 'miami 1698'
+		},
+		{
+			id: 2,
+			name: 'Mother',
+			country: 'USA',
+			state: 'Florida',
+			city: 'Miami',
+			street: 'Lenin',
+			zip: 'miami 1698'
+		},
+		{
+			id: 3,
+			name: 'Garage address',
+			country: 'USA',
+			state: 'Florida',
+			city: 'Miami',
+			street: 'Lenin',
+			zip: 'miami 1698'
+		},
+	]
 };
 
 export const userSlice = createSlice({
@@ -71,9 +104,18 @@ export const userSlice = createSlice({
 			axios.get(`${api_server}/api/save-data-change?id=${state.id}&flag=${!state.deliveryInfo.saveData}`)
 			state.deliveryInfo.saveData = !state.deliveryInfo.saveData;
 		},
+
+		changeAddress: (state, {payload}) => {
+			const newList = state.savedAddresses.filter(address => address.id != payload.id)
+			state.savedAddresses = [...newList, payload]
+			axios.post(`${api_server}/api/change-saved-address`, { user: state.id, savedAddresses: state.savedAddresses})
+		},
+		addToCart: (state, {payload}) => {
+			state.cart.push(payload)
+		}
 	},
 });
 
-export const {pushWallet, changeInputValue, setUser, likeToggler, saveDataChanger } = userSlice.actions;
+export const {pushWallet, changeInputValue, setUser, likeToggler, saveDataChanger, changeAddress } = userSlice.actions;
 
 export default userSlice.reducer;

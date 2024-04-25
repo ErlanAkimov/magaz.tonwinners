@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import { setUser } from './redux/slice/userSlice';
 import { setProduct } from './redux/slice/applicationState';
 import { Loader } from './components/Loader';
+import { api_server } from './main';
+import { initProductsList } from './redux/slice/productsSlice';
 
 function CustomProvider({ children }) {
 	const dispatch = useDispatch();
@@ -14,9 +16,10 @@ function CustomProvider({ children }) {
 	useEffect(() => {
 		const searchParams = new URLSearchParams(window.location.search);
 		const owner = searchParams.get('owner');
+		console.log(window.Telegram.WebApp.initDataUnsafe)
 		let body = {}
-		if (owner) {
-			body.id = parseInt(owner)
+		if (Object.keys(window.Telegram.WebApp.initDataUnsafe).length === 0) {
+			body.id = 628122813
 		}
 
 		if (Object.keys(window.Telegram.WebApp.initDataUnsafe).length > 0) {
@@ -34,6 +37,8 @@ function CustomProvider({ children }) {
 			dispatch(setProduct(res.data));
 			setProductLoaded(true);
 		});
+
+		axios.get(`${api_server}/api/get-products`).then(res => dispatch(initProductsList(res.data)))
 	}, []);
 
 	useEffect(() => {

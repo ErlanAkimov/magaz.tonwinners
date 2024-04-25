@@ -21,36 +21,17 @@ import { pushWallet } from '../../redux/slice/userSlice';
 import { BannerDefault } from '../../components/BannerDefault';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
-import { useNavigate } from 'react-router-dom';
-
-// asdf
-const prod = {
-	_id: 'drop-coin',
-	name: 'DROP COINS',
-	description: `Buy TON souvenir coins made of zinc alloy with a silver coating, and <strong>receive random drops</strong> in the wallet used for purchase. More coins mean more drops
-
-	Don't miss the opportunity to get souvenirs at a low price`,
-	type: 'souvenir',
-	price: 10,
-	total: 1000,
-	sold: 570,
-	deliveryHold: 5,
-	deliverMin: 3,
-	deliverMax: 4,
-	specialQuote:
-		'We can ship souvenir coins globally, though delivery times may vary by location. For those purchasing coins solely for wallet drops, opt out of delivery; your wallet will still receive drops after payment.',
-	properties: [{ weight: '6,5 g' }, { diameter: '36 mm' }, { thikness: '3,5 mm' }],
-	banners: ['https://i.ibb.co/C1Yw5qq/mainbanner1.png', 'https://i.ibb.co/x2tM4j3/mainbanner2.png'],
-};
+import { useNavigate, useParams } from 'react-router-dom';
 
 function Productpage() {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.user);
-	const products = useSelector((state) => state.products);
-	const productData = useSelector(
-		(state) => state.products.filter((a) => a._id === window.location.href.split('/')[window.location.href.split('/').length - 1])[0],
-	);
+	const products = useSelector((state) => state.products.productsList);
+	const { productId } = useParams();
+	const productData = useSelector(state => state.products.productsList.filter(a => a._id === productId)[0])
+	const thisProductInCart = user.cart.filter(cartItem => cartItem.id === productId)
+
 	const wallet = useTonWallet();
 	const friendlyAddress = useTonAddress();
 
@@ -178,7 +159,6 @@ function Productpage() {
 		}
 
 		if (readyToBuy) {
-			console.log('re');
 			buy();
 		}
 
@@ -353,7 +333,6 @@ function Productpage() {
 					</Swiper>
 				</div>
 
-				<Quote lineColor={'rgba(67, 120, 255, 1)'} bgColor={'rgba(67, 120, 255, .1)'} text={productData.specialQuote} />
 				<DeliveryToggler handleModalControl={handleModalControl} />
 
 				<Modal zIndex={300} modalTitle={'Shipping Details'} handleModalControl={handleModalControl} modal={modal}>
@@ -506,9 +485,17 @@ and provide your details."
 					</div>
 				</Modal>
 
-				<ButtonDefault propStyles={{ display: 'block', zIndex: readyToBuy && !modal ? 500 : 100 }} marginTop={20} onClick={finallyButton}>
-					{wallet ? 'Buy Product' : 'Connect Wallet'}
-				</ButtonDefault>
+				{
+					thisProductInCart.length > 0 ? (
+						<ButtonDefault propStyles={{ display: 'block', zIndex: readyToBuy && !modal ? 500 : 100 }} marginTop={20} onClick={finallyButton}>
+							{wallet ? 'Buy Product' : 'Connect Wallet'}
+						</ButtonDefault>
+					) : (
+						<div></div>
+					)
+				}
+
+
 			</div>
 			<Nav />
 		</div>

@@ -6,6 +6,7 @@ import GoToMiniApp from './pages/GoToMiniApp/GoToMiniApp';
 import Profile from './pages/Profile/Profile';
 import { Categoriespage } from './pages/Categories/Categoriespage';
 import { ChangeAddress } from './pages/ChangeAddress/ChangeAddress';
+import { CreateNewAddress } from './pages/CreateNewAddress/CreateNewAddress';
 
 
 
@@ -19,18 +20,18 @@ export const router = createBrowserRouter([
 		element: <Categoriespage />,
 	},
 	{
-		path: '/product/:product-id',
+		path: '/product/:productId',
 		element: <Productpage />,
 	},
 
 	{
-		path: '/change-address',
+		path: '/change-my-address/:addressId',
 		element: <ChangeAddress />,
 	},
 
 	{
 		path: '/create-new-address',
-		element: <ChangeAddress />,
+		element: <CreateNewAddress />,
 	},
 
 	{

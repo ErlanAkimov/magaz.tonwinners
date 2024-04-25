@@ -43,7 +43,7 @@ const cats = [
 ];
 
 export const Categoriespage = () => {
-	const products = useSelector((state) => state.products);
+	const products = useSelector((state) => state.products.productsList);
 	const [pickedCategory, setPickedCategory] = useState(null);
 
 	const wallet = useTonWallet();
@@ -99,7 +99,7 @@ export const Categoriespage = () => {
 			{pickedCategory && (
 				<div className={styles.catalog}>
 					{products
-						.filter((item) => item.category === pickedCategory)
+						.filter((item) => item.category.toLowerCase() === pickedCategory.toLowerCase())
 						.map((data) => (
 								<ProductCard data={data} />
 						))}
