@@ -17,7 +17,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { changeNeedDelivery } from '../../redux/slice/cartSlice';
 import { DeliveryInfo } from '../../components/DeliveryInfo';
 import { deliveryInfoModalController } from '../../redux/slice/applicationState';
-import { pushWallet } from '../../redux/slice/userSlice';
+import { addToCart, pushWallet, removeFromCart } from '../../redux/slice/userSlice';
 import { BannerDefault } from '../../components/BannerDefault';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
@@ -29,8 +29,10 @@ function Productpage() {
 	const user = useSelector((state) => state.user);
 	const products = useSelector((state) => state.products.productsList);
 	const { productId } = useParams();
-	const productData = useSelector(state => state.products.productsList.filter(a => a._id === productId)[0])
-	const thisProductInCart = user.cart.filter(cartItem => cartItem.id === productId)
+	const productData = useSelector((state) => state.products.productsList.filter((a) => a._id === productId)[0]);
+	const productInCart = useSelector(state => state.user.cart.filter(item => item._id === productId));
+
+	useEffect(() => window.scrollTo(0, 0), [productId]);
 
 	const wallet = useTonWallet();
 	const friendlyAddress = useTonAddress();
@@ -105,8 +107,10 @@ function Productpage() {
 		});
 	};
 
+	useEffect(() => {console.log(user)}, [user])
+
 	useEffect(() => {
-		window.scrollTo(0,0)
+		window.scrollTo(0, 0);
 		tonConnectUI.uiOptions = {
 			actionsConfiguration: {
 				modals: ['before', 'success', 'error'],
@@ -115,11 +119,11 @@ function Productpage() {
 		};
 
 		const gohome = () => {
-			Telegram.WebApp.onEvent('backButtonClicked', gohome)
-			navigate('/')
-		}
-		window.Telegram.WebApp.BackButton.show()
-		Telegram.WebApp.onEvent('backButtonClicked', gohome)
+			Telegram.WebApp.onEvent('backButtonClicked', gohome);
+			navigate('/');
+		};
+		window.Telegram.WebApp.BackButton.show();
+		Telegram.WebApp.onEvent('backButtonClicked', gohome);
 	}, []);
 
 	useEffect(() => {
@@ -392,7 +396,7 @@ function Productpage() {
 					) : (
 						<div className={styles.details}>
 							<div className={styles.banana}>
-								<img src='https://i.ibb.co/YtW140P/Image.png' alt="" />
+								<img src="https://i.ibb.co/YtW140P/Image.png" alt="" />
 							</div>
 
 							<Quote
@@ -485,17 +489,31 @@ and provide your details."
 					</div>
 				</Modal>
 
-				{
-					thisProductInCart.length > 0 ? (
-						<ButtonDefault propStyles={{ display: 'block', zIndex: readyToBuy && !modal ? 500 : 100 }} marginTop={20} onClick={finallyButton}>
-							{wallet ? 'Buy Product' : 'Connect Wallet'}
-						</ButtonDefault>
-					) : (
-						<div></div>
-					)
-				}
-
-
+				{/* Counter для количества товаров в корзине */}
+				{productInCart.length > 0 ? (
+					<div className={styles.cartButton}>
+						<button onClick={() => {dispatch(removeFromCart(productData))}}>
+							<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<rect x="0.5" width="24" height="24" rx="12" fill="white" />
+								<path d="M14.4702 11.668V13.1987H10.4639V11.668H14.4702Z" fill="#12AC58" />
+							</svg>
+						</button>
+						<p className={styles.counter}>{user.appLanguage === 'ru' ? 'Штук заказать: ' : 'Pieces to order: '}{productInCart.length}</p>
+						<button onClick={() => {dispatch(addToCart(productData))}}>
+							<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<rect x="0.5" width="24" height="24" rx="12" fill="white" />
+								<path
+									d="M16.1328 11.104V12.8252H8.82324V11.104H16.1328ZM13.4082 8.16699V15.9307H11.5552V8.16699H13.4082Z"
+									fill="#12AC58"
+								/>
+							</svg>
+						</button>
+					</div>
+				) : (
+					<ButtonDefault propStyles={{ display: 'block', zIndex: readyToBuy && !modal ? 500 : 100 }} marginTop={20} onClick={() => {dispatch(addToCart(productData))}}>
+						{wallet ? 'Buy Product' : 'Connect Wallet'}
+					</ButtonDefault>
+				)}
 			</div>
 			<Nav />
 		</div>

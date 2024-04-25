@@ -7,6 +7,7 @@ import Profile from './pages/Profile/Profile';
 import { Categoriespage } from './pages/Categories/Categoriespage';
 import { ChangeAddress } from './pages/ChangeAddress/ChangeAddress';
 import { CreateNewAddress } from './pages/CreateNewAddress/CreateNewAddress';
+import { Orderspage } from './pages/Cart/Orderspage';
 
 
 
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
 	{
 		path: '/create-new-address',
 		element: <CreateNewAddress />,
+	},
+	{
+		path: '/orders',
+		element: <Orderspage />,
 	},
 
 	{
