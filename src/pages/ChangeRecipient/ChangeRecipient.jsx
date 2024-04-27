@@ -1,40 +1,34 @@
 import { useEffect, useState } from 'react';
 import { Nav } from '../../components/Nav/Nav';
-import styles from './changeAddress.module.scss';
+import styles from './changerecipient.module.scss';
 import { Input } from '../../components/Inputs/Input';
 import { useSelector, useDispatch } from 'react-redux';
 import { ButtonDefault } from '../../components/ButtonDefault';
 import { useNavigate, useParams } from 'react-router-dom';
-import { changeMyAddress, removeSavedAddress } from '../../redux/slice/userSlice';
+import { changeMyAddress, changeMyRecipient, removeSavedAddress, removeSavedRecipient } from '../../redux/slice/userSlice';
 
-export const ChangeAddress = () => {
+export const ChangeRecipient = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	
 	const user = useSelector(state => state.user)
 	const appLanguage = user.appLanguage;
-	const { addressId } = useParams();
-	const myAddress = user.savedAddresses.filter((address) => address.id === parseInt(addressId))[0];
+	const { recipientId } = useParams();
+	const myRecipient = user.savedRecipients.filter((r) => r.id === parseInt(recipientId))[0];
 
-	const [name, setName] = useState('' );
-	const [country, setCountry] = useState('');
-	const [state, setState] = useState('');
-	const [city, setCity] = useState('');
-	const [street, setStreet] = useState('');
-	const [zip, setZip] = useState('');
+	const [name, setName] = useState('');
+	const [fio, setFio] = useState('');
+	const [phone, setPhone] = useState('');
 
 
 	useEffect(() => {
-		if (!myAddress) {
+		if (!myRecipient) {
 			navigate('/create-new-address')
 		} 
-		if (myAddress) {
-			setName(myAddress.name)
-			setCountry(myAddress.country)
-			setState(myAddress.state)
-			setCity(myAddress.city)
-			setStreet(myAddress.street)
-			setZip(myAddress.zip)
+		if (myRecipient) {
+			setName(myRecipient.name)
+			setFio(myRecipient.fio)
+			setPhone(myRecipient.phone)
 		}
 	}, [user])
 
@@ -42,14 +36,12 @@ export const ChangeAddress = () => {
 		<div className={styles.wrapper} style={{ minHeight: window.innerHeight }}>
 			<div className="text-13">{appLanguage === 'ru' ? 'Изменить адрес' : 'Change my address'}</div>
 
-			<Input prop={{ place: 'Name', value: name, setValue: setName }} />
-			<Input prop={{ place: 'Country', value: country, setValue: setCountry }} />
-			<Input prop={{ place: 'State', value: state, setValue: setState }} />
-			<Input prop={{ place: 'City', value: city, setValue: setCity }} />
-			<Input prop={{ place: 'Street', value: street, setValue: setStreet }} />
-			<Input prop={{ place: 'ZIP code or pick-up point', value: zip, setValue: setZip }} />
+			<Input prop={{ place: 'Recipient title', value: name, setValue: setName }} />
+			<Input prop={{ place: 'Joshua Alex Caminski', value: fio, setValue: setFio }} />
+			<Input prop={{ place: 'Phone', value: phone, setValue: setPhone }} />
+
 			<button className={styles.deleteButton} onClick={() => {
-				dispatch(removeSavedAddress(addressId))
+				dispatch(removeSavedRecipient(recipientId))
 				navigate(-1)
 			}}>
 				<svg width="18" height="21" viewBox="0 0 18 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -64,52 +56,37 @@ export const ChangeAddress = () => {
 			</button>
 			<ButtonDefault
 				onClick={() => {
-					const newAddress = {
-						id: myAddress.id,
+					const newRecipient = {
+						id: myRecipient.id,
 						name,
-						country,
-						state,
-						city,
-						street,
-						zip,
+						fio,
+						phone
 					};
-					if (!validate(newAddress)) {
+					if (!validate(newRecipient)) {
 						console.log('data not valid')
 						return;
 					}
-					dispatch(changeMyAddress(newAddress))
+					dispatch(changeMyRecipient(newRecipient))
 					navigate(-1)
 				}}
 			>
-				{appLanguage === 'ru' ? 'Сохранить адрес' : 'Save address'}
+				{appLanguage === 'ru' ? 'Сохранить получателя' : 'Save recipient'}
 			</ButtonDefault>
 			<Nav />
 		</div>
 	);
 };
 
-function validate(address) {
-	if (address.name.length < 1) {
+function validate(data) {
+	if (data.name.length < 1) {
 		return false;
 	}
 
-	if (address.country.length < 3) {
+	if (data.fio.length < 3) {
 		return false;
 	}
 
-	if (address.state < 2) {
-		return false;
-	}
-
-	if (address.city < 2) {
-		return false;
-	}
-
-	if (address.street < 3) {
-		return false;
-	}
-
-	if (address.zip < 4) {
+	if (data.phone < 2) {
 		return false;
 	}
 

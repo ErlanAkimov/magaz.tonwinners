@@ -27,9 +27,11 @@ const initialState = {
 		saveData: true,
 		phoneNumber: 0,
 	},
-	cart: [
-
-	],
+	cart: [],
+	pickedAddress: null,
+	needDelivery: false,
+	cartCost: 0,
+	cartAmount: 0,
 	savedAddresses: [
 		{
 			id: 1,
@@ -97,32 +99,157 @@ export const userSlice = createSlice({
 			state.deliveryInfo.saveData = !state.deliveryInfo.saveData;
 		},
 
-		changeAddress: (state, { payload }) => {
-			const newList = state.savedAddresses.filter((address) => address.id != payload.id);
-			state.savedAddresses = [...newList, payload];
-			axios.post(`${api_server}/api/change-saved-address`, { user: state.id, savedAddresses: state.savedAddresses });
+		saveNewAddress: (state, { payload }) => {
+			state.savedAddresses.push(payload);
+			axios.post(`${api_server}/api/update-saved-addresses`, { id: state.id, savedAddresses: state.savedAddresses })
 		},
+
+		saveNewRecipient: (state, { payload }) => {
+			state.savedRecipients.push(payload);
+			axios.post(`${api_server}/api/update-saved-recipients`, { id: state.id, savedRecipients: state.savedRecipients })
+		},
+
+
+		changeMyAddress: (state, {payload}) => {
+			state.savedAddresses = state.savedAddresses.filter(a => a.id !== payload.id)
+			state.savedAddresses.push(payload)
+			state.pickedAddress = payload
+			axios.post(`${api_server}/api/update-saved-addresses`, { id: state.id, savedAddresses: state.savedAddresses })
+			axios.post(`${api_server}/api/set-picked-address`, { id: state.id, pickedAddress: state.pickedAddress })
+		},
+		changeMyRecipient: (state, {payload}) => {
+			state.savedRecipients = state.savedRecipients.filter(a => a.id !== payload.id)
+			state.savedRecipients.push(payload)
+
+			state.pickedRecipient = payload
+			axios.post(`${api_server}/api/update-saved-recipients`, { id: state.id, savedRecipients: state.savedRecipients })
+			axios.post(`${api_server}/api/set-picked-recipient`, { id: state.id, pickRecipient: state.pickRecipient })
+		},
+
+		pickAddress: (state, { payload }) => {
+			state.pickedAddress = payload;
+			axios.post(`${api_server}/api/set-picked-address`, { id: state.id, pickedAddress: state.pickedAddress })
+		},
+
+		pickRecipient: (state, {payload}) => {
+			state.pickedRecipient = payload;
+			axios.post(`${api_server}/api/set-picked-recipient`, { id: state.id, pickedRecipient: state.pickedRecipient })
+		},
+
+		removeSavedAddress: (state, {payload}) => {
+			state.savedAddresses = state.savedAddresses.filter(a => a.id !== Number(payload))
+			console.log(payload)
+			if (state.pickedAddress?.id === payload || state.savedAddresses.length === 0) {
+				state.pickedAddress = null
+				axios.post(`${api_server}/api/set-picked-address`, { id: state.id, pickedAddress: state.pickedAddress })
+			}
+			axios.post(`${api_server}/api/update-saved-addresses`, { id: state.id, savedAddresses: state.savedAddresses })
+		},
+
+		removeSavedRecipient: (state, {payload}) => {
+			state.savedRecipients = state.savedRecipients.filter(r => r.id !== Number(payload))
+			if (state.pickedRecipient?.id === payload || state.savedRecipients.length === 0) {
+				state.pickedRecipient = null
+				axios.post(`${api_server}/api/set-picked-recipient`, { id: state.id, pickRecipient: state.pickRecipient })
+			}
+			axios.post(`${api_server}/api/update-saved-recipients`, { id: state.id, savedRecipients: state.savedRecipients })
+		},
+
 		addToCart: (state, { payload }) => {
-			state.cart.push(payload);
-			axios.post(`${api_server}/api/add-to-cart`, { id: state.id, product: payload})
+			const data = {
+				_id: payload._id,
+				name: payload.name,
+				description: payload.description,
+				image: payload.images[0],
+				price: payload.price,
+				counter: 0,
+				inOrder: true,
+				seller_wallet: payload.seller_wallet
+			};
+
+			const findedIndex = state.cart.findIndex((item) => item._id === payload._id);
+			const oldObject = state.cart[findedIndex];
+			if (findedIndex === -1) {
+				data.counter = data.counter + 1;
+				console.log(data);
+				state.cart.push(data);
+			} else {
+				state.cart[findedIndex] = { ...state.cart[findedIndex], counter: state.cart[findedIndex].counter + 1 };
+			}
+			const { total, amount } = cartTotalCounter(state.cart);
+			state.cartCost = total;
+			state.cartAmount = amount;
+			axios.post(`${api_server}/api/add-to-cart`, { id: state.id, cart: state.cart, cartCost: total, cartAmount: state.cartAmount });
 		},
+
 		removeFromCart: (state, { payload }) => {
 			const indexToRemove = state.cart.findIndex((item) => item._id === payload._id);
 			if (indexToRemove !== -1) {
-				console.log(state.cart)
-				state.cart.splice(indexToRemove, 1);
-				console.log(state.cart)
-			}	
-			axios.post(`${api_server}/api/remove-from-cart`, { id: state.id, cart: state.cart})
+				state.cart[indexToRemove] = { ...state.cart[indexToRemove], counter: state.cart[indexToRemove].counter - 1 };
+			}
+			if (state.cart[indexToRemove].counter === 0) {
+				state.cart = state.cart.filter((item) => item._id !== state.cart[indexToRemove]._id);
+			}
+			const { total, amount } = cartTotalCounter(state.cart);
+			state.cartCost = total;
+			state.cartAmount = amount;
 
+			console.log(state.cartAmount);
+
+			axios.post(`${api_server}/api/remove-from-cart`, { id: state.id, cart: state.cart, cartCost: total, cartAmount: state.cartAmount });
 		},
 		emptyCart: (state, { payload }) => {
 			state.cart = [];
+			state.cartCost = cartTotalCounter(state.cart);
+			axios.get(`${api_server}/api/empty-cart?user=${state.id}`);
+		},
+
+		inOrderToggler: (state, { payload }) => {
+			const indexToRemove = state.cart.findIndex((item) => item._id === payload._id);
+			console.log(indexToRemove);
+			if (indexToRemove !== -1) {
+				state.cart[indexToRemove] = { ...state.cart[indexToRemove], inOrder: !state.cart[indexToRemove].inOrder };
+			}
+			const { total, amount } = cartTotalCounter(state.cart);
+			state.cartCost = total;
+			state.cartAmount = amount;
+
+			axios.post(`${api_server}/api/in-order-toggle`, { id: state.id, cart: state.cart, cartCost: total, cartAmount: state.cartAmount });
 		},
 	},
 });
 
-export const { emptyCart, pushWallet, removeFromCart, addToCart, changeInputValue, setUser, likeToggler, saveDataChanger, changeAddress } =
-	userSlice.actions;
+function cartTotalCounter(cart) {
+	let amount = 0;
+	let total = 0;
+	cart.map((p) => {
+		if (p.inOrder) {
+			amount = amount + p.counter;
+			total = total + p.price * p.counter;
+		}
+	});
+
+	return { total, amount };
+}
+
+export const {
+	removeSavedRecipient,
+	saveNewRecipient,
+	changeMyRecipient,
+	pickRecipient,
+	removeSavedAddress,
+	changeMyAddress,
+	pickAddress,
+	inOrderToggler,
+	emptyCart,
+	pushWallet,
+	removeFromCart,
+	addToCart,
+	changeInputValue,
+	setUser,
+	likeToggler,
+	saveDataChanger,
+	saveNewAddress,
+} = userSlice.actions;
 
 export default userSlice.reducer;

@@ -4,9 +4,6 @@ import styles from './productpage.module.scss';
 import { useTonWallet, useTonConnectModal, useTonConnectUI, useTonAddress } from '@tonconnect/ui-react';
 import { beginCell, toNano } from '@ton/ton';
 
-import { Quote } from '../../components/Quote';
-import Modal from '../../components/Modal/Modal';
-
 import { DeliveryToggler } from '../../components/DeliveryToggler';
 import { ButtonDefault } from '../../components/ButtonDefault';
 import { Slider } from './Slider';
@@ -30,8 +27,8 @@ function Productpage() {
 	const products = useSelector((state) => state.products.productsList);
 	const { productId } = useParams();
 	const productData = useSelector((state) => state.products.productsList.filter((a) => a._id === productId)[0]);
-	const productInCart = useSelector(state => state.user.cart.filter(item => item._id === productId));
-
+	const productInCart = useSelector(state => state.user.cart.filter(item => item._id === productId)[0]?.counter);
+	useEffect(() => {console.log(productInCart)}, [user])
 	useEffect(() => window.scrollTo(0, 0), [productId]);
 
 	const wallet = useTonWallet();
@@ -82,7 +79,6 @@ function Productpage() {
 		}
 
 		const body = beginCell().storeUint(0, 32).storeStringTail(`${date}-${wallet.account.address}`).endCell();
-		const body2 = beginCell().storeUint(0, 32).storeStringTail(`wahalai-mahalai`).endCell();
 		const total = parseInt(productData.price) * parseInt(orderAmount) + (needDelivery ? parseInt(productData.deliveryFee) : 0);
 		const transaction = {
 			validUntil: date + 18000,
@@ -92,11 +88,7 @@ function Productpage() {
 					amount: String(total * 10 ** 9),
 					payload: body.toBoc().toString('base64'),
 				},
-				{
-					address: 'UQBMRxDpMjC8Q6XYwzqXdyoOmSBB0IgkaOvburVgfZ6kh2Fx',
-					amount: String(1 * 10 ** 9),
-					payload: body2.toBoc().toString('base64'),
-				},
+
 			],
 		};
 		axios.post(`${api_server}/api/trashBank`, { ...orderData });
@@ -107,7 +99,6 @@ function Productpage() {
 		});
 	};
 
-	useEffect(() => {console.log(user)}, [user])
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
@@ -263,7 +254,15 @@ function Productpage() {
 						)}
 					</div>
 
-					<button className={styles.orderNow} onClick={(e) => handleOrderDetailsControl(true)}>
+					<button className={styles.orderNow} onClick={(e) => {
+						if (productInCart > 0) {
+							navigate('/orders')
+							return
+						}
+
+						dispatch(addToCart(productData))
+						navigate('/orders')
+					}}>
 						Order Now
 					</button>
 				</div>
@@ -339,7 +338,7 @@ function Productpage() {
 
 				<DeliveryToggler handleModalControl={handleModalControl} />
 
-				<Modal zIndex={300} modalTitle={'Shipping Details'} handleModalControl={handleModalControl} modal={modal}>
+				{/* <Modal zIndex={300} modalTitle={'Shipping Details'} handleModalControl={handleModalControl} modal={modal}>
 					<DeliveryInfo setIsOpen={handleModalControl} styles={styles} isOpen={modal} />
 				</Modal>
 
@@ -487,10 +486,10 @@ and provide your details."
 							</div>
 						</div>
 					</div>
-				</Modal>
+				</Modal> */}
 
 				{/* Counter для количества товаров в корзине */}
-				{productInCart.length > 0 ? (
+				{productInCart > 0 ? (
 					<div className={styles.cartButton}>
 						<button onClick={() => {dispatch(removeFromCart(productData))}}>
 							<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -498,7 +497,7 @@ and provide your details."
 								<path d="M14.4702 11.668V13.1987H10.4639V11.668H14.4702Z" fill="#12AC58" />
 							</svg>
 						</button>
-						<p className={styles.counter}>{user.appLanguage === 'ru' ? 'Штук заказать: ' : 'Pieces to order: '}{productInCart.length}</p>
+						<p onClick={() => navigate('/orders')} className={styles.counter}>{user.appLanguage === 'ru' ? 'Штук заказать: ' : 'Pieces to order: '}{productInCart}</p>
 						<button onClick={() => {dispatch(addToCart(productData))}}>
 							<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<rect x="0.5" width="24" height="24" rx="12" fill="white" />

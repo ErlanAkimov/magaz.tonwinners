@@ -16,7 +16,6 @@ function CustomProvider({ children }) {
 	useEffect(() => {
 		const searchParams = new URLSearchParams(window.location.search);
 		const owner = searchParams.get('owner');
-		console.log(window.Telegram.WebApp.initDataUnsafe)
 		let body = {}
 		if (Object.keys(window.Telegram.WebApp.initDataUnsafe).length === 0) {
 			body.id = 628122813

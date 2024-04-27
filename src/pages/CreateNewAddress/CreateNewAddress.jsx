@@ -2,70 +2,11 @@ import { useEffect, useState } from 'react';
 import { Nav } from '../../components/Nav/Nav';
 import styles from './create-new-address.module.scss';
 import { Input } from '../../components/Inputs/Input';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ButtonDefault } from '../../components/ButtonDefault';
 import { useNavigate } from 'react-router-dom';
-
-export const CreateNewAddress = () => {
-	const appLanguage = useSelector((state) => state.user.appLanguage);
-	const user = useSelector((state) => state.user);
-	const navigate = useNavigate();
-
-	const [addressName, setAddressName] = useState('');
-	const [country, setCountry] = useState('');
-	const [state, setState] = useState('');
-	const [city, setCity] = useState('');
-	const [street, setStreet] = useState('');
-	const [zip, setZip] = useState('');
-
-	const handlePick = (address) => {
-		setAddressName(address.name)
-		setCountry(address.country)
-		setState(address.state)
-		setCity(address.city)
-		setStreet(address.street)
-		setZip(address.zip)
-	}
-
-	return (
-		<div className={styles.wrapper} style={{ minHeight: window.innerHeight }}>
-			<div className="text-13">{appLanguage === 'ru' ? 'Сохраните новый адрес' : 'save new address'}</div>
-
-			<Input prop={{ place: 'Name', value: addressName, setValue: setAddressName }} />
-			<Input prop={{ place: 'Country', value: country, setValue: setCountry }} />
-			<Input prop={{ place: 'State', value: state, setValue: setState }} />
-			<Input prop={{ place: 'City', value: city, setValue: setCity }} />
-			<Input prop={{ place: 'Street', value: street, setValue: setStreet }} />
-			<Input prop={{ place: 'ZIP code or pick-up point', value: zip, setValue: setZip }} />
-
-			<div style={{ marginTop: 45 }} className="text-13">
-				{appLanguage === 'ru' ? 'Мои адреса' : 'My addresses'}
-			</div>
-			<div className={styles.myAddresses}>
-				{user.savedAddresses.map((address) => {
-					return (
-						<div key={address.id} className={styles.address} onClick={() => handlePick(address)}>
-							{sub()}
-							<div className={styles.central}>
-								<p className={styles.addressName}>{address.name}</p>
-								<p className={styles.pick}>{appLanguage == 'ru' ? 'Выбрать' : 'Pick'}</p>
-							</div>
-
-							<button className={styles.changeBtn} onClick={() => navigate(`/change-my-address/${address.id}`)}>
-								{appLanguage === 'ru' ? 'Изменить' : 'Change'}
-								{vector()}
-							</button>
-						</div>
-					);
-				})}
-			</div>
-			<ButtonDefault>{appLanguage === 'ru' ? 'Сохранить адрес' : 'Save address'}</ButtonDefault>
-			<Nav />
-		</div>
-	);
-};
-
-function sub() {
+import { pickAddress, saveNewAddress } from '../../redux/slice/userSlice';
+export const sub = () => {
 	return (
 		<svg width="30" height="31" viewBox="0 0 30 31" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path
@@ -76,12 +17,111 @@ function sub() {
 			/>
 		</svg>
 	);
-}
+};
 
-function vector() {
+export const vector = () => {
 	return (
 		<svg width="7" height="13" viewBox="0 0 7 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<path d="M1 1.5L6 6.5L1 11.5" stroke="#707579" stroke-width="2" strokeLinecap="round" strokeLinejoin="round" />
+			<path d="M1 1.5L6 6.5L1 11.5" stroke="#707579" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 		</svg>
 	);
-}
+};
+
+export const recipientIcon = () => {
+	return (
+		<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M0 9.6C0 6.23968 0 4.55953 0.653961 3.27606C1.2292 2.14708 2.14708 1.2292 3.27606 0.653961C4.55953 0 6.23969 0 9.6 0H20.4C23.7603 0 25.4405 0 26.7239 0.653961C27.8529 1.2292 28.7708 2.14708 29.346 3.27606C30 4.55953 30 6.23969 30 9.6V20.4C30 23.7603 30 25.4405 29.346 26.7239C28.7708 27.8529 27.8529 28.7708 26.7239 29.346C25.4405 30 23.7603 30 20.4 30H9.6C6.23968 30 4.55953 30 3.27606 29.346C2.14708 28.7708 1.2292 27.8529 0.653961 26.7239C0 25.4405 0 23.7603 0 20.4V9.6Z"
+				fill="#008AFF"
+			/>
+			<path
+				d="M16.959 12.2759H21.4912C21.6351 12.2759 21.7568 12.2261 21.8564 12.1265C21.9561 12.0269 22.0059 11.9051 22.0059 11.7612C22.0059 11.6174 21.9561 11.4984 21.8564 11.4043C21.7568 11.3047 21.6351 11.2549 21.4912 11.2549H16.959C16.8096 11.2549 16.6851 11.3047 16.5854 11.4043C16.4858 11.4984 16.436 11.6174 16.436 11.7612C16.436 11.9051 16.4858 12.0269 16.5854 12.1265C16.6851 12.2261 16.8096 12.2759 16.959 12.2759ZM16.959 15.5298H21.4912C21.6351 15.5298 21.7568 15.48 21.8564 15.3804C21.9561 15.2808 22.0059 15.1562 22.0059 15.0068C22.0059 14.8685 21.9561 14.7523 21.8564 14.6582C21.7568 14.5586 21.6351 14.5088 21.4912 14.5088H16.959C16.8096 14.5088 16.6851 14.5586 16.5854 14.6582C16.4858 14.7523 16.436 14.8685 16.436 15.0068C16.436 15.1562 16.4858 15.2808 16.5854 15.3804C16.6851 15.48 16.8096 15.5298 16.959 15.5298ZM16.959 18.7754H21.4912C21.6351 18.7754 21.7568 18.7284 21.8564 18.6343C21.9561 18.5347 22.0059 18.4157 22.0059 18.2773C22.0059 18.1335 21.9561 18.0117 21.8564 17.9121C21.7568 17.807 21.6351 17.7544 21.4912 17.7544H16.959C16.8096 17.7544 16.6851 17.807 16.5854 17.9121C16.4858 18.0117 16.436 18.1335 16.436 18.2773C16.436 18.4157 16.4858 18.5347 16.5854 18.6343C16.6851 18.7284 16.8096 18.7754 16.959 18.7754ZM8.30957 18.8335H14.7925C14.9253 18.8335 15.0249 18.792 15.0913 18.709C15.1632 18.626 15.1992 18.5236 15.1992 18.4019C15.1992 18.2026 15.1245 17.9508 14.9751 17.6465C14.8312 17.3366 14.6071 17.0267 14.3027 16.7168C14.0039 16.4014 13.6248 16.1385 13.1655 15.9282C12.7062 15.7179 12.1667 15.6128 11.5469 15.6128C10.9271 15.6128 10.3875 15.7179 9.92822 15.9282C9.47445 16.1385 9.09538 16.4014 8.79102 16.7168C8.49219 17.0267 8.26807 17.3366 8.11865 17.6465C7.97477 17.9508 7.90283 18.2026 7.90283 18.4019C7.90283 18.5236 7.93604 18.626 8.00244 18.709C8.07438 18.792 8.17676 18.8335 8.30957 18.8335ZM11.5469 15.0317C12.0505 15.0317 12.4793 14.8436 12.8335 14.4673C13.1877 14.091 13.3647 13.6178 13.3647 13.0479C13.3647 12.6937 13.2817 12.37 13.1157 12.0767C12.9552 11.7834 12.7367 11.5482 12.46 11.3711C12.1888 11.194 11.8844 11.1055 11.5469 11.1055C11.2148 11.1055 10.9105 11.194 10.6338 11.3711C10.3571 11.5482 10.1357 11.7834 9.96973 12.0767C9.80925 12.37 9.729 12.6937 9.729 13.0479C9.729 13.6178 9.90609 14.091 10.2603 14.4673C10.62 14.8436 11.0488 15.0317 11.5469 15.0317ZM7.81982 22.6519C6.95101 22.6519 6.29801 22.436 5.86084 22.0044C5.4292 21.5783 5.21338 20.9391 5.21338 20.0869V9.94336C5.21338 9.08561 5.4292 8.44368 5.86084 8.01758C6.29801 7.58594 6.95101 7.37012 7.81982 7.37012H22.1802C23.0545 7.37012 23.7075 7.58594 24.1392 8.01758C24.5708 8.44922 24.7866 9.09115 24.7866 9.94336V20.0869C24.7866 20.9391 24.5708 21.5783 24.1392 22.0044C23.7075 22.436 23.0545 22.6519 22.1802 22.6519H7.81982Z"
+				fill="white"
+			/>
+		</svg>
+	);
+};
+
+export const CreateNewAddress = () => {
+	const appLanguage = useSelector((state) => state.user.appLanguage);
+	const user = useSelector((state) => state.user);
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+
+	const [name, setName] = useState('');
+	const [country, setCountry] = useState('');
+	const [state, setState] = useState('');
+	const [city, setCity] = useState('');
+	const [street, setStreet] = useState('');
+	const [zip, setZip] = useState('');
+
+
+	return (
+		<div className={styles.wrapper} style={{ minHeight: window.innerHeight }}>
+			<div className="text-13">{appLanguage === 'ru' ? 'Сохраните новый адрес' : 'save new address'}</div>
+
+			<Input prop={{ place: 'Name', value: name, setValue: setName }} />
+			<Input prop={{ place: 'Country', value: country, setValue: setCountry }} />
+			<Input prop={{ place: 'State', value: state, setValue: setState }} />
+			<Input prop={{ place: 'City', value: city, setValue: setCity }} />
+			<Input prop={{ place: 'Street', value: street, setValue: setStreet }} />
+			<Input prop={{ place: 'ZIP code or pick-up point', value: zip, setValue: setZip }} />
+
+			<div style={{ marginTop: 45 }} className="text-13">
+				{appLanguage === 'ru' ? 'Мои адреса' : 'My addresses'}
+			</div>
+			{user.savedAddresses.length > 0 ? (
+				<div className={styles.myAddresses}>
+					{user.savedAddresses.map((address) => {
+						return (
+							<div key={address.id} className={styles.address}>
+								{sub()}
+								<div
+									className={styles.central}
+									onClick={() => {
+										dispatch(pickAddress(address));
+										navigate('/payment');
+									}}
+								>
+									<p className={styles.addressName}>{address.name}</p>
+									<p className={styles.pick}>{appLanguage == 'ru' ? 'Выбрать' : 'Pick'}</p>
+								</div>
+
+								<button className={styles.changeBtn} onClick={() => navigate(`/change-my-address/${address.id}`)}>
+									{appLanguage === 'ru' ? 'Изменить' : 'Change'}
+									{vector()}
+								</button>
+							</div>
+						);
+					})}
+				</div>
+			) : (
+				<div className={styles.noAddress}>{user.appLanguage === 'ru' ? 'Нет сохраненных адресов' : 'No saved addresses'}</div>
+			)}
+			<ButtonDefault
+				onClick={() => {
+					setName('');
+					setCity('')
+					setCountry('')
+					setState('')
+					setStreet('')
+					setZip('')
+					dispatch(
+						saveNewAddress({
+							id: Date.now(),
+							name,
+							country,
+							state,
+							city,
+							street,
+							zip,
+						}),
+					);
+				}}
+			>
+				{appLanguage === 'ru' ? 'Сохранить адрес' : 'Save address'}
+			</ButtonDefault>
+			<Nav />
+		</div>
+	);
+};
