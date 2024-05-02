@@ -12,8 +12,6 @@ import { Paymentpage } from './pages/Paymentpage/Payment.page';
 import { CreateNewRecipient } from './pages/CreateNewRecipient/CreateNewRecipitent';
 import { ChangeRecipient } from './pages/ChangeRecipient/ChangeRecipient';
 
-
-
 export const router = createBrowserRouter([
 	{
 		path: '/',
@@ -27,7 +25,6 @@ export const router = createBrowserRouter([
 		path: '/product/:productId',
 		element: <Productpage />,
 	},
-
 
 	// Saved Addresses
 	{

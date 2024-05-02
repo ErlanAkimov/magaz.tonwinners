@@ -3,6 +3,20 @@
 	padding-bottom: 150px;
 }
 
+.wrapperEmpty {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+
+	.emptyP {
+		width: 240px;
+		margin-top: 20px;
+		text-align: center;
+		margin-inline: auto;
+	}
+}
+
 .return {
 	font-size: 14px;
 	line-height: 16px;

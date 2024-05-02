@@ -509,7 +509,7 @@ and provide your details."
 						</button>
 					</div>
 				) : (
-					<ButtonDefault propStyles={{ display: 'block', zIndex: readyToBuy && !modal ? 500 : 100 }} marginTop={20} onClick={() => {dispatch(addToCart(productData))}}>
+					<ButtonDefault propStyles={{ display: 'block', zIndex: readyToBuy && !modal ? 500 : 100 }} marginTop={20} onClick={() => {wallet ? dispatch(addToCart(productData)) : open()}}>
 						{wallet ? 'Buy Product' : 'Connect Wallet'}
 					</ButtonDefault>
 				)}

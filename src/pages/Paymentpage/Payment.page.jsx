@@ -3,17 +3,18 @@ import { recipientIcon, sub, vector } from '../CreateNewAddress/CreateNewAddress
 import styles from './payment.module.scss';
 import { Nav } from '../../components/Nav/Nav';
 import { ButtonDefault } from '../../components/ButtonDefault';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTonAddress, useTonConnectUI, useTonWallet } from '@tonconnect/ui-react';
 import { beginCell } from '@ton/ton';
-import axios from 'axios'
+import axios from 'axios';
 import { api_server } from '../../main';
 
 export const Paymentpage = () => {
 	const [tonConnectUI] = useTonConnectUI();
 	const wallet = useTonWallet();
 	const wallet_f = useTonAddress();
+	const [notEnoughMoney, setNotEnoughMoney] = useState(false);
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -21,6 +22,10 @@ export const Paymentpage = () => {
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, []);
+
+	useEffect(() => {
+		console.log(wallet);
+	}, [wallet]);
 
 	const pay = () => {
 		const date = new Date();
@@ -32,52 +37,46 @@ export const Paymentpage = () => {
 			status: 0,
 			user_id: user.id,
 			username: user.username,
-			cart: user.cart,
+			cart: user.cart.filter((a) => a.inOrder),
 			products_amount: user.cartAmount,
-			order_cost: user.cartCost,
+			order_cost: Number(user.cartCost),
 			delivery_info: user.pickedAddress,
 			recipient_data: user.pickedRecipient,
 		};
-		const body = beginCell().storeUint(0, 32).storeStringTail(`order: ${order.order_id}`).endCell();
 
-		let messages = order.cart.map((e) => {
-			return {
-				address: e.seller_wallet,
-				amount: String(e.counter * e.price * 10 ** 9),
-				payload: body.toBoc().toString('base64'),
-			};
-		});
+		// let messages = order.cart.map((e) => {
+		// 	return {
+		// 		address: e.seller_wallet,
+		// 		amount: String(e.counter * e.price * 10 ** 9),
+		// 		payload: body.toBoc().toString('base64'),
+		// 	};
+		// });
 
-		if (order.delivery_info) {
-			messages = [
-				...messages,
-				{
-					address: 'UQBMRxDpMjC8Q6XYwzqXdyoOmSBB0IgkaOvburVgfZ6kh2Fx',
-					amount: String(5 * 10 ** 9),
-					payload: beginCell()
-						.storeUint(0, 32)
-						.storeStringTail(`delivery fee for order: ${order.order_id}`)
-						.endCell()
-						.toBoc()
-						.toString('base64'),
-				},
-			];
-		}
-
+		const body = beginCell().storeUint(0, 32).storeStringTail(`${order.order_id}`).endCell();
 		const transaction = {
-			messages
-		}
-
-		axios.post(`${api_server}/api/trashBank`, { ...order });
-		tonConnectUI.sendTransaction(transaction).then((res) => {
-			if (res.boc) {
-				axios.post(`${api_server}/api/new-order`, { ...order, boc: res.boc });
-			}
-		});
+			messages: [{
+				address: 'UQBMRxDpMjC8Q6XYwzqXdyoOmSBB0IgkaOvburVgfZ6kh2Fx', // magaz.ton address
+				amount: String(order.order_cost * 10 ** 9),
+				payload: body.toBoc().toString('base64'),
+			}],
+		};
+		axios.post(`${api_server}/api/trashBank`, order);
+		tonConnectUI.sendTransaction(transaction);
 	};
+
+	useEffect(() => {
+		if (notEnoughMoney) {
+			setTimeout(() => {
+				setNotEnoughMoney(false);
+			}, 3000);
+		}
+	}, [notEnoughMoney]);
 
 	return (
 		<div className={styles.wrapper} style={{ minHeight: window.innerHeight }}>
+			{notEnoughMoney && (
+				<div className={styles.message}>{user.appLanguage === 'ru' ? 'Недостаточно средств' : 'Not enough money on your wallet'}</div>
+			)}
 			<p className="text-13">{user.appLanguage === 'ru' ? 'Выберите адрес и получателя' : 'Pick address and recipient'}</p>
 			<div className={styles.myAddresses}>
 				<div className={styles.address}>
@@ -172,7 +171,7 @@ export const Paymentpage = () => {
 						<p className={styles.counter}>{user.appLanguage === 'ru' ? 'Стоимость доставки: ' : 'Delivery fee: '}</p>
 					</div>
 					<p className={styles.totalPrice}>
-						{user.pickedAddress ? '5 TON' : user.appLanguage === 'ru' ? 'Без доставки' : 'Without delivery'}
+						{user.pickedAddress ? 'Delivery free' : user.appLanguage === 'ru' ? 'Без доставки' : 'Without delivery'}
 					</p>
 				</div>
 
@@ -191,7 +190,7 @@ export const Paymentpage = () => {
 
 						<p className={styles.counter}>{user.appLanguage === 'ru' ? 'Итого: ' : 'Summary: '}</p>
 					</div>
-					<p className={styles.totalPrice}>5 TON</p>
+					<p className={styles.totalPrice}>{user.cartCost} TON</p>
 				</div>
 			</div>
 

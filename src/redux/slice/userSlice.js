@@ -138,7 +138,6 @@ export const userSlice = createSlice({
 
 		removeSavedAddress: (state, {payload}) => {
 			state.savedAddresses = state.savedAddresses.filter(a => a.id !== Number(payload))
-			console.log(payload)
 			if (state.pickedAddress?.id === payload || state.savedAddresses.length === 0) {
 				state.pickedAddress = null
 				axios.post(`${api_server}/api/set-picked-address`, { id: state.id, pickedAddress: state.pickedAddress })
@@ -156,6 +155,8 @@ export const userSlice = createSlice({
 		},
 
 		addToCart: (state, { payload }) => {
+
+			console.log(payload)
 			const data = {
 				_id: payload._id,
 				name: payload.name,
@@ -168,18 +169,16 @@ export const userSlice = createSlice({
 			};
 
 			const findedIndex = state.cart.findIndex((item) => item._id === payload._id);
-			const oldObject = state.cart[findedIndex];
 			if (findedIndex === -1) {
 				data.counter = data.counter + 1;
-				console.log(data);
 				state.cart.push(data);
 			} else {
 				state.cart[findedIndex] = { ...state.cart[findedIndex], counter: state.cart[findedIndex].counter + 1 };
 			}
 			const { total, amount } = cartTotalCounter(state.cart);
-			state.cartCost = total;
+			state.cartCost = total.toFixed(2);
 			state.cartAmount = amount;
-			axios.post(`${api_server}/api/add-to-cart`, { id: state.id, cart: state.cart, cartCost: total, cartAmount: state.cartAmount });
+			axios.post(`${api_server}/api/add-to-cart`, { id: state.id, cart: state.cart, cartCost: total.toFixed(2), cartAmount: state.cartAmount });
 		},
 
 		removeFromCart: (state, { payload }) => {
@@ -191,13 +190,19 @@ export const userSlice = createSlice({
 				state.cart = state.cart.filter((item) => item._id !== state.cart[indexToRemove]._id);
 			}
 			const { total, amount } = cartTotalCounter(state.cart);
-			state.cartCost = total;
+			state.cartCost = total.toFixed(2);
 			state.cartAmount = amount;
-
-			console.log(state.cartAmount);
-
-			axios.post(`${api_server}/api/remove-from-cart`, { id: state.id, cart: state.cart, cartCost: total, cartAmount: state.cartAmount });
+			axios.post(`${api_server}/api/remove-from-cart`, { id: state.id, cart: state.cart, cartCost: total.toFixed(2), cartAmount: state.cartAmount });
 		},
+
+		removeFullProductFromCart: (state, { payload }) => {
+			state.cart = state.cart.filter(a => a._id !== payload._id);
+			const { total, amount } = cartTotalCounter(state.cart);
+			state.cartCost = total.toFixed(2);
+			state.cartAmount = amount;
+			axios.post(`${api_server}/api/remove-from-cart`, { id: state.id, cart: state.cart, cartCost: total.toFixed(2), cartAmount: state.cartAmount });
+		},
+
 		emptyCart: (state, { payload }) => {
 			state.cart = [];
 			state.cartCost = cartTotalCounter(state.cart);
@@ -206,15 +211,14 @@ export const userSlice = createSlice({
 
 		inOrderToggler: (state, { payload }) => {
 			const indexToRemove = state.cart.findIndex((item) => item._id === payload._id);
-			console.log(indexToRemove);
 			if (indexToRemove !== -1) {
 				state.cart[indexToRemove] = { ...state.cart[indexToRemove], inOrder: !state.cart[indexToRemove].inOrder };
 			}
 			const { total, amount } = cartTotalCounter(state.cart);
-			state.cartCost = total;
+			state.cartCost = total.toFixed(2);
 			state.cartAmount = amount;
 
-			axios.post(`${api_server}/api/in-order-toggle`, { id: state.id, cart: state.cart, cartCost: total, cartAmount: state.cartAmount });
+			axios.post(`${api_server}/api/in-order-toggle`, { id: state.id, cart: state.cart, cartCost: total.toFixed(2), cartAmount: state.cartAmount });
 		},
 	},
 });
@@ -250,6 +254,7 @@ export const {
 	likeToggler,
 	saveDataChanger,
 	saveNewAddress,
+	removeFullProductFromCart
 } = userSlice.actions;
 
 export default userSlice.reducer;

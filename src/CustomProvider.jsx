@@ -50,7 +50,6 @@ function CustomProvider({ children }) {
 
 	return <>
 		{loading ? <Loader /> : children}
-		
 	</>;
 	return <>{children}</>;
 }

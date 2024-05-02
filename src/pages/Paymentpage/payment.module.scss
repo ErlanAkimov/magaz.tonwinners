@@ -72,6 +72,20 @@
 	margin-inline: 15px;
 }
 
+.message {
+	position: fixed;
+	top: 20px;
+	z-index: 200;
+	background-color: red;
+	color: white;
+	font-weight: 500;
+	border-radius: 12px;
+	left: 15px;
+	padding: 15px;
+	transition: .2s ease-in-out;
+	width: calc(100% - 30px);
+	text-align: center;
+}
 
 .item {
 	display: flex;
