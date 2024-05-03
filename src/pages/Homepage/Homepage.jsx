@@ -64,7 +64,7 @@ function Homepage() {
 				</SwiperSlide>
 			</Swiper>
 
-			<div className={styles.categories}>
+			{/* <div className={styles.categories}>
 				{cats.map((cat) => {
 					return (
 						<div key={cat.text} className={styles.catItems}>
@@ -75,7 +75,7 @@ function Homepage() {
 						</div>
 					);
 				})}
-			</div>
+			</div> */}
 
 			<h2 className={styles.catalogTitle}>New from MAGAZ</h2>
 			<div className={styles.catalog}>

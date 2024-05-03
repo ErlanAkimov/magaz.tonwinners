@@ -26,7 +26,7 @@ export const BannerDefault = ({ data }) => {
 	return (
 		<div
 			style={{
-				maxHeight: maxHeight,
+				maxHeight: data.isClosing ? maxHeight : 'initial',
 				transition: '.3s',
 				overflow: 'hidden',
 				opacity: opacity,

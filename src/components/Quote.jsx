@@ -1,4 +1,4 @@
-export const Quote = ({ text, lineColor, bgColor }) => {
+export const Quote = ({ text, lineColor, bgColor, dopStyles }) => {
 	return (
 		<div
 			style={{
@@ -11,6 +11,7 @@ export const Quote = ({ text, lineColor, bgColor }) => {
 				backgroundColor: bgColor,
 				position: 'relative',
 				marginTop: 30,
+				...dopStyles
 			}}
 		>
 			<div

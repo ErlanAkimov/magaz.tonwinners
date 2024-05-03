@@ -52,6 +52,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		width: 100%;
+		aspect-ratio: 1;
 
 		img {
 			border-radius: 20px;object-fit: cover;width: 100%;

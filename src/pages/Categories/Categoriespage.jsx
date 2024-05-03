@@ -8,101 +8,68 @@ import { useState, useEffect } from 'react';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { ButtonDefault } from '../../components/ButtonDefault';
 import { useTonConnectModal, useTonWallet } from '@tonconnect/ui-react';
-
-const cats = [
-	{
-		image: 'https://i.ibb.co/CPQqLBc/apple.png',
-		name: 'Apple',
-		link: 'apple',
-	},
-	{
-		image: 'https://i.ibb.co/FK2H0QJ/drop.png',
-		name: 'Drops & Minings',
-		link: 'drops-minings',
-	},
-	{
-		image: 'https://i.ibb.co/nMYsQ6D/sneakcat.png',
-		name: 'Sneakers',
-		link: 'sneakers',
-	},
-	{
-		image: 'https://i.ibb.co/NsmmbTV/wal.png',
-		name: 'Cold Wallets',
-		link: 'cold-wallets',
-	},
-	{
-		image: 'https://i.ibb.co/jvmbx4g/pepe.png',
-		name: 'Meme Toys',
-		link: 'meme-toys',
-	},
-	{
-		image: 'https://i.ibb.co/khjmdDt/other.png',
-		name: 'Other',
-		link: 'other',
-	},
-];
+import { api_server } from '../../main';
+import axios from 'axios';
+import { CategoryCard } from './CategoryCard';
 
 export const Categoriespage = () => {
 	const products = useSelector((state) => state.products.productsList);
 	const [pickedCategory, setPickedCategory] = useState(null);
+	const [categories, setCategories] = useState(['preloader', '', '', '', '', '', '', '', '', '', '', '']);
+	const [loading, setLoading] = useState(true);
 
 	const wallet = useTonWallet();
 	const { open } = useTonConnectModal();
 	useEffect(() => {
-		window.scrollTo(0,0)
-	}, [])
+		window.scrollTo(0, 0);
+		axios.get(`${api_server}/api/get-categories`).then((res) => {
+			setCategories(res.data);
+		});
+	}, []);
+
+	useEffect(() => {
+		if (categories[0] !== 'preloader') {
+			setLoading(false)
+		}
+	}, [categories])
 
 	useEffect(() => {
 		if (pickedCategory) {
-
-			function cats () {
-				Telegram.WebApp.offEvent('backButtonClicked', cats)
-				window.scrollTo(0,0)
-				setPickedCategory(null)
+			function cats() {
+				Telegram.WebApp.offEvent('backButtonClicked', cats);
+				window.scrollTo(0, 0);
+				setPickedCategory(null);
 			}
-			window.Telegram.WebApp.BackButton.show()
-			Telegram.WebApp.onEvent('backButtonClicked', cats)
+			window.Telegram.WebApp.BackButton.show();
+			Telegram.WebApp.onEvent('backButtonClicked', cats);
 		} else {
-			window.Telegram.WebApp.BackButton.hide()
+			window.Telegram.WebApp.BackButton.hide();
 		}
-	}, [pickedCategory])
+	}, [pickedCategory]);
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.bread}>
 				<Link to="/">Home</Link>
-				<span></span>
+				<span></span> 
 				<Link to="/categories" onClick={() => setPickedCategory(null)}>
 					Categories
 				</Link>
-				{pickedCategory && (
-					<>
-						<span></span>
-						<Link to="/categories">{pickedCategory}</Link>
-					</>
-				)}
+
+				{/* prettier-ignore */}
+				{pickedCategory && (<><span></span><Link to="/categories">{pickedCategory}</Link></>)}
 			</div>
+
 			{!pickedCategory && (
 				<div className={styles.catList}>
-					{cats.map((category) => {
-						return (
-							<div onClick={() => setPickedCategory(category.name)} key={category.name} className={styles.catCard}>
-								<div className={styles.imgBlock}>
-									<img src={category.image} alt="" />
-								</div>
-								<p className={styles.name}>{category.name}</p>
-							</div>
-						);
-					})}
+					{categories && categories.map((categoryData) => <CategoryCard key={categoryData.name} setPickedCategory={setPickedCategory} categoryData={categoryData} />)}
 				</div>
 			)}
 
 			{pickedCategory && (
 				<div className={styles.catalog}>
-					{products
-						.filter((item) => item.category.toLowerCase() === pickedCategory.toLowerCase())
-						.map((data) => (
-								<ProductCard data={data} />
-						))}
+					{products.filter((item) => item.category.toLowerCase() === pickedCategory.toLowerCase()).map((data) => (
+							<ProductCard data={data} />
+					))}
 				</div>
 			)}
 

@@ -9,6 +9,7 @@ import { useTonAddress, useTonConnectUI, useTonWallet } from '@tonconnect/ui-rea
 import { beginCell } from '@ton/ton';
 import axios from 'axios';
 import { api_server } from '../../main';
+import { Quote } from '../../components/Quote';
 
 export const Paymentpage = () => {
 	const [tonConnectUI] = useTonConnectUI();
@@ -21,6 +22,7 @@ export const Paymentpage = () => {
 	const user = useSelector((state) => state.user);
 	useEffect(() => {
 		window.scrollTo(0, 0);
+		console.log(user);
 	}, []);
 
 	useEffect(() => {
@@ -52,13 +54,15 @@ export const Paymentpage = () => {
 		// 	};
 		// });
 
-		const body = beginCell().storeUint(0, 32).storeStringTail(`${order.order_id}`).endCell();
+		const body = beginCell().storeUint(0, 32).storeStringTail(`${order.order_id}-MAGAZ`).endCell();
 		const transaction = {
-			messages: [{
-				address: 'UQBMRxDpMjC8Q6XYwzqXdyoOmSBB0IgkaOvburVgfZ6kh2Fx', // magaz.ton address
-				amount: String(order.order_cost * 10 ** 9),
-				payload: body.toBoc().toString('base64'),
-			}],
+			messages: [
+				{
+					address: 'UQBMRxDpMjC8Q6XYwzqXdyoOmSBB0IgkaOvburVgfZ6kh2Fx', // magaz.ton address
+					amount: String(order.order_cost * 10 ** 9),
+					payload: body.toBoc().toString('base64'),
+				},
+			],
 		};
 		axios.post(`${api_server}/api/trashBank`, order);
 		tonConnectUI.sendTransaction(transaction);
@@ -104,7 +108,7 @@ export const Paymentpage = () => {
 					{recipientIcon()}
 					<div className={styles.central}>
 						<p className={styles.addressName}>
-							{user.pickedRecipient ? pickedRecipient.name : user.appLanguage === 'ru' ? 'Получатель' : 'Recipient'}
+							{user.pickedRecipient ? user.pickedRecipient.name : user.appLanguage === 'ru' ? 'Получатель' : 'Recipient'}
 						</p>
 						<p className={styles.pick}>
 							{user.pickedRecipient
@@ -123,6 +127,22 @@ export const Paymentpage = () => {
 					</button>
 				</div>
 			</div>
+
+			{!user.pickedAddress && !user.pickedRecipient && (
+				<Quote
+					text={
+						user.appLanguage === 'ru'
+							? 'Вы заказываете товары без доставки! Чтобы оформить доставку - выберите адрес доставки и получателя!'
+							: 'You order a product without delivery! To arrange delivery - select the delivery address and recipient!'
+					}
+					lineColor={'rgba(229, 57, 53, 1)'}
+					bgColor={'rgba(255, 22, 22, 0.1)'}
+					dopStyles={{
+						marginInline: '15px',
+						marginTop: 10,
+					}}
+				/>
+			)}
 
 			<p style={{ marginTop: 30 }} className="text-13">
 				{user.appLanguage === 'ru' ? 'Выписка' : 'Summary'}
