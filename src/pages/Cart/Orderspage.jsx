@@ -17,10 +17,6 @@ export const Orderspage = () => {
 	const wallet = useTonWallet();
 	const { open } = useTonConnectModal();
 
-	useEffect(() => {
-		console.log(user.cart);
-	}, [user]);
-
 	const lottieOptions = {
 		loop: true,
 		autoplay: true,
@@ -38,7 +34,7 @@ export const Orderspage = () => {
 			{user.cart.length === 0 && (
 				<div>
 					<div className={styles.empty}>
-						<Lottie style={{ width: 200 }} options={lottieOptions} />
+						<Lottie className={styles.lottie} options={lottieOptions} />
 						<p className={styles.emptyP}>Oops...there's nothing, pick some products and come back</p>
 					</div>
 					<ButtonDefault onClick={() => navigate('/')}>{user.appLanguage === 'ru' ? 'Вернуться на главную' : 'Back to home'}</ButtonDefault>
@@ -50,9 +46,9 @@ export const Orderspage = () => {
 					<div className={styles.return} onClick={() => dispatch(emptyCart())}>
 						{user.appLanguage === 'ru' ? 'Очистить корзину' : 'Delete all'}
 					</div>
-					{user.cart.map((item) => {
+					{user.cart.map((item, index) => {
 						return (
-							<div className={`${styles.cartItem} ${!item.inOrder && styles.notInOrderCard}`}>
+							<div key={index} className={`${styles.cartItem} ${!item.inOrder && styles.notInOrderCard}`}>
 								<div className={styles.topside}>
 									<div className={styles.imgBlock} onClick={() => navigate(`/product/${item._id}`)}>
 										<img src={item.image} alt="" />

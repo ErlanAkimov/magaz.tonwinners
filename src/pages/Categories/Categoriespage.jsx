@@ -15,7 +15,7 @@ import { CategoryCard } from './CategoryCard';
 export const Categoriespage = () => {
 	const products = useSelector((state) => state.products.productsList);
 	const [pickedCategory, setPickedCategory] = useState(null);
-	const [categories, setCategories] = useState(['preloader', '', '', '', '', '', '', '', '', '', '', '']);
+	const [categories, setCategories] = useState(['', '', '']);
 	const [loading, setLoading] = useState(true);
 
 	const wallet = useTonWallet();
@@ -28,7 +28,7 @@ export const Categoriespage = () => {
 	}, []);
 
 	useEffect(() => {
-		if (categories[0] !== 'preloader') {
+		if (categories[0] !== '') {
 			setLoading(false)
 		}
 	}, [categories])
@@ -74,7 +74,7 @@ export const Categoriespage = () => {
 			)}
 
 			{!wallet && <ButtonDefault onClick={open}>Connect Wallet</ButtonDefault>}
-
+{/* 
 			<BannerDefault
 				data={{
 					isClosing: true,
@@ -83,7 +83,7 @@ export const Categoriespage = () => {
 					bgImageUrl: 'https://i.ibb.co/DRY8CcY/Banner-i-OS.png',
 					btnText: "Let's do it",
 				}}
-			/>
+			/> */}
 			<Nav />
 		</div>
 	);

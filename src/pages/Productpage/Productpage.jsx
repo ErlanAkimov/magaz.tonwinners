@@ -13,7 +13,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { changeNeedDelivery } from '../../redux/slice/cartSlice';
 import { deliveryInfoModalController } from '../../redux/slice/applicationState';
 import { addToCart, pushWallet, removeFromCart } from '../../redux/slice/userSlice';
-import { BannerDefault } from '../../components/BannerDefault';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -26,9 +25,6 @@ function Productpage() {
 	const { productId } = useParams();
 	const productData = useSelector((state) => state.products.productsList.filter((a) => a._id === productId)[0]);
 	const productInCart = useSelector((state) => state.user.cart.filter((item) => item._id === productId)[0]?.counter);
-	useEffect(() => {
-		console.log(productInCart);
-	}, [user]);
 	useEffect(() => window.scrollTo(0, 0), [productId]);
 
 	const wallet = useTonWallet();
@@ -121,30 +117,6 @@ function Productpage() {
 		}
 	}, [friendlyAddress]);
 
-	// Управление модальными окнами
-	const handleModalControl = (bool) => {
-		// Отключаем скроллинг документа если модальное окно открыто
-		bool ? (document.body.style.overflow = 'hidden') : orderDetailsModal ? null : (document.body.style.overflow = 'initial');
-		if (
-			(!bool && user.deliveryInfo.name === '') ||
-			user.deliveryInfo.country === '' ||
-			user.deliveryInfo.state === '' ||
-			user.deliveryInfo.city === '' ||
-			user.deliveryInfo.street === '' ||
-			user.deliveryInfo.zipcode === ''
-		) {
-			dispatch(changeNeedDelivery(false));
-		}
-		dispatch(deliveryInfoModalController(bool));
-		setModal(bool);
-	};
-	const handleOrderDetailsControl = (bool) => {
-		// Отключаем скроллинг документа если модальное окно открыто
-		bool ? (document.body.style.overflow = 'hidden') : (document.body.style.overflow = 'initial');
-		setReadyToBuy(bool);
-		setOrderDetailsModal(bool);
-	};
-
 	useEffect(() => {
 		let total = orderAmount * productData.price;
 		if (needDelivery) {
@@ -159,9 +131,7 @@ function Productpage() {
 			<Slider productData={productData} />
 			<div className="wrapper">
 				<div className={styles.title}>
-					<div>
-						<h1>{productData.name}</h1>
-					</div>
+					<h1>{productData.name}</h1>
 
 					<p className={styles.magaz}>magaz</p>
 				</div>
@@ -236,41 +206,10 @@ function Productpage() {
 						})}
 				</div>
 
-				<BannerDefault
-					data={{
-						title: 'Global Delivery',
-						text: 'We take advantage of the best opportunities to deliver your packages as quickly as possible',
-						btnText: 'Order Now',
-						bgImageUrl: 'https://i.ibb.co/JvM4V7k/world.png',
-					}}
-				/>
-
 				<div className={styles.productLine}>
-					<h4 className={styles.prodTitle}>Same products</h4>
+					<h4 className={styles.prodTitle}>{user.appLanguage === 'ru' ? 'Другие предложения' : 'Other products' }</h4>
 					<Swiper spaceBetween={8} slidesPerView={2} className={styles.productLineSwiper}>
-						{products.map((product, index) => (
-							<SwiperSlide key={index}>
-								<ProductCard data={product} />
-							</SwiperSlide>
-						))}
-					</Swiper>
-				</div>
-
-				<div className={styles.productLine}>
-					<h4 className={styles.prodTitle}>Recommended for you</h4>
-					<Swiper spaceBetween={8} slidesPerView={2} className={styles.productLineSwiper}>
-						{products.map((product, index) => (
-							<SwiperSlide key={index}>
-								<ProductCard data={product} />
-							</SwiperSlide>
-						))}
-					</Swiper>
-				</div>
-
-				<div className={styles.productLine}>
-					<h4 className={styles.prodTitle}>From this seller</h4>
-					<Swiper spaceBetween={8} slidesPerView={2} className={styles.productLineSwiper}>
-						{products.map((product, index) => (
+						{products.filter(a => a.name !== productData.name).sort(() => Math.random() - 0.5).map((product, index) => (
 							<SwiperSlide key={index}>
 								<ProductCard data={product} />
 							</SwiperSlide>

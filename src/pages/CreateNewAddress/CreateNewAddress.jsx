@@ -60,7 +60,7 @@ export const CreateNewAddress = () => {
 		<div className={styles.wrapper} style={{ minHeight: window.innerHeight }}>
 			<div className="text-13">{appLanguage === 'ru' ? 'Сохраните новый адрес' : 'save new address'}</div>
 
-			<Input prop={{ place: 'Name', value: name, setValue: setName }} />
+			<Input prop={{ place: 'Address title', value: name, setValue: setName }} />
 			<Input prop={{ place: 'Country', value: country, setValue: setCountry }} />
 			<Input prop={{ place: 'State', value: state, setValue: setState }} />
 			<Input prop={{ place: 'City', value: city, setValue: setCity }} />

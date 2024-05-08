@@ -155,8 +155,6 @@ export const userSlice = createSlice({
 		},
 
 		addToCart: (state, { payload }) => {
-
-			console.log(payload)
 			const data = {
 				_id: payload._id,
 				name: payload.name,

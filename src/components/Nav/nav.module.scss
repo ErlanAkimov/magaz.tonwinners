@@ -13,7 +13,28 @@
 	padding-bottom: 34px;
 }
 
+.ordersCounter {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background-color: var(--blue-color);
+	color: white;
+	border-radius: 100px;
+	width: 17px;
+	height: 17px;
+	font-size: 10px;
+	padding-bottom: 1px;
+	padding-right: 1px;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transform: translate(20%, -20%);
+}
+
 .item {
+
+	position: relative;
 	width: 100%;
 	text-align: center;
 	text-decoration: none;

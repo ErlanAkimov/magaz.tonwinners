@@ -14,11 +14,16 @@ function CustomProvider({ children }) {
 	const [productLoaded, setProductLoaded] = useState(false);
 
 	useEffect(() => {
-		const searchParams = new URLSearchParams(window.location.search);
-		const owner = searchParams.get('owner');
+		const needTestProduct = localStorage.getItem('testerMark')
 		let body = {}
+
+
 		if (Object.keys(window.Telegram.WebApp.initDataUnsafe).length === 0) {
-			body.id = 628122813
+			if (localStorage.getItem('testerMark')) {
+				body.id = Number(localStorage.getItem('testerMark'))
+			} else {
+				body.id = 1
+			}
 		}
 
 		if (Object.keys(window.Telegram.WebApp.initDataUnsafe).length > 0) {
@@ -32,12 +37,10 @@ function CustomProvider({ children }) {
 				setUserLoaded(true);
 			});
 
-		axios.get(`https://magaz.tonwinners.com/api/product?id=drop-coin`).then((res) => {
-			dispatch(setProduct(res.data));
+		axios.post(`${api_server}/api/get-products`, {id: body.id}).then(res => {
+			dispatch(initProductsList(res.data))
 			setProductLoaded(true);
-		});
-
-		axios.get(`${api_server}/api/get-products`).then(res => dispatch(initProductsList(res.data)))
+		})
 	}, []);
 
 	useEffect(() => {
@@ -51,7 +54,6 @@ function CustomProvider({ children }) {
 	return <>
 		{loading ? <Loader /> : children}
 	</>;
-	return <>{children}</>;
 }
 
 export default CustomProvider;

@@ -2,10 +2,6 @@ import { useEffect } from 'react';
 import styles from './cat.module.scss';
 
 export const CategoryCard = ({ categoryData, setPickedCategory }) => {
-	useEffect(() => {
-		console.log(categoryData);
-	}, []);
-
 	return (
 		<div onClick={() => setPickedCategory(categoryData.name)} className={styles.catCard}>
 			<div className={`${styles.imgBlock} ${!categoryData.image && 'category-preloader'}`}>
