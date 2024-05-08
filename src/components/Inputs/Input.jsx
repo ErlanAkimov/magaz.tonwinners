@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styles from './input.module.scss';
 
 export const Input = ({ prop }) => {
