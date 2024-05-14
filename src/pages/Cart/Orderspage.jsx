@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Nav } from '../../components/Nav/Nav';
 import styles from './orders.module.scss';
 import { addToCart, emptyCart, inOrderToggler, removeFromCart, removeFullProductFromCart } from '../../redux/slice/userSlice';
-import { useEffect } from 'react';
 import { ButtonDefault } from '../../components/ButtonDefault';
 import { useNavigate } from 'react-router-dom';
 import Lottie from 'react-lottie';

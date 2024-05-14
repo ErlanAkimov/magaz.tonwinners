@@ -13,7 +13,7 @@ import { ButtonDefault } from '../../components/ButtonDefault';
 
 import { useTonConnectModal, useTonWallet } from '@tonconnect/ui-react';
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const cats = [
 	{
@@ -41,11 +41,12 @@ const cats = [
 function Homepage() {
 	const wallet = useTonWallet();
 	const { open } = useTonConnectModal();
+
 	const productsList = useSelector(state => state.products.productsList)
 
 	useEffect(() => {
 		window.scrollTo(0,0)
-		window.Telegram.WebApp.BackButton.hide()
+		// window.Telegram.WebApp.BackButton.hide()
 	}, [])
 
 	return (
@@ -80,7 +81,7 @@ function Homepage() {
 			<h2 className={styles.catalogTitle}>New from MAGAZ</h2>
 			<div className={styles.catalog}>
 				{
-					productsList.map(data => <ProductCard data={data} />)
+					productsList.map((data, index) => <ProductCard key={index} data={data} />)
 				}
 			</div>
 			

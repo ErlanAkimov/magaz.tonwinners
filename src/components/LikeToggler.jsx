@@ -13,12 +13,12 @@ export const LikeToggler = ({ ...props }) => {
 			const s = user.likedProducts.filter((a) => a === props.productId);
 			s.length === 0 ? setLike(false) : setLike(true);
 		}
-	}, [user]);
+	}, [user, props.productId]);
 	const dispatch = useDispatch()
 
 	return (
 		<div
-			onClick={(e) => dispatch(likeToggler(props.productId))}
+			onClick={() => dispatch(likeToggler(props.productId))}
 			style={{
 				width: Number(props.width),
 				borderRadius: 100,

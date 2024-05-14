@@ -201,7 +201,7 @@ export const userSlice = createSlice({
 			axios.post(`${api_server}/api/remove-from-cart`, { id: state.id, cart: state.cart, cartCost: total.toFixed(2), cartAmount: state.cartAmount });
 		},
 
-		emptyCart: (state, { payload }) => {
+		emptyCart: (state) => {
 			state.cart = [];
 			state.cartCost = cartTotalCounter(state.cart);
 			axios.get(`${api_server}/api/empty-cart?user=${state.id}`);
@@ -218,6 +218,23 @@ export const userSlice = createSlice({
 
 			axios.post(`${api_server}/api/in-order-toggle`, { id: state.id, cart: state.cart, cartCost: total.toFixed(2), cartAmount: state.cartAmount });
 		},
+
+		removeBuyedProducts: (state, {payload}) => {
+
+			payload.map((item) => {
+				state.cart = state.cart.filter(ci => ci._id !== item._id)
+			})
+
+			const { total, amount } = cartTotalCounter(state.cart);
+			state.cartCost = total.toFixed(2);
+			state.cartAmount = amount;
+			
+			axios.post(`${api_server}/api/remove-from-cart`, { id: state.id, cart: state.cart, cartCost: total.toFixed(2), cartAmount: state.cartAmount });
+			
+			console.log(payload)
+			// state.cart = state.car
+			// console.log(payload.cart)
+		}
 	},
 });
 
@@ -235,6 +252,7 @@ function cartTotalCounter(cart) {
 }
 
 export const {
+	removeBuyedProducts,
 	removeSavedRecipient,
 	saveNewRecipient,
 	changeMyRecipient,

@@ -8,7 +8,7 @@ export const Nav = () => {
 	const user = useSelector((state) => state.user);
 	useEffect(() => {
 		setPage(window.location.pathname);
-	}, [window.location.pathname]);
+	}, []);
 	return (
 		<div className={styles.wrapper}>
 			<Link to="/" className={styles.item}>

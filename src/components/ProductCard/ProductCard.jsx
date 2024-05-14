@@ -1,30 +1,31 @@
 import styles from './prodCard.module.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LikeToggler } from '../../components/LikeToggler';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useNavigate } from 'react-router-dom';
 
 export const ProductCard = ({ data }) => {
 	const [imageIndex, setImageIndex] = useState(0);
+
 	const navigate = useNavigate();
 	return (
-		<div className={styles.wrapper} style={{position: 'relative'}} >
-				<LikeToggler productId={data._id} top={10} right={12} width={30}/>
+		<div className={styles.wrapper} style={{ position: 'relative' }}>
+			<LikeToggler productId={data._id} top={10} right={12} width={30} />
 			<Swiper className={styles.imgBlock} onSlideChange={(s) => setImageIndex(s.activeIndex)} onClick={() => navigate(`/product/${data._id}`)}>
-				{data.images.map((image, index) => {
+				{data.images.filter(name => name.split('-')[1] !== 'video').map((image, index) => {
 					return (
 						<SwiperSlide key={index}>
-							<img style={{userSelect: 'none'}} src={image} alt="" />
+							<img style={{ userSelect: 'none' }} src={image} alt="" />
 						</SwiperSlide>
 					);
 				})}
 			</Swiper>
 			<div className={styles.dots}>
-				{data.images.map((image, index) => {
+				{data.images.filter(name => name.split('-')[1] !== 'video').map((image, index) => {
 					return <div key={index} className={styles.dot} style={{ backgroundColor: imageIndex === index && '#a9a1a1' }}></div>;
 				})}
 			</div>
-			<div  onClick={() => navigate(`/product/${data._id}`)}>
+			<div onClick={() => navigate(`/product/${data._id}`)}>
 				<div className={styles.price}>
 					<svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path

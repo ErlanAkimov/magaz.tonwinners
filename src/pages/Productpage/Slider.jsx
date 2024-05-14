@@ -14,14 +14,12 @@ export const Slider = ({ productData }) => {
 			const s = user.likedProducts.filter((a) => a === productData._id);
 			s.length === 0 ? setLike(false) : setLike(true);
 		}
-	}, [user]);
+	}, [user, productData._id]);
 
 	return (
 		<Swiper className={styles.swiper}>
-
-
 			<div
-				onClick={(e) => dispatch(likeToggler(productData._id))}
+				onClick={() => dispatch(likeToggler(productData._id))}
 				style={{
 					padding: '10px 10px',
 					borderRadius: 100,
@@ -57,7 +55,13 @@ export const Slider = ({ productData }) => {
 			{productData.images.map((banner, index) => {
 				return (
 					<SwiperSlide key={index} className={styles.swiperSlide}>
-						<img src={banner} alt="banner image" />
+						{banner.split('-')[1] === 'video' ? (
+							<video preload='true' autoPlay={true} loop src={banner.split('-')[0]} />
+						) : (
+							<img src={banner} alt="banner image" />
+						)}
+
+						{/* Pass */}
 					</SwiperSlide>
 				);
 			})}

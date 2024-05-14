@@ -3,7 +3,6 @@ import styles from './cat.module.scss';
 
 import { Link } from 'react-router-dom';
 import { Nav } from '../../components/Nav/Nav';
-import { BannerDefault } from '../../components/BannerDefault';
 import { useState, useEffect } from 'react';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { ButtonDefault } from '../../components/ButtonDefault';
@@ -16,7 +15,6 @@ export const Categoriespage = () => {
 	const products = useSelector((state) => state.products.productsList);
 	const [pickedCategory, setPickedCategory] = useState(null);
 	const [categories, setCategories] = useState(['', '', '']);
-	const [loading, setLoading] = useState(true);
 
 	const wallet = useTonWallet();
 	const { open } = useTonConnectModal();
@@ -28,15 +26,9 @@ export const Categoriespage = () => {
 	}, []);
 
 	useEffect(() => {
-		if (categories[0] !== '') {
-			setLoading(false)
-		}
-	}, [categories])
-
-	useEffect(() => {
 		if (pickedCategory) {
 			function cats() {
-				Telegram.WebApp.offEvent('backButtonClicked', cats);
+				window.Telegram.WebApp.offEvent('backButtonClicked', cats);
 				window.scrollTo(0, 0);
 				setPickedCategory(null);
 			}
@@ -61,14 +53,14 @@ export const Categoriespage = () => {
 
 			{!pickedCategory && (
 				<div className={styles.catList}>
-					{categories && categories.map((categoryData) => <CategoryCard key={categoryData.name} setPickedCategory={setPickedCategory} categoryData={categoryData} />)}
+					{categories && categories.map((categoryData, index) => <CategoryCard key={index} setPickedCategory={setPickedCategory} categoryData={categoryData} />)}
 				</div>
 			)}
 
 			{pickedCategory && (
 				<div className={styles.catalog}>
-					{products.filter((item) => item.category.toLowerCase() === pickedCategory.toLowerCase()).map((data) => (
-							<ProductCard data={data} />
+					{products.filter((item) => item.category.toLowerCase() === pickedCategory.toLowerCase()).map((data, index) => (
+							<ProductCard key={index} data={data} />
 					))}
 				</div>
 			)}

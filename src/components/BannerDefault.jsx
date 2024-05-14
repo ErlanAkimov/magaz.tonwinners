@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
+
 export const BannerDefault = ({ data }) => {
 	const [isVisible, setIsVisible] = useState(true);
 	const [opacity, setOpacity] = useState(1);

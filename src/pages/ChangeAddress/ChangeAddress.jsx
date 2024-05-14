@@ -36,7 +36,7 @@ export const ChangeAddress = () => {
 			setStreet(myAddress.street)
 			setZip(myAddress.zip)
 		}
-	}, [user])
+	}, [user, myAddress, navigate])
 
 	return (
 		<div className={styles.wrapper} style={{ minHeight: window.innerHeight }}>

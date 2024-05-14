@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Nav } from '../../components/Nav/Nav';
 import styles from './create-new-rec.module.scss';
 import { Input } from '../../components/Inputs/Input';
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonDefault } from '../../components/ButtonDefault';
 import { useNavigate } from 'react-router-dom';
-import { pickAddress, pickRecipient, saveNewAddress, saveNewRecipient } from '../../redux/slice/userSlice';
-import { recipientIcon, vector } from '../CreateNewAddress/CreateNewAddress';
+import { pickRecipient, saveNewRecipient } from '../../redux/slice/userSlice';
+import { vector, recipientIcon } from '../../components/icons'
+
 
 export const CreateNewRecipient = () => {
 	const appLanguage = useSelector((state) => state.user.appLanguage);
@@ -30,7 +31,7 @@ export const CreateNewRecipient = () => {
 			<div style={{ marginTop: 45 }} className="text-13">
 				{appLanguage === 'ru' ? 'Сохранённые получатели' : 'Saved recipients'}
 			</div>
-			{user.savedRecipients.length > 0 ? (
+			{user.savedRecipients?.length > 0 ? (
 				<div className={styles.myAddresses}>
 					{user.savedRecipients.map((recipient) => {
 						return (

@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import styles from './cat.module.scss';
 
 export const CategoryCard = ({ categoryData, setPickedCategory }) => {

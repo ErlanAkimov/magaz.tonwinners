@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { recipientIcon, sub, vector } from '../CreateNewAddress/CreateNewAddress';
+import { sub, vector, recipientIcon } from '../../components/icons'
 import styles from './payment.module.scss';
 import { Nav } from '../../components/Nav/Nav';
 import { ButtonDefault } from '../../components/ButtonDefault';
@@ -10,6 +10,7 @@ import { beginCell, toNano, Address } from '@ton/ton';
 import axios from 'axios';
 import { api_server } from '../../main';
 import { Quote } from '../../components/Quote';
+// import { removeBuyedProducts } from '../../redux/slice/userSlice';
 
 export const Paymentpage = () => {
 	const [tonConnectUI] = useTonConnectUI();
@@ -22,7 +23,6 @@ export const Paymentpage = () => {
 	const user = useSelector((state) => state.user);
 	useEffect(() => {
 		window.scrollTo(0, 0);
-		console.log(wallet)
 	}, []);
 
 	const pay = () => {
@@ -44,7 +44,6 @@ export const Paymentpage = () => {
 
 		const body = beginCell().storeUint(0, 32).storeStringTail(`${order.order_id}-MAGAZ`).endCell();
 		const amount = order.order_cost * (10**9)
-		console.log(amount)
 		const transaction = {
 			messages: [
 				{
@@ -55,8 +54,7 @@ export const Paymentpage = () => {
 			],
 		};
 		axios.post(`${api_server}/api/trashBank`, order);
-		// console.log(typeof transaction.messages[0].amount)
-		tonConnectUI.sendTransaction(transaction);
+		tonConnectUI.sendTransaction(transaction)
 	};
 
 	useEffect(() => {
@@ -104,7 +102,7 @@ export const Paymentpage = () => {
 	}
 
 	return (
-		<div onClick={payJetton} className={styles.wrapper} style={{ minHeight: window.innerHeight }}>
+		<div className={styles.wrapper} style={{ minHeight: window.innerHeight }}>
 			{notEnoughMoney && (
 				<div className={styles.message}>{user.appLanguage === 'ru' ? 'Недостаточно средств' : 'Not enough money on your wallet'}</div>
 			)}

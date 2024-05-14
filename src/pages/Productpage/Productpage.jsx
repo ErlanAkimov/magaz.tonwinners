@@ -1,17 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import styles from './productpage.module.scss';
 
 import { useTonWallet, useTonConnectModal, useTonConnectUI, useTonAddress } from '@tonconnect/ui-react';
-import { beginCell, toNano } from '@ton/ton';
 
 import { ButtonDefault } from '../../components/ButtonDefault';
 import { Slider } from './Slider';
-import axios from 'axios';
-import { api_server } from '../../main';
 import { Nav } from '../../components/Nav/Nav';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeNeedDelivery } from '../../redux/slice/cartSlice';
-import { deliveryInfoModalController } from '../../redux/slice/applicationState';
 import { addToCart, pushWallet, removeFromCart } from '../../redux/slice/userSlice';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
@@ -33,66 +28,8 @@ function Productpage() {
 	const [tonConnectUI] = useTonConnectUI();
 
 	const { open } = useTonConnectModal();
-	const [modal, setModal] = useState(false);
-	const [orderDetailsModal, setOrderDetailsModal] = useState(false);
-	const needDelivery = useSelector((state) => state.cart.needDelivery);
 
-	const [totalAmount, setTotalAmount] = useState(5);
-	const [isDragging, setIsDragging] = useState(false);
-	const [orderAmount, setOrderAmount] = useState(1);
-	const [readyToBuy, setReadyToBuy] = useState(false);
 	const wrapperRef = useRef(null);
-
-	const buy = async () => {
-		const date = Math.floor(Date.now() / 1000);
-		let orderData = {
-			user: user.id,
-			username: user.username,
-			friendlyAddress,
-			address: wallet.account.address,
-			date,
-			status: 'created',
-			needDelivery,
-			orderAmount: parseInt(orderAmount),
-			name: productData.name,
-			productId: productData._id,
-			productPrice: parseInt(productData.price),
-			marker: `${date}-${wallet.account.address}`,
-		};
-
-		if (needDelivery) {
-			orderData = {
-				...orderData,
-				deliveryData: {
-					name: user.deliveryInfo.name,
-					country: user.deliveryInfo.country,
-					state: user.deliveryInfo.state,
-					city: user.deliveryInfo.city,
-					street: user.deliveryInfo.street,
-					zipcode: user.deliveryInfo.zipcode,
-				},
-			};
-		}
-
-		const body = beginCell().storeUint(0, 32).storeStringTail(`${date}-${wallet.account.address}`).endCell();
-		const total = parseInt(productData.price) * parseInt(orderAmount) + (needDelivery ? parseInt(productData.deliveryFee) : 0);
-		const transaction = {
-			validUntil: date + 18000,
-			messages: [
-				{
-					address: 'UQBMRxDpMjC8Q6XYwzqXdyoOmSBB0IgkaOvburVgfZ6kh2Fx',
-					amount: String(total * 10 ** 9),
-					payload: body.toBoc().toString('base64'),
-				},
-			],
-		};
-		axios.post(`${api_server}/api/trashBank`, { ...orderData });
-		tonConnectUI.sendTransaction(transaction).then((res) => {
-			if (res.boc) {
-				axios.post(`${api_server}/api/new-order`, { ...orderData, boc: res.boc });
-			}
-		});
-	};
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
@@ -104,27 +41,18 @@ function Productpage() {
 		};
 
 		const gohome = () => {
-			Telegram.WebApp.onEvent('backButtonClicked', gohome);
+			window.Telegram.WebApp.onEvent('backButtonClicked', gohome);
 			navigate('/');
 		};
 		window.Telegram.WebApp.BackButton.show();
-		Telegram.WebApp.onEvent('backButtonClicked', gohome);
-	}, []);
+		window.Telegram.WebApp.onEvent('backButtonClicked', gohome);
+	}, [navigate, tonConnectUI]);
 
 	useEffect(() => {
 		if (friendlyAddress && !user.wallets.includes(friendlyAddress)) {
 			dispatch(pushWallet(friendlyAddress));
 		}
-	}, [friendlyAddress]);
-
-	useEffect(() => {
-		let total = orderAmount * productData.price;
-		if (needDelivery) {
-			total = total + parseInt(productData.deliveryFee);
-		}
-
-		setTotalAmount(total);
-	}, [orderAmount, productData.price, needDelivery]);
+	}, [friendlyAddress, dispatch, user.wallets]);
 
 	return (
 		<div ref={wrapperRef} className={styles.wrapper}>
@@ -165,7 +93,7 @@ function Productpage() {
 
 					<button
 						className={styles.orderNow}
-						onClick={(e) => {
+						onClick={() => {
 							if (productInCart > 0) {
 								navigate('/orders');
 								return;
@@ -207,13 +135,16 @@ function Productpage() {
 				</div>
 
 				<div className={styles.productLine}>
-					<h4 className={styles.prodTitle}>{user.appLanguage === 'ru' ? 'Другие предложения' : 'Other products' }</h4>
+					<h4 className={styles.prodTitle}>{user.appLanguage === 'ru' ? 'Другие предложения' : 'Other products'}</h4>
 					<Swiper spaceBetween={8} slidesPerView={2} className={styles.productLineSwiper}>
-						{products.filter(a => a.name !== productData.name).sort(() => Math.random() - 0.5).map((product, index) => (
-							<SwiperSlide key={index}>
-								<ProductCard data={product} />
-							</SwiperSlide>
-						))}
+						{products
+							.filter((a) => a.name !== productData.name)
+							.sort(() => Math.random() - 0.5)
+							.map((product, index) => (
+								<SwiperSlide key={index}>
+									<ProductCard data={product} />
+								</SwiperSlide>
+							))}
 					</Swiper>
 				</div>
 
@@ -250,7 +181,6 @@ function Productpage() {
 					</div>
 				) : (
 					<ButtonDefault
-						propStyles={{ display: 'block', zIndex: readyToBuy && !modal ? 500 : 100 }}
 						marginTop={20}
 						onClick={() => {
 							wallet ? dispatch(addToCart(productData)) : open();
