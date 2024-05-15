@@ -1,6 +1,6 @@
 import styles from './homepage.module.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import mac from '../../assets/images/mac.png';
+import mac from '../../assets/images/g93.png';
 
 import macMini from '../../assets/images/mac mini.png';
 import coins from '../../assets/images/coin mini.png';
@@ -54,13 +54,6 @@ function Homepage() {
 			<Nav />
 			<Swiper className={styles.banner} spaceBetween={30}>
 				<SwiperSlide className={styles.bannerItem}>
-					<h2 className={styles.bannerTitle}>
-						MacBook Pro <br /> Giveaway
-					</h2>
-					<p className={styles.bannerDesc}>
-						- Make purchases from <br /> 15 TON and participate <br />
-						in the draw
-					</p>
 					<img src={mac} alt="" />
 				</SwiperSlide>
 			</Swiper>

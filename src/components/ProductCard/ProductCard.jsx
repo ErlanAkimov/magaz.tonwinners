@@ -26,6 +26,7 @@ export const ProductCard = ({ data }) => {
 				})}
 			</div>
 			<div onClick={() => navigate(`/product/${data._id}`)}>
+				<h3 className={styles.name}>{data.name}</h3>
 				<div className={styles.price}>
 					<svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path
@@ -38,7 +39,6 @@ export const ProductCard = ({ data }) => {
 					</p>
 				</div>
 
-				<h3 className={styles.name}>{data.name}</h3>
 				<div className={styles.dCost}>
 					<svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path

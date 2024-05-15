@@ -196,7 +196,8 @@
 .properties {
 	margin-top: 8px;
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	display: flex;
+	
 	column-gap: 8px;
 	padding-inline: 15px;
 	margin-bottom: 30px;

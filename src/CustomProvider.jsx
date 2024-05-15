@@ -6,12 +6,12 @@ import { Loader } from './components/Loader';
 import { api_server } from './main';
 import { initProductsList } from './redux/slice/productsSlice';
 import PropTypes from 'prop-types'
-
 function CustomProvider({ children }) {
 	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(true);
 	const [userLoaded, setUserLoaded] = useState(false);
 	const [productLoaded, setProductLoaded] = useState(false);
+
 
 	useEffect(() => {
 		let body = {}
