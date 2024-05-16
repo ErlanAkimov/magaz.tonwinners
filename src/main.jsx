@@ -14,6 +14,9 @@ window.Telegram.WebApp.expand();
 // window.Telegram.WebApp.setBackgroundColor('#fff');
 export const api_server = 'https://magaz.tonwinners.com';
 
+
+// some changes
+
 ReactDOM.createRoot(document.getElementById('root')).render(
 	<Provider store={store}>
 		<TonConnectUIProvider manifestUrl={`${api_server}/tonconnect-manifest.json`}>
