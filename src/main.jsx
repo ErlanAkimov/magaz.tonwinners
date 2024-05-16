@@ -15,7 +15,7 @@ window.Telegram.WebApp.expand();
 export const api_server = 'https://magaz.tonwinners.com';
 
 
-// some changes
+// adasdasd
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 	<Provider store={store}>
