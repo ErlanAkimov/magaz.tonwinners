@@ -24,9 +24,7 @@ function Productpage() {
 
 	const wallet = useTonWallet();
 	const friendlyAddress = useTonAddress();
-
 	const [tonConnectUI] = useTonConnectUI();
-
 	const { open } = useTonConnectModal();
 
 	const wrapperRef = useRef(null);
@@ -61,7 +59,7 @@ function Productpage() {
 				<div className={styles.title}>
 					<h1>{productData.name}</h1>
 
-					<p className={styles.magaz}>magaz</p>
+					<p className={styles.magaz}>{productData.seller_name}</p>
 				</div>
 				<div className={styles.priceLine}>
 					<div>
@@ -106,18 +104,34 @@ function Productpage() {
 						Order Now
 					</button>
 				</div>
-				<div className={styles.productInfo}>
-					<div>
-						<p>{productData.sold}</p>
-						<p>Items Sold</p>
+
+				{/* <div className={styles.sizes}>
+					{
+						productData.sizes.map((size, index) => {
+							return (
+								<div className={styles.size}>
+
+								</div>
+							)	
+						})
+					}
+				</div> */}
+
+				{productData.category !== 'nft pack' && (
+					<div className={styles.productInfo}>
+						<div>
+							<p>{productData.sold}</p>
+							<p>Items Sold</p>
+						</div>
+						<div>
+							<p>
+								{productData.deliverMin} to {productData.deliverMax}
+							</p>
+							<p>Weeks Arrival</p>
+						</div>
 					</div>
-					<div>
-						<p>
-							{productData.deliverMin} to {productData.deliverMax}
-						</p>
-						<p>Weeks Arrival</p>
-					</div>
-				</div>
+				)}
+
 				<div className={styles.description}>
 					<h3>Description</h3>
 					{productData.description && <p dangerouslySetInnerHTML={{ __html: productData.description.replace(/\n/g, '<br />') }} />}

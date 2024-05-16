@@ -15,7 +15,7 @@ export const ProductCard = ({ data }) => {
 				{data.images.filter(name => name.split('-')[1] !== 'video').map((image, index) => {
 					return (
 						<SwiperSlide key={index}>
-							<img style={{ userSelect: 'none' }} src={image} alt="" />
+							<img loading='lazy' style={{ userSelect: 'none' }} src={image} alt="" />
 						</SwiperSlide>
 					);
 				})}

@@ -1,6 +1,8 @@
 import styles from './homepage.module.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import mac from '../../assets/images/g93.png';
+import g94 from '../../assets/images/g95.png';
+import g95 from '../../assets/images/g94.png';
 
 import macMini from '../../assets/images/mac mini.png';
 import coins from '../../assets/images/coin mini.png';
@@ -42,12 +44,12 @@ function Homepage() {
 	const wallet = useTonWallet();
 	const { open } = useTonConnectModal();
 
-	const productsList = useSelector(state => state.products.productsList)
+	const productsList = useSelector((state) => state.products.productsList);
 
 	useEffect(() => {
-		window.scrollTo(0,0)
+		window.scrollTo(0, 0);
 		// window.Telegram.WebApp.BackButton.hide()
-	}, [])
+	}, []);
 
 	return (
 		<div className={styles.wrapper}>
@@ -55,6 +57,12 @@ function Homepage() {
 			<Swiper className={styles.banner} spaceBetween={30}>
 				<SwiperSlide className={styles.bannerItem}>
 					<img src={mac} alt="" />
+				</SwiperSlide>
+				<SwiperSlide className={styles.bannerItem}>
+					<img src={g94} alt="" />
+				</SwiperSlide>
+				<SwiperSlide className={styles.bannerItem}>
+					<img src={g95} alt="" />
 				</SwiperSlide>
 			</Swiper>
 
@@ -73,14 +81,12 @@ function Homepage() {
 
 			<h2 className={styles.catalogTitle}>New from MAGAZ</h2>
 			<div className={styles.catalog}>
-				{
-					productsList.map((data, index) => <ProductCard key={index} data={data} />)
-				}
+				{productsList.map((data, index) => (
+					<ProductCard key={index} data={data} />
+				))}
 			</div>
-			
 
 			{!wallet && <ButtonDefault onClick={open}>Connect Wallet</ButtonDefault>}
-
 		</div>
 	);
 }
