@@ -64,7 +64,7 @@ export const CreateNewRecipient = () => {
 					setName('');
 					setFio('')
 					setPhone('')
-
+					
 					dispatch(
 						saveNewRecipient({
 							id: Date.now(),

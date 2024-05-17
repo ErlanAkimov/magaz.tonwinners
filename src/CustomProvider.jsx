@@ -15,7 +15,6 @@ function CustomProvider({ children }) {
 
 	useEffect(() => {
 		let body = {}
-
 		if (Object.keys(window.Telegram.WebApp.initDataUnsafe).length === 0) {
 			if (localStorage.getItem('testerMark')) {
 				body.id = Number(localStorage.getItem('testerMark'))

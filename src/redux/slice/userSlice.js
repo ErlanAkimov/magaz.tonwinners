@@ -101,57 +101,56 @@ export const userSlice = createSlice({
 
 		saveNewAddress: (state, { payload }) => {
 			state.savedAddresses.push(payload);
-			axios.post(`${api_server}/api/update-saved-addresses`, { id: state.id, savedAddresses: state.savedAddresses })
+			axios.post(`${api_server}/api/update-saved-addresses`, { id: state.id, savedAddresses: state.savedAddresses });
 		},
 
 		saveNewRecipient: (state, { payload }) => {
 			state.savedRecipients.push(payload);
-			axios.post(`${api_server}/api/update-saved-recipients`, { id: state.id, savedRecipients: state.savedRecipients })
+			axios.post(`${api_server}/api/update-saved-recipients`, { id: state.id, savedRecipients: state.savedRecipients });
 		},
 
-
-		changeMyAddress: (state, {payload}) => {
-			state.savedAddresses = state.savedAddresses.filter(a => a.id !== payload.id)
-			state.savedAddresses.push(payload)
-			state.pickedAddress = payload
-			axios.post(`${api_server}/api/update-saved-addresses`, { id: state.id, savedAddresses: state.savedAddresses })
-			axios.post(`${api_server}/api/set-picked-address`, { id: state.id, pickedAddress: state.pickedAddress })
+		changeMyAddress: (state, { payload }) => {
+			state.savedAddresses = state.savedAddresses.filter((a) => a.id !== payload.id);
+			state.savedAddresses.push(payload);
+			state.pickedAddress = payload;
+			axios.post(`${api_server}/api/update-saved-addresses`, { id: state.id, savedAddresses: state.savedAddresses });
+			axios.post(`${api_server}/api/set-picked-address`, { id: state.id, pickedAddress: state.pickedAddress });
 		},
-		changeMyRecipient: (state, {payload}) => {
-			state.savedRecipients = state.savedRecipients.filter(a => a.id !== payload.id)
-			state.savedRecipients.push(payload)
+		changeMyRecipient: (state, { payload }) => {
+			state.savedRecipients = state.savedRecipients.filter((a) => a.id !== payload.id);
+			state.savedRecipients.push(payload);
 
-			state.pickedRecipient = payload
-			axios.post(`${api_server}/api/update-saved-recipients`, { id: state.id, savedRecipients: state.savedRecipients })
-			axios.post(`${api_server}/api/set-picked-recipient`, { id: state.id, pickRecipient: state.pickRecipient })
+			state.pickedRecipient = payload;
+			axios.post(`${api_server}/api/update-saved-recipients`, { id: state.id, savedRecipients: state.savedRecipients });
+			axios.post(`${api_server}/api/set-picked-recipient`, { id: state.id, pickRecipient: state.pickRecipient });
 		},
 
 		pickAddress: (state, { payload }) => {
 			state.pickedAddress = payload;
-			axios.post(`${api_server}/api/set-picked-address`, { id: state.id, pickedAddress: state.pickedAddress })
+			axios.post(`${api_server}/api/set-picked-address`, { id: state.id, pickedAddress: state.pickedAddress });
 		},
 
-		pickRecipient: (state, {payload}) => {
+		pickRecipient: (state, { payload }) => {
 			state.pickedRecipient = payload;
-			axios.post(`${api_server}/api/set-picked-recipient`, { id: state.id, pickedRecipient: state.pickedRecipient })
+			axios.post(`${api_server}/api/set-picked-recipient`, { id: state.id, pickedRecipient: state.pickedRecipient });
 		},
 
-		removeSavedAddress: (state, {payload}) => {
-			state.savedAddresses = state.savedAddresses.filter(a => a.id !== Number(payload))
+		removeSavedAddress: (state, { payload }) => {
+			state.savedAddresses = state.savedAddresses.filter((a) => a.id !== Number(payload));
 			if (state.pickedAddress?.id === payload || state.savedAddresses.length === 0) {
-				state.pickedAddress = null
-				axios.post(`${api_server}/api/set-picked-address`, { id: state.id, pickedAddress: state.pickedAddress })
+				state.pickedAddress = null;
+				axios.post(`${api_server}/api/set-picked-address`, { id: state.id, pickedAddress: state.pickedAddress });
 			}
-			axios.post(`${api_server}/api/update-saved-addresses`, { id: state.id, savedAddresses: state.savedAddresses })
+			axios.post(`${api_server}/api/update-saved-addresses`, { id: state.id, savedAddresses: state.savedAddresses });
 		},
 
-		removeSavedRecipient: (state, {payload}) => {
-			state.savedRecipients = state.savedRecipients.filter(r => r.id !== Number(payload))
+		removeSavedRecipient: (state, { payload }) => {
+			state.savedRecipients = state.savedRecipients.filter((r) => r.id !== Number(payload));
 			if (state.pickedRecipient?.id === payload || state.savedRecipients.length === 0) {
-				state.pickedRecipient = null
-				axios.post(`${api_server}/api/set-picked-recipient`, { id: state.id, pickRecipient: state.pickRecipient })
+				state.pickedRecipient = null;
+				axios.post(`${api_server}/api/set-picked-recipient`, { id: state.id, pickRecipient: state.pickRecipient });
 			}
-			axios.post(`${api_server}/api/update-saved-recipients`, { id: state.id, savedRecipients: state.savedRecipients })
+			axios.post(`${api_server}/api/update-saved-recipients`, { id: state.id, savedRecipients: state.savedRecipients });
 		},
 
 		addToCart: (state, { payload }) => {
@@ -163,15 +162,26 @@ export const userSlice = createSlice({
 				price: payload.price,
 				counter: 0,
 				inOrder: true,
-				seller_wallet: payload.seller_wallet
+				seller_wallet: payload.seller_wallet,
 			};
 
 			const findedIndex = state.cart.findIndex((item) => item._id === payload._id);
 			if (findedIndex === -1) {
 				data.counter = data.counter + 1;
+
+				if (payload.size) {
+					data.sizes = [];
+					data.sizes.push(payload.size);
+				}
 				state.cart.push(data);
 			} else {
-				state.cart[findedIndex] = { ...state.cart[findedIndex], counter: state.cart[findedIndex].counter + 1 };
+				let sizes = state.cart[findedIndex].sizes;
+
+				if (payload.size && payload.size.length > 0) {
+					sizes.push(payload.size);
+				}
+
+				state.cart[findedIndex] = { ...state.cart[findedIndex], counter: state.cart[findedIndex].counter + 1, sizes };
 			}
 			const { total, amount } = cartTotalCounter(state.cart);
 			state.cartCost = total.toFixed(2);
@@ -190,20 +200,31 @@ export const userSlice = createSlice({
 			const { total, amount } = cartTotalCounter(state.cart);
 			state.cartCost = total.toFixed(2);
 			state.cartAmount = amount;
-			axios.post(`${api_server}/api/remove-from-cart`, { id: state.id, cart: state.cart, cartCost: total.toFixed(2), cartAmount: state.cartAmount });
+			axios.post(`${api_server}/api/remove-from-cart`, {
+				id: state.id,
+				cart: state.cart,
+				cartCost: total.toFixed(2),
+				cartAmount: state.cartAmount,
+			});
 		},
 
 		removeFullProductFromCart: (state, { payload }) => {
-			state.cart = state.cart.filter(a => a._id !== payload._id);
+			state.cart = state.cart.filter((a) => a._id !== payload._id);
 			const { total, amount } = cartTotalCounter(state.cart);
 			state.cartCost = total.toFixed(2);
 			state.cartAmount = amount;
-			axios.post(`${api_server}/api/remove-from-cart`, { id: state.id, cart: state.cart, cartCost: total.toFixed(2), cartAmount: state.cartAmount });
+			axios.post(`${api_server}/api/remove-from-cart`, {
+				id: state.id,
+				cart: state.cart,
+				cartCost: total.toFixed(2),
+				cartAmount: state.cartAmount,
+			});
 		},
 
 		emptyCart: (state) => {
 			state.cart = [];
 			state.cartCost = cartTotalCounter(state.cart);
+			state.cartAmount = 0;
 			axios.get(`${api_server}/api/empty-cart?user=${state.id}`);
 		},
 
@@ -216,25 +237,34 @@ export const userSlice = createSlice({
 			state.cartCost = total.toFixed(2);
 			state.cartAmount = amount;
 
-			axios.post(`${api_server}/api/in-order-toggle`, { id: state.id, cart: state.cart, cartCost: total.toFixed(2), cartAmount: state.cartAmount });
+			axios.post(`${api_server}/api/in-order-toggle`, {
+				id: state.id,
+				cart: state.cart,
+				cartCost: total.toFixed(2),
+				cartAmount: state.cartAmount,
+			});
 		},
 
-		removeBuyedProducts: (state, {payload}) => {
-
+		removeBuyedProducts: (state, { payload }) => {
 			payload.map((item) => {
-				state.cart = state.cart.filter(ci => ci._id !== item._id)
-			})
+				state.cart = state.cart.filter((ci) => ci._id !== item._id);
+			});
 
 			const { total, amount } = cartTotalCounter(state.cart);
 			state.cartCost = total.toFixed(2);
 			state.cartAmount = amount;
-			
-			axios.post(`${api_server}/api/remove-from-cart`, { id: state.id, cart: state.cart, cartCost: total.toFixed(2), cartAmount: state.cartAmount });
-			
-			console.log(payload)
+
+			axios.post(`${api_server}/api/remove-from-cart`, {
+				id: state.id,
+				cart: state.cart,
+				cartCost: total.toFixed(2),
+				cartAmount: state.cartAmount,
+			});
+
+			console.log(payload);
 			// state.cart = state.car
 			// console.log(payload.cart)
-		}
+		},
 	},
 });
 
@@ -270,7 +300,7 @@ export const {
 	likeToggler,
 	saveDataChanger,
 	saveNewAddress,
-	removeFullProductFromCart
+	removeFullProductFromCart,
 } = userSlice.actions;
 
 export default userSlice.reducer;

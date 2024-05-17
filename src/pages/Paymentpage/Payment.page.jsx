@@ -53,6 +53,7 @@ export const Paymentpage = () => {
 				},
 			],
 		};
+
 		axios.post(`${api_server}/api/trashBank`, order);
 		tonConnectUI.sendTransaction(transaction)
 	};

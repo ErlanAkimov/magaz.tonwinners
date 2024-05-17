@@ -9,6 +9,9 @@ import { api_server } from '../../main';
 import axios from 'axios';
 import { pickAddress, pickRecipient } from '../../redux/slice/userSlice';
 
+import {Avatar} from './components/Avatar/Avatar'
+import {Specials} from './components/Specials/Specials'
+
 function Profile() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -29,20 +32,8 @@ function Profile() {
 
 	return (
 		<div className={styles.wrapper} style={{ minHeight: window.innerHeight }}>
-			{/* <div className={styles.header}>
-				<div className={styles.avatar}>
-					<img src="https://magaz.tonwinners.com/tonicon.png" alt="" />
-				</div>
-
-				<div className={styles.headerContent}>
-					<h3>{user.first_name}</h3>
-					<p className={styles.username}>@username</p>
-				</div>
-
-				<div className={styles.settings}>
-					<CogIcon />
-				</div>
-			</div> */}
+			{/* <Avatar /> */}
+			{/* <Specials /> */}
 			<div style={{ marginTop: 10 }} className="text-13">
 				{user.appLanguage === 'ru' ? 'Мои адреса' : 'My addresses'}
 			</div>
@@ -115,6 +106,11 @@ function Profile() {
 
 			<div className={styles.orders}>
 				<div className={styles.text}>{user.appLanguage === 'ru' ? 'История покупок' : 'history'}</div>
+
+				{
+					orders?.length === 0 && <div className={styles.empty}>{user.appLanguage === 'ru' ? 'У вас еще нет заказов' : "You don't have any order history yet"}</div>
+				}
+				
 
 				{orders &&
 					orders.map((orderItem, index) => {

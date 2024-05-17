@@ -55,6 +55,10 @@
 
 	.counter {
 		color: white;
+		font-weight: 600;
+		text-align: center;
+		width: 100%;
+		cursor: pointer;
 	}
 
 	.controlBtn {
@@ -171,61 +175,29 @@
 	}
 }
 
-.description {
-	padding: 12px 16px;
-	margin-inline: 15px;
-	border-radius: 16px;
-	margin-top: 8px;
-	background-color: rgb(245, 245, 245);
 
-	h3 {
-		font-size: 15px;
-		color: rgba(112, 117, 121, 1);
-		font-weight: 400;
-		line-height: 20px;
-	}
 
-	p {
-		margin-top: 3px;
-		font-size: 17px;
-		line-height: 22px;
-		font-weight: 400;
-	}
+.sizes {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding-inline: 10px;
+	margin-top: 10px;
 }
 
-.properties {
-	margin-top: 8px;
-	display: grid;
+.size {
+	padding: 10px 12px;
+	height: 40px;
+	border-radius: 10px;
 	display: flex;
-	
-	column-gap: 8px;
-	padding-inline: 15px;
-	margin-bottom: 30px;
+	align-items: center;
+	justify-content: center;
+	font-family: 'H_neue';
+	border: 1px solid #f2f2f2;
+	cursor: pointer;
 
-	div {
-		display: flex;
-		align-items: center;
-		flex-direction: column;
-		justify-content: center;
-		row-gap: 4px;
-		width: 100%;
-		background-color: rgb(245, 245, 245);
-		padding: 12px 0;
-		border-radius: 12px;
-		text-align: center;
-
-		p {
-			&:nth-child(1) {
-				font-size: 20px;
-				font-weight: 900;
-				color: rgba(0, 122, 255, 1);
-			}
-
-			&:nth-child(2) {
-				font-size: 13px;
-				font-weight: 500;
-			}
-		}
+	&Active {
+		border: 1px solid #333333;
 	}
 }
 
