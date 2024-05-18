@@ -29,7 +29,6 @@ export const Categoriespage = () => {
 		if (pickedCategory) {
 			function cats() {
 				window.Telegram.WebApp.offEvent('backButtonClicked', cats);
-				window.scrollTo(0, 0);
 				setPickedCategory(null);
 			}
 			window.Telegram.WebApp.BackButton.show();
@@ -57,6 +56,8 @@ export const Categoriespage = () => {
 				</div>
 			)}
 
+			<p className={styles.categoriesSoon}>Update coming soon</p>
+
 			{pickedCategory && (
 				<div className={styles.catalog}>
 					{products.filter((item) => item.category.toLowerCase() === pickedCategory.toLowerCase()).map((data, index) => (
@@ -66,6 +67,8 @@ export const Categoriespage = () => {
 			)}
 
 			{!wallet && <ButtonDefault onClick={open}>Connect Wallet</ButtonDefault>}
+
+
 {/* 
 			<BannerDefault
 				data={{

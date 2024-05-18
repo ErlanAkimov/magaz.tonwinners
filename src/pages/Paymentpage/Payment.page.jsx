@@ -18,12 +18,8 @@ export const Paymentpage = () => {
 	const wallet_f = useTonAddress();
 	const [notEnoughMoney, setNotEnoughMoney] = useState(false);
 
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const user = useSelector((state) => state.user);
-	useEffect(() => {
-		window.scrollTo(0, 0);
-	}, []);
 
 	const pay = () => {
 		const date = new Date();
@@ -53,6 +49,7 @@ export const Paymentpage = () => {
 				},
 			],
 		};
+
 		axios.post(`${api_server}/api/trashBank`, order);
 		tonConnectUI.sendTransaction(transaction)
 	};
@@ -133,7 +130,7 @@ export const Paymentpage = () => {
 					{recipientIcon()}
 					<div className={styles.central}>
 						<p className={styles.addressName}>
-							{user.pickedRecipient ? user.pickedRecipient.fio : user.appLanguage === 'ru' ? 'Получатель' : 'Recipient'}
+							{user.pickedRecipient ? `${user.pickedRecipient.fio.slice(0, 18)}...` : user.appLanguage === 'ru' ? 'Получатель' : 'Recipient'}
 						</p>
 						<p className={styles.pick}>
 							{user.pickedRecipient 

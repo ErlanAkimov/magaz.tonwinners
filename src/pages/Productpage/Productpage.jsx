@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './productpage.module.scss';
 
 import { useTonWallet, useTonConnectModal, useTonConnectUI, useTonAddress } from '@tonconnect/ui-react';
@@ -12,6 +12,11 @@ import { SwiperSlide, Swiper } from 'swiper/react';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { Description } from './components/description/Description';
+import { Properties } from './components/properties/Properties';
+import { Sizes } from './components/sizes/Sizes';
+import OtherProducts from './components/otherproducts/OtherProducts';
+
 function Productpage() {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -20,17 +25,13 @@ function Productpage() {
 	const { productId } = useParams();
 	const productData = useSelector((state) => state.products.productsList.filter((a) => a._id === productId)[0]);
 	const productInCart = useSelector((state) => state.user.cart.filter((item) => item._id === productId)[0]?.counter);
-	useEffect(() => window.scrollTo(0, 0), [productId]);
-
 	const wallet = useTonWallet();
 	const friendlyAddress = useTonAddress();
 	const [tonConnectUI] = useTonConnectUI();
 	const { open } = useTonConnectModal();
-
-	const wrapperRef = useRef(null);
+	const [pickedSize, setPickedSize] = useState(productData.sizes ? productData.sizes[0] : []);
 
 	useEffect(() => {
-		window.scrollTo(0, 0);
 		tonConnectUI.uiOptions = {
 			actionsConfiguration: {
 				modals: ['before', 'success', 'error'],
@@ -42,9 +43,14 @@ function Productpage() {
 			window.Telegram.WebApp.onEvent('backButtonClicked', gohome);
 			navigate('/');
 		};
+
 		window.Telegram.WebApp.BackButton.show();
 		window.Telegram.WebApp.onEvent('backButtonClicked', gohome);
 	}, [navigate, tonConnectUI]);
+
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [productData]);
 
 	useEffect(() => {
 		if (friendlyAddress && !user.wallets.includes(friendlyAddress)) {
@@ -53,7 +59,7 @@ function Productpage() {
 	}, [friendlyAddress, dispatch, user.wallets]);
 
 	return (
-		<div ref={wrapperRef} className={styles.wrapper}>
+		<div className={styles.wrapper}>
 			<Slider productData={productData} />
 			<div className="wrapper">
 				<div className={styles.title}>
@@ -105,17 +111,7 @@ function Productpage() {
 					</button>
 				</div>
 
-				{/* <div className={styles.sizes}>
-					{
-						productData.sizes.map((size, index) => {
-							return (
-								<div className={styles.size}>
-
-								</div>
-							)	
-						})
-					}
-				</div> */}
+				<Sizes data={productData.sizes} pickedSize={pickedSize} setPickedSize={setPickedSize} />
 
 				{productData.category !== 'nft pack' && (
 					<div className={styles.productInfo}>
@@ -132,72 +128,22 @@ function Productpage() {
 					</div>
 				)}
 
-				<div className={styles.description}>
-					<h3>Description</h3>
-					{productData.description && <p dangerouslySetInnerHTML={{ __html: productData.description.replace(/\n/g, '<br />') }} />}
-				</div>
-				<div className={styles.properties}>
-					{productData.properties &&
-						productData.properties.map((propertyData, index) => {
-							return (
-								<div key={index}>
-									<p>{Object.values(propertyData)}</p>
-									<p>{Object.keys(propertyData)}</p>
-								</div>
-							);
-						})}
-				</div>
-
-				<div className={styles.productLine}>
-					<h4 className={styles.prodTitle}>{user.appLanguage === 'ru' ? 'Другие предложения' : 'Other products'}</h4>
-					<Swiper spaceBetween={8} slidesPerView={2} className={styles.productLineSwiper}>
-						{products
-							.filter((a) => a.name !== productData.name)
-							.sort(() => Math.random() - 0.5)
-							.map((product, index) => (
-								<SwiperSlide key={index}>
-									<ProductCard data={product} />
-								</SwiperSlide>
-							))}
-					</Swiper>
-				</div>
+				<Description text={productData.description} />
+				<Properties data={productData.properties} />
+				<OtherProducts data={products} currentProduct={productData} />
 
 				{/* Counter для количества товаров в корзине */}
 				{productInCart > 0 ? (
 					<div className={styles.cartButton}>
-						<button
-							onClick={() => {
-								dispatch(removeFromCart(productData));
-							}}
-						>
-							<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<rect x="0.5" width="24" height="24" rx="12" fill="white" />
-								<path d="M14.4702 11.668V13.1987H10.4639V11.668H14.4702Z" fill="#12AC58" />
-							</svg>
-						</button>
 						<p onClick={() => navigate('/orders')} className={styles.counter}>
-							{user.appLanguage === 'ru' ? 'Штук заказать: ' : 'Pieces to order: '}
-							{productInCart}
+							{user.appLanguage === 'ru' ? 'Перейти в корзину' : 'View Orders'}
 						</p>
-						<button
-							onClick={() => {
-								dispatch(addToCart(productData));
-							}}
-						>
-							<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<rect x="0.5" width="24" height="24" rx="12" fill="white" />
-								<path
-									d="M16.1328 11.104V12.8252H8.82324V11.104H16.1328ZM13.4082 8.16699V15.9307H11.5552V8.16699H13.4082Z"
-									fill="#12AC58"
-								/>
-							</svg>
-						</button>
 					</div>
 				) : (
 					<ButtonDefault
 						marginTop={20}
 						onClick={() => {
-							wallet ? dispatch(addToCart(productData)) : open();
+							wallet ? dispatch(addToCart({ ...productData, size: pickedSize })) : open();
 						}}
 					>
 						{wallet ? 'Buy Product' : 'Connect Wallet'}

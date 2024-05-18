@@ -1,7 +1,7 @@
 .wrapper {
 	// position: relative;
-	padding-top: 10px;
 	background-color: #efeff4;
+	padding-top: 10px;
 }
 
 .noAddress {
@@ -104,6 +104,12 @@
 			line-height: 22px;
 		}
 	}
+}
+
+.empty {
+	padding: 10px 0 40px;
+	margin-top: 12px;
+
 }
 
 .text {

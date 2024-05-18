@@ -41,30 +41,32 @@ const cats = [
 ];
 
 function Homepage() {
+	const [slide, setSlide] = useState(0);
 	const wallet = useTonWallet();
 	const { open } = useTonConnectModal();
-
 	const productsList = useSelector((state) => state.products.productsList);
-
-	useEffect(() => {
-		window.scrollTo(0, 0);
-		// window.Telegram.WebApp.BackButton.hide()
-	}, []);
 
 	return (
 		<div className={styles.wrapper}>
 			<Nav />
-			<Swiper className={styles.banner} spaceBetween={30}>
+			<Swiper onSlideChange={(e) => setSlide(e.activeIndex)} className={styles.banner} spaceBetween={30}>
 				<SwiperSlide className={styles.bannerItem}>
 					<img src={mac} alt="" />
 				</SwiperSlide>
 				<SwiperSlide className={styles.bannerItem}>
-					<img src={g94} alt="" />
+					<a target='_blank' href="https://docs.google.com/forms/d/e/1FAIpQLSdwAbVjahSqHeCfcuky4kH1F_Qf1yqVW19pJVVOBfddXCH6jQ/viewform">
+						<img src={g94} alt="" />
+					</a>
 				</SwiperSlide>
 				<SwiperSlide className={styles.bannerItem}>
 					<img src={g95} alt="" />
 				</SwiperSlide>
 			</Swiper>
+			<div className={styles.dots}>
+				{[0, 0, 0].map((d, i) => (
+					<div className={`${styles.dot} ${slide === i ? styles.activeDot : null}`} key={i}></div>
+				))}
+			</div>
 
 			{/* <div className={styles.categories}>
 				{cats.map((cat) => {

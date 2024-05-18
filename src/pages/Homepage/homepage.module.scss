@@ -79,6 +79,27 @@
 	margin-top: 6px;
 }
 
+.dots {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 3px;
+	margin-top: 4px;
+}
+
+.dot {
+	border-radius: 10px;
+	width: 6px;
+	height: 6px;
+	background-color: #c0c0c0;
+	transition: .2s;
+}
+
+.activeDot {
+	background-color: var(--blue-color);
+	width: 14px;
+}
+
  .catalogTitle {
 	margin-left: 15px;
 	margin-top: 30px;
