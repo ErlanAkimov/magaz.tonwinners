@@ -12,8 +12,10 @@ import { SwiperSlide, Swiper } from 'swiper/react';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import {Description} from './components/description/Description'
-import {Properties} from './components/properties/Properties'
+import { Description } from './components/description/Description';
+import { Properties } from './components/properties/Properties';
+import { Sizes } from './components/sizes/Sizes';
+import OtherProducts from './components/otherproducts/OtherProducts';
 
 function Productpage() {
 	const navigate = useNavigate();
@@ -23,16 +25,11 @@ function Productpage() {
 	const { productId } = useParams();
 	const productData = useSelector((state) => state.products.productsList.filter((a) => a._id === productId)[0]);
 	const productInCart = useSelector((state) => state.user.cart.filter((item) => item._id === productId)[0]?.counter);
-	useEffect(() => window.scrollTo(0, 0), [productId]);
-
 	const wallet = useTonWallet();
 	const friendlyAddress = useTonAddress();
 	const [tonConnectUI] = useTonConnectUI();
 	const { open } = useTonConnectModal();
-
 	const [pickedSize, setPickedSize] = useState(productData.sizes ? productData.sizes[0] : []);
-
-	const wrapperRef = useRef(null);
 
 	useEffect(() => {
 		tonConnectUI.uiOptions = {
@@ -46,9 +43,14 @@ function Productpage() {
 			window.Telegram.WebApp.onEvent('backButtonClicked', gohome);
 			navigate('/');
 		};
+
 		window.Telegram.WebApp.BackButton.show();
 		window.Telegram.WebApp.onEvent('backButtonClicked', gohome);
 	}, [navigate, tonConnectUI]);
+
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [productData]);
 
 	useEffect(() => {
 		if (friendlyAddress && !user.wallets.includes(friendlyAddress)) {
@@ -56,11 +58,8 @@ function Productpage() {
 		}
 	}, [friendlyAddress, dispatch, user.wallets]);
 
-	useEffect(() => {
-		console.log(user.cart);
-	}, [user]);
 	return (
-		<div ref={wrapperRef} className={styles.wrapper}>
+		<div className={styles.wrapper}>
 			<Slider productData={productData} />
 			<div className="wrapper">
 				<div className={styles.title}>
@@ -112,20 +111,7 @@ function Productpage() {
 					</button>
 				</div>
 
-				{productData.sizes && (
-					<div className={styles.sizes}>
-						{productData.sizes.map((size, index) => {
-							return (
-								<div
-									onClick={() => setPickedSize(size)}
-									className={`${styles.size} ${pickedSize === size ? styles.sizeActive : null}`}
-								>
-									{size}
-								</div>
-							);
-						})}
-					</div>
-				)}
+				<Sizes data={productData.sizes} pickedSize={pickedSize} setPickedSize={setPickedSize} />
 
 				{productData.category !== 'nft pack' && (
 					<div className={styles.productInfo}>
@@ -144,20 +130,7 @@ function Productpage() {
 
 				<Description text={productData.description} />
 				<Properties data={productData.properties} />
-
-				<div className={styles.productLine}>
-					<h4 className={styles.prodTitle}>{user.appLanguage === 'ru' ? 'Другие предложения' : 'Other products'}</h4>
-					<Swiper spaceBetween={8} slidesPerView={2} className={styles.productLineSwiper}>
-						{products
-							.filter((a) => a.name !== productData.name)
-							.sort(() => Math.random() - 0.5)
-							.map((product, index) => (
-								<SwiperSlide key={index}>
-									<ProductCard data={product} />
-								</SwiperSlide>
-							))}
-					</Swiper>
-				</div>
+				<OtherProducts data={products} currentProduct={productData} />
 
 				{/* Counter для количества товаров в корзине */}
 				{productInCart > 0 ? (
