@@ -17,6 +17,10 @@ import { useTonConnectModal, useTonWallet } from '@tonconnect/ui-react';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
+import 'swiper/swiper-bundle.css';
+
+import { Autoplay, Pagination } from 'swiper/modules';
+
 const cats = [
 	{
 		img: macMini,
@@ -49,12 +53,26 @@ function Homepage() {
 	return (
 		<div className={styles.wrapper}>
 			<Nav />
-			<Swiper onSlideChange={(e) => setSlide(e.activeIndex)} className={styles.banner} spaceBetween={30}>
+			<Swiper
+				loop={true}
+				modules={[Autoplay, Pagination]}
+				pagination={{
+					el: '.myDots',
+					clickable: true,
+					bulletClass: styles.dot,
+					bulletActiveClass: styles.activeDot,
+					renderBullet: (index, className) => `<div class="${className} ${index === slide ? styles.activeDot : ''}"></div>`
+				}}
+				autoplay={{ delay: 5000, disableOnInteraction: false }}
+				onSlideChange={(e) => setSlide(e.activeIndex)}
+				className={styles.banner}
+				spaceBetween={30}
+			>
 				<SwiperSlide className={styles.bannerItem}>
 					<img src={mac} alt="" />
 				</SwiperSlide>
 				<SwiperSlide className={styles.bannerItem}>
-					<a target='_blank' href="https://docs.google.com/forms/d/e/1FAIpQLSdwAbVjahSqHeCfcuky4kH1F_Qf1yqVW19pJVVOBfddXCH6jQ/viewform">
+					<a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdwAbVjahSqHeCfcuky4kH1F_Qf1yqVW19pJVVOBfddXCH6jQ/viewform">
 						<img src={g94} alt="" />
 					</a>
 				</SwiperSlide>
@@ -62,11 +80,7 @@ function Homepage() {
 					<img src={g95} alt="" />
 				</SwiperSlide>
 			</Swiper>
-			<div className={styles.dots}>
-				{[0, 0, 0].map((d, i) => (
-					<div className={`${styles.dot} ${slide === i ? styles.activeDot : null}`} key={i}></div>
-				))}
-			</div>
+			<div className={`myDots ${styles.dots}`}></div>
 
 			{/* <div className={styles.categories}>
 				{cats.map((cat) => {
