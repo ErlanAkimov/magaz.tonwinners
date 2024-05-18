@@ -29,7 +29,6 @@ export const Categoriespage = () => {
 		if (pickedCategory) {
 			function cats() {
 				window.Telegram.WebApp.offEvent('backButtonClicked', cats);
-				window.scrollTo(0, 0);
 				setPickedCategory(null);
 			}
 			window.Telegram.WebApp.BackButton.show();

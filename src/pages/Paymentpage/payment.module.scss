@@ -35,6 +35,8 @@
 		font-size: 17px;
 		line-height: 22px;
 		font-weight: 500;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 
 	.pick {

@@ -19,7 +19,6 @@ function Profile() {
 	const [orders, setOrders] = useState(null);
 
 	useEffect(() => {
-		window.scrollTo(0, 0);
 		axios.post(`${api_server}/api/get-my-orders`, { orders: user.orders }).then((res) => {
 			const cart = [];
 			res.data.map((a) => {
