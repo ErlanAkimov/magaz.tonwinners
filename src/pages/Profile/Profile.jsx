@@ -11,6 +11,7 @@ import { pickAddress, pickRecipient } from '../../redux/slice/userSlice';
 
 import {Avatar} from './components/Avatar/Avatar'
 import {Specials} from './components/Specials/Specials'
+import { TonConnectButton } from '@tonconnect/ui-react';
 
 function Profile() {
 	const dispatch = useDispatch();
@@ -31,6 +32,9 @@ function Profile() {
 
 	return (
 		<div className={styles.wrapper} style={{ minHeight: window.innerHeight }}>
+			<div style={{marginInline: 'auto', width: 'fit-content'}}>
+				<TonConnectButton />
+			</div>
 			{/* <Avatar /> */}
 			{/* <Specials /> */}
 			<div style={{ marginTop: 10 }} className="text-13">
