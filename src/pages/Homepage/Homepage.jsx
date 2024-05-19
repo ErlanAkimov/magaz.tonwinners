@@ -15,7 +15,7 @@ import { ButtonDefault } from "../../components/ButtonDefault";
 
 import { useTonConnectModal, useTonWallet } from "@tonconnect/ui-react";
 import { useSelector } from "react-redux";
-import { useEffect, useRef, useState } from "react";
+import { createRef, useEffect, useMemo, useRef, useState } from "react";
 import { Autoplay } from "swiper/modules";
 
 const cats = [
@@ -41,19 +41,48 @@ const cats = [
   },
 ];
 
+const slides = [
+  {
+    id: 0,
+    img: mac,
+  },
+  {
+    id: 1,
+    img: g94,
+  },
+  {
+    id: 2,
+    img: g95,
+  },
+];
+
 function Homepage() {
   const [slide, setSlide] = useState(0);
   const wallet = useTonWallet();
   const { open } = useTonConnectModal();
   const productsList = useSelector((state) => state.products.productsList);
-  const progressBarRef = useRef(null);
+  const progressBarRef = useRef([]);
+
+  // По хорошему это все дело лучше вынести в отдельный компонент
+
+  progressBarRef.current = useMemo(
+    () => slides.map((_, idx) => progressBarRef.current[idx] ?? createRef()),
+    []
+  );
+
+  const setProgressProperty = (value, idx = slide) => {
+    progressBarRef.current[idx].current.style.setProperty("--progress", value);
+  };
 
   const onAutoplayTimeLeft = (_, __, progress) => {
-    progressBarRef.current.style.setProperty(
-      "--progress",
-      Math.round((1 - progress) * 100)
-    );
+    setProgressProperty((1 - progress) * 100);
   };
+
+  useEffect(() => {
+    return () => {
+      setProgressProperty(0, slide);
+    };
+  }, [slide]);
 
   return (
     <div className={styles.wrapper}>
@@ -66,8 +95,16 @@ function Homepage() {
         autoplay={{ delay: 5000 }}
         onAutoplayTimeLeft={onAutoplayTimeLeft}
       >
-        <div className={styles.progress} ref={progressBarRef} />
-        <SwiperSlide className={styles.bannerItem}>
+        {slides.map((slide, idx) => (
+          <SwiperSlide key={slide.id} className={styles.bannerItem}>
+            <img src={slide.img} alt="" />
+            <div
+              ref={progressBarRef.current[idx]}
+              className={styles.progress}
+            />
+          </SwiperSlide>
+        ))}
+        {/* <SwiperSlide className={styles.bannerItem}>
           <img src={mac} alt="" />
         </SwiperSlide>
         <SwiperSlide className={styles.bannerItem}>
@@ -80,14 +117,14 @@ function Homepage() {
         </SwiperSlide>
         <SwiperSlide className={styles.bannerItem}>
           <img src={g95} alt="" />
-        </SwiperSlide>
+        </SwiperSlide> */}
       </Swiper>
       <div className={styles.dots}>
-        {[0, 0, 0].map((d, i) => (
+        {[0, 0, 0].map((_, i) => (
           <div
-            className={`${styles.dot} ${slide === i ? styles.activeDot : null}`}
             key={i}
-          ></div>
+            className={`${styles.dot} ${slide === i ? styles.activeDot : null}`}
+          />
         ))}
       </div>
 

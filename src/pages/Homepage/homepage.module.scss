@@ -4,31 +4,30 @@
   padding-bottom: 170px;
 
   .banner {
-    padding-inline: 15px;
+    margin: 0 15px;
 
-    .progress {
-      --progress: 0;
-      position: absolute;
-      z-index: 10;
-      bottom: 4px;
-      left: 15px;
+    .bannerItem {
+      overflow: hidden;
+      border-radius: 23px;
 
-      width: calc((1% * var(--progress)) - 30px);
-      height: 3px;
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
 
-      transition: 0.1s;
+      .progress {
+        --progress: 0;
+        position: absolute;
+        z-index: 10;
+        bottom: 4px;
+        left: 0;
 
-      background-color: red;
-    }
-  }
+        width: calc((1% * var(--progress)));
+        height: 3px;
 
-  .bannerItem {
-    border-radius: 12px;
-
-    img {
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
+        background-color: red;
+      }
     }
   }
 
