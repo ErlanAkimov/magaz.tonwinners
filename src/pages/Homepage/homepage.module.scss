@@ -5,10 +5,11 @@
 
   .banner {
     margin: 0 15px;
+    border-radius: 25px;
 
     .bannerItem {
       overflow: hidden;
-      border-radius: 23px;
+      border-radius: 25px;
 
       img {
         height: 100%;
@@ -20,13 +21,13 @@
         --progress: 0;
         position: absolute;
         z-index: 10;
-        bottom: 4px;
+        bottom: 5px;
         left: 0;
 
         width: calc((1% * var(--progress)));
-        height: 3px;
+        height: 10px;
 
-        background-color: red;
+        background-color: rgba(0, 0, 0, 0.3);
       }
     }
   }
