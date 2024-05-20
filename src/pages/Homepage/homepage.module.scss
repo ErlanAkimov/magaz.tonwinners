@@ -3,35 +3,6 @@
   position: relative;
   padding-bottom: 170px;
 
-  .banner {
-    margin: 0 15px;
-    border-radius: 25px;
-
-    .bannerItem {
-      overflow: hidden;
-      border-radius: 25px;
-
-      img {
-        height: 100%;
-        width: 100%;
-        object-fit: cover;
-      }
-
-      .progress {
-        --progress: 0;
-        position: absolute;
-        z-index: 10;
-        bottom: 5px;
-        left: 0;
-
-        width: calc((1% * var(--progress)));
-        height: 10px;
-
-        background-color: rgba(0, 0, 0, 0.3);
-      }
-    }
-  }
-
   .bannerTitle {
     font-family: "H_neue";
     color: white;
@@ -92,27 +63,6 @@
   column-gap: 10px;
   row-gap: 20px;
   margin-top: 6px;
-}
-
-.dots {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  margin-top: 4px;
-}
-
-.dot {
-  border-radius: 10px;
-  width: 6px;
-  height: 6px;
-  background-color: #c0c0c0;
-  transition: 0.2s;
-}
-
-.activeDot {
-  background-color: var(--blue-color);
-  width: 14px;
 }
 
 .catalogTitle {
