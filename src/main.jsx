@@ -1,5 +1,7 @@
 import './global.scss';
 import 'swiper/css';
+import 'swiper/css/autoplay'
+
 import './styles/clashFonts.scss'
 import ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
