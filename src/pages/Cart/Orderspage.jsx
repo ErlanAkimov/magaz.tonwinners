@@ -27,10 +27,10 @@ export const Orderspage = () => {
 
 	return (
 		<div
-			className={`${styles.wrapper} ${user.cart.length === 0 ? styles.wrapperEmpty : null}`}
+			className={`${styles.wrapper} ${user.cart?.length === 0 ? styles.wrapperEmpty : null}`}
 			style={{ minHeight: user.cart.length === 0 ? window.innerHeight : 'initial' }}
 		>
-			{user.cart.length === 0 && (
+			{user.cart && user.cart?.length === 0 && (
 				<div>
 					<div className={styles.empty}>
 						<Lottie className={styles.lottie} options={lottieOptions} />
@@ -40,7 +40,7 @@ export const Orderspage = () => {
 				</div>
 			)}
 
-			{user.cart.length > 0 && (
+			{user.cart && user.cart?.length > 0 && (
 				<>
 					<div className={styles.return} onClick={() => dispatch(emptyCart())}>
 						{user.appLanguage === 'ru' ? 'Очистить корзину' : 'Delete all'}
