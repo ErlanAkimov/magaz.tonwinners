@@ -1,7 +1,11 @@
 import React from 'react';
 import styles from './properties.module.scss';
 
-export const Properties: React.FC<any> = ({ data }) => {
+type PropsType = {
+	data: { [key: string]: string }[];
+};
+
+export const Properties: React.FC<PropsType> = ({ data }) => {
 	return (
 		<div className={styles.wrapper}>
 			{data.map((propertyData: any, index: number) => {

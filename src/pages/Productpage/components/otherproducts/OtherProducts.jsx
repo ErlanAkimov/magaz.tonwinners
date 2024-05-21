@@ -1,18 +1,29 @@
-import React, { memo } from 'react';
-import styles from './other.module.scss';
+import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { ProductCard } from '../../../../components/ProductCard/ProductCard';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-const OtherProducts = memo(({ data, currentProduct }) => {
+import styles from './other.module.scss';
+
+import { ProductCard } from '/src/components/ProductCard/ProductCard';
+import { api_server } from '../../../../main';
+import axios from 'axios';
+
+export const OtherProducts = () => {
+  const { productId } = useParams();
+  const [products, setProducts] = useState(null)
+  
+
+  useEffect(() => {
+    axios.get(`${api_server}/api/get-other-products?id=${productId}`).then(res => setProducts(res.data))
+  }, [])
+  
 	return (
 		<div className={styles.productLine}>
 			<h4 className={styles.prodTitle}>Other products</h4>
 			<Swiper spaceBetween={8} slidesPerView={2} className={styles.productLineSwiper}>
-				{data &&
-					data
-						.filter((a) => a.name !== currentProduct.name)
-						.sort(() => Math.random() - 0.5)
-						.map((product, index) => (
+				{products &&
+					products.map((product, index) => (
 							<SwiperSlide key={index}>
 								<ProductCard data={product} />
 							</SwiperSlide>
@@ -20,6 +31,4 @@ const OtherProducts = memo(({ data, currentProduct }) => {
 			</Swiper>
 		</div>
 	);
-});
-
-export default OtherProducts;
+};
