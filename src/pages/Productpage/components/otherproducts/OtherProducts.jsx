@@ -1,25 +1,37 @@
-import React, { memo } from 'react';
-import styles from './other.module.scss';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { ProductCard } from '../../../../components/ProductCard/ProductCard';
+import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const OtherProducts = memo(({ data, currentProduct }) => {
-	return (
-		<div className={styles.productLine}>
-			<h4 className={styles.prodTitle}>Other products</h4>
-			<Swiper spaceBetween={8} slidesPerView={2} className={styles.productLineSwiper}>
-				{data &&
-					data
-						.filter((a) => a.name !== currentProduct.name)
-						.sort(() => Math.random() - 0.5)
-						.map((product, index) => (
-							<SwiperSlide key={index}>
-								<ProductCard data={product} />
-							</SwiperSlide>
-						))}
-			</Swiper>
-		</div>
-	);
-});
+import styles from "./other.module.scss";
 
-export default OtherProducts;
+import { ProductCard } from "/src/components/ProductCard/ProductCard";
+
+export const OtherProducts = () => {
+  const { productId } = useParams();
+  const products = useSelector((state) => state.products.productsList);
+  const currentProduct = useSelector(
+    (state) => state.products.productsList.filter((a) => a._id === productId)[0]
+  );
+
+  return (
+    <div className={styles.productLine}>
+      <h4 className={styles.prodTitle}>Other products</h4>
+      <Swiper
+        spaceBetween={8}
+        slidesPerView={2}
+        className={styles.productLineSwiper}
+      >
+        {products &&
+          products
+            .filter((a) => a.name !== currentProduct.name)
+            .sort(() => Math.random() - 0.5)
+            .map((product, index) => (
+              <SwiperSlide key={index}>
+                <ProductCard data={product} />
+              </SwiperSlide>
+            ))}
+      </Swiper>
+    </div>
+  );
+};
