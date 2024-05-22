@@ -20,7 +20,7 @@ export interface ProductInterface {
     likes: number; // Количество лайков
 }
 
-interface variationInterface {
+export interface variationInterface {
     name: string; // color/memory_size etc.
     avatar_small: string; // img_url (40x40)
     product_card_images: string[]; // img_urls for card

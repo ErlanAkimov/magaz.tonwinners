@@ -19,17 +19,47 @@ const data = {
         },
         variations: [
             {
-                name: "Size",
+                name: "beige",
                 avatar_small: "sample_image_url",
                 product_card_images: [
-                    "https://magaz.tonwinners.com/api/media/66447e09b20e2f30173329c8",
-                    "https://magaz.tonwinners.com/api/media/66447e09b20e2f30173329ca",
-                    "https://magaz.tonwinners.com/api/media/66447e09b20e2f30173329c9",
-                    "https://magaz.tonwinners.com/api/media/66447e09b20e2f30173329c7",
-                    "https://magaz.tonwinners.com/api/media/66447e09b20e2f30173329cb",
+                    "https://magaz.tonwinners.com/api/media/66485fe7b1b73f24f0e1263f",
+                    "https://magaz.tonwinners.com/api/media/66485fe8b1b73f24f0e12641",
+                    "https://magaz.tonwinners.com/api/media/66485fe8b1b73f24f0e12643",
+                    "https://magaz.tonwinners.com/api/media/66485fe8b1b73f24f0e12645",
+                    "https://magaz.tonwinners.com/api/media/66485fe8b1b73f24f0e12647",
+                    "https://magaz.tonwinners.com/api/media/66485fe9b1b73f24f0e12649",
                 ],
                 images: ["sample_image_url_1", "sample_image_url_2"],
                 types: [
+                    {
+                        name: "42",
+                        stock: 15,
+                        price: 120,
+                        attributes: null,
+                    },
+                    {
+                        name: "41",
+                        stock: 20,
+                        price: 130,
+                        attributes: null,
+                    },
+                ],
+            },
+            {
+                name: "red",
+                avatar_small: "sample_image_url",
+                product_card_images: [
+                    "https://sport.pibig.info/uploads/posts/2023-10/1696767567_sport-pibig-info-p-belo-krasnie-krossovki-dlya-voleibola-vkon-52.jpg",
+                    "https://sport.pibig.info/uploads/posts/2023-10/1696767567_sport-pibig-info-p-belo-krasnie-krossovki-dlya-voleibola-vkon-52.jpg",
+                ],
+                images: ["sample_image_url_1", "sample_image_url_2"],
+                types: [
+                    {
+                        name: "43",
+                        stock: 20,
+                        price: 130,
+                        attributes: null,
+                    },
                     {
                         name: "42",
                         stock: 15,

@@ -8,7 +8,7 @@ import styles from "./slider.module.scss";
 
 import { Like } from "../like/Like";
 
-export const Slider = ({ variations, _id }) => {
+export const Slider = ({ variations, id, currentVariation }) => {
     const [slide, setSlide] = useState(0);
     // const { productId } = useParams();
     // const { images, _id } = useSelector(
@@ -31,25 +31,28 @@ export const Slider = ({ variations, _id }) => {
                     }"></div>`,
             }}
         >
-            <Like productId={_id} className={styles.like} />
-            {variations[0].product_card_images.map((banner, index) => (
-                <SwiperSlide key={index} className={styles.swiperSlide}>
-                    {banner.split("-")[1] === "video" ? (
-                        <video
-                            loop
-                            preload="true"
-                            autoPlay={true}
-                            src={banner.split("-")[0]}
-                        />
-                    ) : (
-                        <img src={banner} alt="banner image" />
-                    )}
-                </SwiperSlide>
-            ))}
+            <Like productId={id} className={styles.like} />
+            {variations[currentVariation].product_card_images.map(
+                (img, index) => (
+                    <SwiperSlide key={index} className={styles.swiperSlide}>
+                        {img.split("-")[1] === "video" ? (
+                            <video
+                                loop
+                                preload="true"
+                                autoPlay={true}
+                                src={img.split("-")[0]}
+                            />
+                        ) : (
+                            <img src={img} alt="banner image" />
+                        )}
+                    </SwiperSlide>
+                )
+            )}
+
             <div
                 className={`myDots ${styles.dots}`}
                 style={{ left: "20px", bottom: "20px" }}
-            ></div>
+            />
         </Swiper>
     );
 };

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTonConnectUI, useTonAddress } from "@tonconnect/ui-react";
@@ -44,6 +44,8 @@ export const Product = ({ data }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const friendlyAddress = useTonAddress();
+    const [currentVariation, setCurrentVariation] = useState(0);
+    const [size, setSize] = useState(0);
     const [tonConnectUI] = useTonConnectUI();
     const user = useSelector((state) => state.user);
     const productInCart = useSelector(
@@ -61,6 +63,11 @@ export const Product = ({ data }) => {
             dispatch(addToCart(product));
             navigate("/orders");
         };
+    };
+
+    const setCurrentVariationHandler = (index) => {
+        setCurrentVariation(index);
+        setSize(0);
     };
 
     useEffect(() => {
@@ -92,15 +99,27 @@ export const Product = ({ data }) => {
 
     return (
         <>
-            <Slider {...data} />
-            <Title {...data} />
+            <Slider
+                variations={data.variations}
+                currentVariation={currentVariation}
+                id={productId}
+            />
+            <Title name={data.name} seller={data.seller} />
             <PriceAndOrderButton
                 addToCart={addToCartHandler}
                 user={user}
-                {...data}
+                price={data.variations[currentVariation].types[size].price}
             />
-            <Colors data={colors} />
-            <Sizes sizes={data.variations[0].types} />
+            <Colors
+                variations={data.variations}
+                onChange={setCurrentVariationHandler}
+                currentVariation={currentVariation}
+            />
+            <Sizes
+                data={data.variations[currentVariation].types}
+                currentSize={size}
+                onChange={setSize}
+            />
             <Line />
             <SocialFeedback likes={data.likes} />
             <Description text={data.description} />
