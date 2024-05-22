@@ -87,7 +87,6 @@ function Homepage() {
         </SwiperSlide>
       </Swiper>
       <div className={`myDots ${styles.dots}`}></div>
-
       {/* <div className={styles.categories}>
 				{cats.map((cat) => {
 					return (
@@ -100,14 +99,12 @@ function Homepage() {
 					);
 				})}
 			</div> */}
-
       <h2 className={styles.catalogTitle}>New from MAGAZ</h2>
       <div className={styles.catalog}>
         {productsList.map((data, index) => (
           <ProductCard key={index} data={data} />
         ))}
       </div>
-
       {!wallet && <ButtonDefault onClick={open}>Connect Wallet</ButtonDefault>}
     </div>
   );
