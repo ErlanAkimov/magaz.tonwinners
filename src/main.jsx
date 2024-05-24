@@ -17,8 +17,6 @@ window.Telegram.WebApp.expand();
 export const api_server = 'https://magaz.tonwinners.com';
 
 
-// adasdasd
-
 ReactDOM.createRoot(document.getElementById('root')).render(
 	<Provider store={store}>
 		<TonConnectUIProvider manifestUrl={`${api_server}/tonconnect-manifest.json`}>
