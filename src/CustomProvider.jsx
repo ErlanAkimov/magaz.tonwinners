@@ -6,6 +6,7 @@ import { Loader } from './components/Loader';
 import { api_server } from './main';
 import { initProductsList } from './redux/slice/productsSlice';
 import PropTypes from 'prop-types';
+
 function CustomProvider({ children }) {
 	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(true);
@@ -34,12 +35,12 @@ function CustomProvider({ children }) {
 			}
 		});
 
-		axios.post(`${api_server}/api/get-products`, { id: body.id }).then((res) => {
-			if (res.data !== 'no products') {
-				dispatch(initProductsList(res.data));
-				setProductLoaded(true);
-			}
-		});
+		// axios.post(`${api_server}/api/get-products`, { id: body.id }).then((res) => {
+		// 	if (res.data !== 'no products') {
+		// 		dispatch(initProductsList(res.data));
+		// 		setProductLoaded(true);
+		// 	}
+		// });
 	}, [dispatch]);
 
 	useEffect(() => {

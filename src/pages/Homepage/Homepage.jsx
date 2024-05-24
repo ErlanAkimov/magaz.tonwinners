@@ -48,7 +48,17 @@ function Homepage() {
 	const [slide, setSlide] = useState(0);
 	const wallet = useTonWallet();
 	const { open } = useTonConnectModal();
-	const productsList = useSelector((state) => state.products.productsList);
+	const [productsList, setProductsList] = useState([]);
+	// const productsList = useSelector((state) => state.products.productsList);
+
+	useEffect(() => {
+		axios.post(`${api_server}/api/get-products`, { id: body.id }).then((res) => {
+			if (res.data !== 'no products') {
+				dispatch(initProductsList(res.data));
+				setProductLoaded(true);
+			}
+		});
+	}, [])
 
 	return (
 		<div className={styles.wrapper}>
