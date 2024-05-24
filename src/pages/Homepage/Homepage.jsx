@@ -1,27 +1,32 @@
+// styles
 import styles from "./homepage.module.scss";
-import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper-bundle.css";
+
+// images 
 import mac from "../../assets/images/g93.png";
 import g94 from "../../assets/images/g95.png";
 import g95 from "../../assets/images/g94.png";
-
 import macMini from "../../assets/images/mac mini.png";
 import coins from "../../assets/images/coin mini.png";
 import pods from "../../assets/images/pods.png";
 import phones from "../../assets/images/iphones.png";
 import sneak from "../../assets/images/sneakers.png";
+
+// components
 import { ProductCard } from "../../components/ProductCard/ProductCard";
 import { Nav } from "../../components/Nav/Nav";
 import { ButtonDefault } from "../../components/ButtonDefault";
 
-import axios from "/src/axios";
+// utils
+import xApi from "/src/axios";
 
+// dependencies
 import { useTonConnectModal, useTonWallet } from "@tonconnect/ui-react";
-import { useSelector } from "react-redux";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { Autoplay, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
-import "swiper/swiper-bundle.css";
 
 const cats = [
     {
@@ -46,20 +51,16 @@ const cats = [
     },
 ];
 
-const INITIAL_NUMBER_PRODUCTS = 8;
-
 function Homepage() {
     const [slide, setSlide] = useState(0);
     const wallet = useTonWallet();
     const { open } = useTonConnectModal();
     const [productsList, setProductsList] = useState(null);
-    // const productsList = useSelector((state) => state.products.productsList);
     const { ref, inView } = useInView();
 
     const fetchProducts = async (params) => {
         try {
-            const response = await axios("/products/homepage", { params });
-
+            const response = await xApi("/products/homepage", { params })
             setProductsList([...(productsList || []), ...response.data]);
         } catch (error) {
             console.log(error);
@@ -69,7 +70,6 @@ function Homepage() {
     useEffect(() => {
         // prettier-ignore
         const params = productsList?.length ? { limit: productsList?.length } : {};
-
         inView && fetchProducts(params);
     }, [inView]);
 
