@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const instance = axios.create({
+const xApi = axios.create({
     baseURL: 'https://magaz.tonwinners.com/x-api'
 })
 
-export default instance;
+export default xApi;
