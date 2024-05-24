@@ -49,6 +49,8 @@ function Homepage() {
 	const wallet = useTonWallet();
 	const { open } = useTonConnectModal();
 	const productsList = useSelector((state) => state.products.productsList);
+	
+	// asdasdasds
 
 	return (
 		<div className={styles.wrapper}>
