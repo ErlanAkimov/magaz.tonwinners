@@ -11,7 +11,7 @@ function CustomProvider({ children }) {
 	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(true);
 	const [userLoaded, setUserLoaded] = useState(false);
-	const [productLoaded, setProductLoaded] = useState(false);
+	const [productLoaded, setProductLoaded] = useState(true);
 
 	useEffect(() => {
 		let body = {};
