@@ -26,6 +26,7 @@ import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import axios from "axios";
 
 
 const cats = [
@@ -55,23 +56,41 @@ function Homepage() {
     const [slide, setSlide] = useState(0);
     const wallet = useTonWallet();
     const { open } = useTonConnectModal();
-    const [productsList, setProductsList] = useState(null);
-    const { ref, inView } = useInView();
-
-    const fetchProducts = async (params) => {
-        try {
-            const response = await xApi("/products/homepage", { params })
-            setProductsList([...(productsList || []), ...response.data]);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [displayedProducts, setDisplayedProducts] = useState([]);
+    const [displayCount, setDisplayCount] = useState(6);
+    
     useEffect(() => {
-        // prettier-ignore
-        const params = productsList?.length ? { limit: productsList?.length } : {};
-        inView && fetchProducts(params);
-    }, [inView]);
+        fetchProducts();
+    }, []);
+    
+    const fetchProducts = async () => {
+        await axios.get(`https://magaz.tonwinners.com/x-api/products/homepage`)
+        .then(res => {
+        console.log(res)
+        setProducts(res.data);
+        setDisplayedProducts(res.data.slice(0, displayCount));
+        })
+        .catch(error => {
+        console.error('Error fetching products:', error);
+        });
+    };
+    
+    const handleScroll = () => {
+        const scrollHeight = document.documentElement.scrollHeight;
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        const clientHeight = document.documentElement.clientHeight;
+        
+        if (scrollTop + clientHeight >= scrollHeight - 20 && !loading) {
+        setLoading(true);
+        setDisplayCount(displayCount + 2);
+        setDisplayedProducts(products.slice(0, displayCount + 2));
+        setLoading(false);
+        }
+        };
+
+        window.addEventListener('scroll', handleScroll);
 
     return (
         <div className={styles.wrapper}>
@@ -126,11 +145,9 @@ function Homepage() {
 
             <h2 className={styles.catalogTitle}>New from MAGAZ</h2>
             <div className={styles.catalog}>
-                {productsList &&
-                    productsList.map((data, index) => (
+                    {displayedProducts.map((data, index) => (
                         <ProductCard key={index} data={data} />
                     ))}
-                <div ref={ref} /> {/* Trigger */}
             </div>
 
             {!wallet && (
