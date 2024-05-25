@@ -2,10 +2,7 @@
 import styles from "./homepage.module.scss";
 import "swiper/swiper-bundle.css";
 
-// images 
-import mac from "../../assets/images/g93.png";
-import g94 from "../../assets/images/g95.png";
-import g95 from "../../assets/images/g94.png";
+// images
 import macMini from "../../assets/images/mac mini.png";
 import coins from "../../assets/images/coin mini.png";
 import pods from "../../assets/images/pods.png";
@@ -13,19 +10,12 @@ import phones from "../../assets/images/iphones.png";
 import sneak from "../../assets/images/sneakers.png";
 
 // components
-import { ProductCard } from "../../components/ProductCard/ProductCard";
 import { Nav } from "../../components/Nav/Nav";
-import { ButtonDefault } from "../../components/ButtonDefault";
-
-// utils
-import useInfiniteScroll from './hooks/useInfiniteScroll';
+import { Slider } from "./components/slider/Slider";
+import { WalletConnectionButton } from "./components/walletconnectionbutton/WalletConnectionButton";
 
 // dependencies
-import { useTonConnectModal, useTonWallet } from "@tonconnect/ui-react";
-import {  useState } from "react";
-import { Autoplay, Pagination } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
-
+import { Products } from "./components/products/Products";
 
 const cats = [
     {
@@ -51,49 +41,10 @@ const cats = [
 ];
 
 function Homepage() {
-    const [slide, setSlide] = useState(0);
-    const wallet = useTonWallet();
-    const { open } = useTonConnectModal();
-    const { ref, products } = useInfiniteScroll()
-
     return (
         <div className={styles.wrapper}>
             <Nav />
-            <Swiper
-                loop={true}
-                modules={[Autoplay, Pagination]}
-                pagination={{
-                    el: ".myDots",
-                    clickable: true,
-                    bulletClass: styles.dot,
-                    bulletActiveClass: styles.activeDot,
-                    renderBullet: (index, className) =>
-                        `<div class="${className} ${
-                            index === slide ? styles.activeDot : ""
-                        }"></div>`,
-                }}
-                autoplay={{ delay: 5000, disableOnInteraction: false }}
-                onSlideChange={(e) => setSlide(e.activeIndex)}
-                className={styles.banner}
-                spaceBetween={30}
-            >
-                <SwiperSlide className={styles.bannerItem}>
-                    <img src={mac} alt="" />
-                </SwiperSlide>
-                <SwiperSlide className={styles.bannerItem}>
-                    <a
-                        target="_blank"
-                        href="https://docs.google.com/forms/d/e/1FAIpQLSdwAbVjahSqHeCfcuky4kH1F_Qf1yqVW19pJVVOBfddXCH6jQ/viewform"
-                    >
-                        <img src={g94} alt="" />
-                    </a>
-                </SwiperSlide>
-                <SwiperSlide className={styles.bannerItem}>
-                    <img src={g95} alt="" />
-                </SwiperSlide>
-            </Swiper>
-            <div className={`myDots ${styles.dots}`}></div>
-
+            <Slider />
             {/* <div className={styles.categories}>
 				{cats.map((cat) => {
 					return (
@@ -106,19 +57,8 @@ function Homepage() {
 					);
 				})}
 			</div> */}
-
-            <h2 className={styles.catalogTitle}>New from MAGAZ</h2>
-            <div className={styles.catalog}>
-                {products &&
-                    products.map((data, index) => (
-                        <ProductCard key={index} data={data} />
-                    ))}
-                <div ref={ref} /> {/* Trigger */}
-            </div>
-
-            {!wallet && (
-                <ButtonDefault onClick={open}>Connect Wallet</ButtonDefault>
-            )}
+            <Products />
+            <WalletConnectionButton />
         </div>
     );
 }
