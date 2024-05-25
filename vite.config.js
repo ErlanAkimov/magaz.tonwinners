@@ -4,7 +4,13 @@ import nodePolyfills from 'vite-plugin-node-stdlib-browser';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [react(), nodePolyfills()],
+	server: {
+		host: '0.0.0.0',
+	},
+	plugins: [
+		react(),
+		nodePolyfills(),
+	],
 	build: {
 		rollupOptions: {
 			output: {
