@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import Productpage from "./pages/Productpage/Productpage";
+// import Productpage from "./pages/Productpage/Productpage";
 import NewProductpage from "./pages/NewProductpage/Productpage";
 import Homepage from "./pages/Homepage/Homepage";
 import GoToMiniApp from "./pages/GoToMiniApp/GoToMiniApp";
@@ -14,62 +14,62 @@ import { CreateNewRecipient } from "./pages/CreateNewRecipient/CreateNewRecipite
 import { ChangeRecipient } from "./pages/ChangeRecipient/ChangeRecipient";
 
 export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Homepage />,
-  },
-  {
-    path: "/categories",
-    element: <Categoriespage />,
-  },
-  {
-    path: "/product/:productId",
-    element: <Productpage />,
-  },
-  {
-    path: "/new-product/:productId",
-    element: <NewProductpage />,
-  },
+    {
+        path: "/",
+        element: <Homepage />,
+    },
+    {
+        path: "/categories",
+        element: <Categoriespage />,
+    },
+    // {
+    //   path: "/product/:productId",
+    //   element: <Productpage />,
+    // },
+    {
+        path: "/new-product/:productId",
+        element: <NewProductpage />,
+    },
 
-  // Saved Addresses
-  {
-    path: "/create-new-address",
-    element: <CreateNewAddress />,
-  },
+    // Saved Addresses
+    {
+        path: "/create-new-address",
+        element: <CreateNewAddress />,
+    },
 
-  {
-    path: "/change-my-address/:addressId",
-    element: <ChangeAddress />,
-  },
+    {
+        path: "/change-my-address/:addressId",
+        element: <ChangeAddress />,
+    },
 
-  // Recipients
-  {
-    path: "/create-new-recipient",
-    element: <CreateNewRecipient />,
-  },
-  {
-    path: "/change-my-recipient/:recipientId",
-    element: <ChangeRecipient />,
-  },
-  {
-    path: "/orders",
-    element: <Orderspage />,
-  },
+    // Recipients
+    {
+        path: "/create-new-recipient",
+        element: <CreateNewRecipient />,
+    },
+    {
+        path: "/change-my-recipient/:recipientId",
+        element: <ChangeRecipient />,
+    },
+    {
+        path: "/orders",
+        element: <Orderspage />,
+    },
 
-  {
-    path: "/profile",
-    element: <Profile />,
-  },
+    {
+        path: "/profile",
+        element: <Profile />,
+    },
 
-  {
-    path: "/payment",
-    element: <Paymentpage />,
-  },
+    {
+        path: "/payment",
+        element: <Paymentpage />,
+    },
 ]);
 
 export const desktopRouter = createBrowserRouter([
-  {
-    path: "*",
-    element: <GoToMiniApp />,
-  },
+    {
+        path: "*",
+        element: <GoToMiniApp />,
+    },
 ]);

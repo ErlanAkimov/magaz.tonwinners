@@ -1,0 +1,55 @@
+.swiper {
+    position: relative;
+
+    .like {
+        border-radius: 100px;
+        background-color: #fff;
+        aspect-ratio: 1;
+
+        cursor: pointer;
+    }
+
+    .swiperSlide {
+        aspect-ratio: 1;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            object-fit: cover;
+            object-position: center;
+            width: 100%;
+        }
+
+        video {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .dots {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        position: absolute;
+        left: 20px;
+        bottom: 20px;
+        z-index: 10;
+    }
+}
+
+.dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 100%;
+    background: rgb(217, 217, 217);
+
+    transition: 0.2s;
+}
+
+.activeDot {
+    background: rgb(169, 161, 161);
+}

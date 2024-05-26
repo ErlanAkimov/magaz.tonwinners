@@ -1,0 +1,41 @@
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 26px;
+    padding: 10px 0;
+
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+        border: 1px solid rgba(0, 0, 0, 0.8);
+    }
+
+    &.active {
+        border: 1px solid rgba(0, 0, 0, 0.8);
+    }
+
+    .img {
+        width: 26.7px;
+        height: 26.7px;
+
+        border-radius: 100%;
+    }
+
+    .color {
+        color: rgba(0, 0, 0, 0.8);
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 20px;
+        letter-spacing: -0.23px;
+
+        &::first-letter {
+            text-transform: uppercase;
+        }
+    }
+}

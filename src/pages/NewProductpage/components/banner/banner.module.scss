@@ -1,0 +1,43 @@
+.root {
+    position: relative;
+    padding: 20px;
+    margin-inline: 15px;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+
+        border-radius: 16px;
+        background-image: url("/src/assets/images/Banner (iOS).png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .title {
+            color: rgb(255, 255, 255);
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 28px;
+            letter-spacing: 0.07px;
+            text-transform: uppercase;
+        }
+    }
+
+    .text {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 20px;
+        letter-spacing: -0.23px;
+
+        margin-top: 2px;
+    }
+}

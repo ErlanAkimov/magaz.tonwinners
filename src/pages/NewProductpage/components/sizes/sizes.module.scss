@@ -1,30 +1,37 @@
-.wrapper {
-	width: 100%;
-	overflow-x: auto;
-	&::-webkit-scrollbar {
-		display: none;
-	}
+.root {
+    width: 100%;
+    overflow-x: auto;
 
-	display: flex;
-	align-items: center;
-	gap: 6px;
-	padding-inline: 10px;
-	margin-top: 10px;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding-left: 15px;
 }
 
-
 .size {
-	padding: 10px 12px;
-	height: 40px;
-	border-radius: 10px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-family: 'H_neue';
-	border: 1px solid #f2f2f2;
-	cursor: pointer;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-	&Active {
-		border: 1px solid #333333;
-	}
+    height: 40px;
+    width: 40px;
+    border-radius: 10px;
+    border: 1px solid #f2f2f2;
+
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+        border: 1px solid #333333;
+    }
+
+    &.active {
+        border: 1px solid #333333;
+    }
 }
