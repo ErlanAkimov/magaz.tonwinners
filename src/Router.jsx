@@ -1,4 +1,8 @@
-import { createBrowserRouter } from "react-router-dom";
+import {
+    Route,
+    createBrowserRouter,
+    createRoutesFromElements,
+} from "react-router-dom";
 
 // import Productpage from "./pages/Productpage/Productpage";
 import NewProductpage from "./pages/NewProductpage/Productpage";
@@ -12,60 +16,36 @@ import { Orderspage } from "./pages/Cart/Orderspage";
 import { Paymentpage } from "./pages/Paymentpage/Payment.page";
 import { CreateNewRecipient } from "./pages/CreateNewRecipient/CreateNewRecipitent";
 import { ChangeRecipient } from "./pages/ChangeRecipient/ChangeRecipient";
+import { Errorpage } from "./pages/Errorpage/Errorpage";
 
-export const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <Homepage />,
-    },
-    {
-        path: "/categories",
-        element: <Categoriespage />,
-    },
-    // {
-    //   path: "/product/:productId",
-    //   element: <Productpage />,
-    // },
-    {
-        path: "/new-product/:productId",
-        element: <NewProductpage />,
-    },
+export const router = createBrowserRouter(
+    createRoutesFromElements(
+        <Route path="/" errorElement={<Errorpage />}>
+            <Route index element={<Homepage />} />
+            <Route path="categories" element={<Categoriespage />} />
+            <Route path="new-product/:productId" element={<NewProductpage />} />
 
-    // Saved Addresses
-    {
-        path: "/create-new-address",
-        element: <CreateNewAddress />,
-    },
-
-    {
-        path: "/change-my-address/:addressId",
-        element: <ChangeAddress />,
-    },
-
-    // Recipients
-    {
-        path: "/create-new-recipient",
-        element: <CreateNewRecipient />,
-    },
-    {
-        path: "/change-my-recipient/:recipientId",
-        element: <ChangeRecipient />,
-    },
-    {
-        path: "/orders",
-        element: <Orderspage />,
-    },
-
-    {
-        path: "/profile",
-        element: <Profile />,
-    },
-
-    {
-        path: "/payment",
-        element: <Paymentpage />,
-    },
-]);
+            {/* Saved Addresses */}
+            <Route path="create-new-address" element={<CreateNewAddress />} />
+            <Route
+                path="change-my-address/:addressId"
+                element={<ChangeAddress />}
+            />
+            {/* Recipients */}
+            <Route
+                path="create-new-recipient"
+                element={<CreateNewRecipient />}
+            />
+            <Route
+                path="change-my-recipient/:recipientId"
+                element={<ChangeRecipient />}
+            />
+            <Route path="orders" element={<Orderspage />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="payment" element={<Paymentpage />} />
+        </Route>
+    )
+);
 
 export const desktopRouter = createBrowserRouter([
     {
