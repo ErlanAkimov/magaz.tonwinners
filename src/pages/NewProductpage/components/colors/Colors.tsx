@@ -16,29 +16,23 @@ export const Colors = ({ variations, onChange, currentVariation }: Props) => {
             spaceBetween={6}
             style={{ padding: "0 15px" }}
         >
-            {variations?.map(({ name, product_card_images }, index) => {
-                console.log(name);
-
-                return (
-                    <SwiperSlide key={index} onClick={() => onChange(index)}>
-                        <div
-                            className={[
-                                `${styles.item} ${
-                                    index === currentVariation
-                                        ? styles.active
-                                        : ""
-                                }`,
-                            ].join(" ")}
-                        >
-                            <img
-                                src={product_card_images[0]}
-                                className={styles.img}
-                            />
-                            <span className={styles.color}>{name}</span>
-                        </div>
-                    </SwiperSlide>
-                );
-            })}
+            {variations?.map(({ name, product_card_images }, index) => (
+                <SwiperSlide key={index} onClick={() => onChange(index)}>
+                    <div
+                        className={[
+                            `${styles.item} ${
+                                index === currentVariation ? styles.active : ""
+                            }`,
+                        ].join(" ")}
+                    >
+                        <img
+                            src={product_card_images[0]}
+                            className={styles.img}
+                        />
+                        <span className={styles.color}>{name}</span>
+                    </div>
+                </SwiperSlide>
+            ))}
         </Swiper>
     );
 };

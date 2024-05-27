@@ -16,31 +16,7 @@ import { Line } from "../line/Line";
 import { Banner } from "../banner/Banner";
 import { SocialFeedback } from "../socialfeedback/SocialFeedback";
 
-const colors = [
-    {
-        id: 0,
-        value: "Fossil",
-        img: "https://magaz.tonwinners.com/api/media/6645bf9656ba4bce0e1f2685",
-    },
-    {
-        id: 1,
-        value: "Black",
-        img: "https://magaz.tonwinners.com/api/media/6645bf9656ba4bce0e1f2685",
-    },
-    {
-        id: 2,
-        value: "Yellow",
-        img: "https://magaz.tonwinners.com/api/media/6645bf9656ba4bce0e1f2685",
-    },
-    {
-        id: 3,
-        value: "White",
-        img: "https://magaz.tonwinners.com/api/media/6645bf9656ba4bce0e1f2685",
-    },
-];
-
-// export const Product = ({ data }) => {
-export const Product = () => {
+export const Product = ({ data }) => {
     const { productId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();

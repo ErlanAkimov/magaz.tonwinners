@@ -176,8 +176,6 @@ const data = {
 };
 
 const Productpage = () => {
-    // return <Skeleton />;
-
     return (
         <div className={styles.wrapper}>
             <Product data={data.product} />

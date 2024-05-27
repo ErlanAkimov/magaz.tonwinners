@@ -16,7 +16,7 @@ import sneak from "../../assets/images/sneakers.png";
 import { ProductCard } from "../../components/ProductCard/ProductCard";
 import { Nav } from "../../components/Nav/Nav";
 import { ButtonDefault } from "../../components/ButtonDefault";
-import { Skeletons } from "./components/skeletons/Skeletons";
+import { Skeletons } from "/src/components/ProductCard/components/skeletons/Skeletons";
 
 // utils
 import xApi from "/src/axios";
@@ -132,7 +132,7 @@ function Homepage() {
     const { open } = useTonConnectModal();
     const [productsList, setProductsList] = useState(null);
     const { ref, inView } = useInView();
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const fetchProducts = async (params) => {
         try {
@@ -150,6 +150,12 @@ function Homepage() {
         const params = productsList?.length ? { limit: productsList?.length } : {};
         inView && fetchProducts(params);
     }, [inView]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 3000);
+    }, []);
 
     return (
         <div className={styles.wrapper}>
@@ -204,12 +210,11 @@ function Homepage() {
             <h2 className={styles.catalogTitle}>New from MAGAZ</h2>
             <div className={styles.catalog}>
                 {isLoading ? (
-                    <Skeletons />
+                    <Skeletons size={8} />
                 ) : (
                     <>
                         <ProductCard data={product} />
-                        <ProductCard data={product} />
-                        <Skeletons />
+                        <Skeletons size={2} />
                     </>
                 )}
                 {/* {productsList &&
