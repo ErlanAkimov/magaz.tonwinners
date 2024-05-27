@@ -18,12 +18,11 @@ import { Nav } from "../../components/Nav/Nav";
 import { ButtonDefault } from "../../components/ButtonDefault";
 
 // utils
-import xApi from "/src/axios";
+import useInfiniteScroll from './hooks/useInfiniteScroll';
 
 // dependencies
 import { useTonConnectModal, useTonWallet } from "@tonconnect/ui-react";
-import { useEffect, useState } from "react";
-import { useInView } from "react-intersection-observer";
+import {  useState } from "react";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -55,23 +54,7 @@ function Homepage() {
     const [slide, setSlide] = useState(0);
     const wallet = useTonWallet();
     const { open } = useTonConnectModal();
-    const [productsList, setProductsList] = useState(null);
-    const { ref, inView } = useInView();
-
-    const fetchProducts = async (params) => {
-        try {
-            const response = await xApi("/products/homepage", { params })
-            setProductsList([...(productsList || []), ...response.data]);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    useEffect(() => {
-        // prettier-ignore
-        const params = productsList?.length ? { limit: productsList?.length } : {};
-        inView && fetchProducts(params);
-    }, [inView]);
+    const { ref, products } = useInfiniteScroll()
 
     return (
         <div className={styles.wrapper}>
@@ -126,8 +109,8 @@ function Homepage() {
 
             <h2 className={styles.catalogTitle}>New from MAGAZ</h2>
             <div className={styles.catalog}>
-                {productsList &&
-                    productsList.map((data, index) => (
+                {products &&
+                    products.map((data, index) => (
                         <ProductCard key={index} data={data} />
                     ))}
                 <div ref={ref} /> {/* Trigger */}
