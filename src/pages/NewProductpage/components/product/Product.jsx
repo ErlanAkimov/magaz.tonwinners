@@ -30,8 +30,6 @@ export const Product = ({ data }) => {
             state.user.cart.filter((item) => item._id === productId)[0]?.counter
     );
 
-    useEffect(() => {}, []);
-
     const addToCartHandler = (product) => {
         () => {
             if (productInCart > 0) {

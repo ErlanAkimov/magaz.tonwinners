@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./description.module.scss";
+import ContentLoader from "react-content-loader";
 
 export const Description: React.FC<{ text: string }> = ({ text }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -8,6 +9,10 @@ export const Description: React.FC<{ text: string }> = ({ text }) => {
     };
 
     useEffect(() => setIsOpen(false), [text]);
+
+    if (!text) {
+        return <Skeleton />;
+    }
 
     return (
         <div className={styles.wrapper}>
@@ -24,5 +29,27 @@ export const Description: React.FC<{ text: string }> = ({ text }) => {
                 </div>
             )}
         </div>
+    );
+};
+
+const Skeleton = () => {
+    const defaultAttributes = { rx: "5px", ry: "5px" };
+
+    return (
+        <ContentLoader
+            speed={2}
+            height={"121px"}
+            width={"100vw"}
+            backgroundColor="#f3f3f3"
+            foregroundColor="#ecebeb"
+        >
+            <rect
+                y={"22px"}
+                x={"15px"}
+                width={"calc(100vw - 30px)"}
+                height={"99px"}
+                {...defaultAttributes}
+            />
+        </ContentLoader>
     );
 };

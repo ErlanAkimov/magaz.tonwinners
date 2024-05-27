@@ -1,3 +1,5 @@
+import ContentLoader from "react-content-loader";
+
 import styles from "./socialfeedback.module.scss";
 
 import { LikeIcon } from "/src/icons/like/LikeIcon";
@@ -7,6 +9,10 @@ interface Props {
 }
 
 export const SocialFeedback = ({ likes }: Props) => {
+    if (!likes) {
+        return <Skeleton />;
+    }
+
     return (
         <div className={styles.root}>
             <div className={[styles.item, styles.active].join(" ")}>
@@ -60,5 +66,42 @@ export const SocialFeedback = ({ likes }: Props) => {
                 </svg>
             </div>
         </div>
+    );
+};
+
+const Skeleton = () => {
+    const defaultAttributes = { rx: "5px", ry: "5px" };
+    return (
+        <ContentLoader
+            speed={2}
+            height={"63px"}
+            width={"100vw"}
+            backgroundColor="#f3f3f3"
+            foregroundColor="#ecebeb"
+        >
+            <rect
+                y={"0"}
+                x={"15px"}
+                width={"calc((100vw - 30px) * 0.195)"}
+                height={"63px"}
+                {...defaultAttributes}
+            />
+            <rect
+                y={"0"}
+                x={"calc(15px + (100vw - 30px) * 0.195 + 7px)"}
+                width={"calc((100vw - 30px) * 0.388)"}
+                height={"63px"}
+                {...defaultAttributes}
+            />
+            <rect
+                y={"0"}
+                x={
+                    "calc(15px + (100vw - 30px) * 0.195 + 7px + (100vw - 30px) * 0.388 + 7px)"
+                }
+                width={"calc((100vw - 30px) * 0.388)"}
+                height={"63px"}
+                {...defaultAttributes}
+            />
+        </ContentLoader>
     );
 };
