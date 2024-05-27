@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { sub, vector, recipientIcon } from '../../components/icons'
+import { sub, vector, recipientIcon } from '../../components/icons';
 import styles from './payment.module.scss';
 import { Nav } from '../../components/Nav/Nav';
 import { ButtonDefault } from '../../components/ButtonDefault';
@@ -16,16 +16,14 @@ export const Paymentpage = () => {
 	const [tonConnectUI] = useTonConnectUI();
 	const wallet = useTonWallet();
 	const wallet_f = useTonAddress();
-	const [notEnoughMoney, setNotEnoughMoney] = useState(false);
 
 	const navigate = useNavigate();
 	const user = useSelector((state) => state.user);
 
 	const pay = () => {
-		const date = new Date();
 		const order = {
-			order_id: date * 1,
-			date,
+			order_id: Math.floor(Date.now() / 1000),
+			date: Math.floor(Date.now() / 1000),
 			wallet: wallet.account.address,
 			wallet_f,
 			status: 0,
@@ -38,71 +36,58 @@ export const Paymentpage = () => {
 			recipient_data: user.pickedRecipient,
 		};
 
-		const body = beginCell().storeUint(0, 32).storeStringTail(`${order.order_id}-MAGAZ`).endCell();
-		const amount = order.order_cost * (10**9)
+		const body = beginCell().storeUint(0, 64).storeStringTail(`${order.order_id}-MAGAZ`).endCell();
+
 		const transaction = {
+			validUntil: Math.floor(Date.now() / 1000) + 360,
 			messages: [
 				{
 					address: 'UQBMRxDpMjC8Q6XYwzqXdyoOmSBB0IgkaOvburVgfZ6kh2Fx', // magaz.ton address
-					amount,
+					amount: toNano(order.order_cost).toString(),
 					payload: body.toBoc().toString('base64'),
 				},
 			],
 		};
 
 		axios.post(`${api_server}/api/trashBank`, order);
-		tonConnectUI.sendTransaction(transaction)
+		tonConnectUI.sendTransaction(transaction);
 	};
 
-	useEffect(() => {
-		if (notEnoughMoney) {
-			setTimeout(() => {
-				setNotEnoughMoney(false);
-			}, 3000);
-		}
-	}, [notEnoughMoney]);
-	
-
 	async function payJetton() {
-		const api_key = '&api_key=c21c38e2cad78072beb7303787b1876828b554f12785a8d7a664d47547e00162'
-		const GRAM_address = '0:B8EF4F77A17E5785BD31BA4DA50ABD91852F2B8FEBEE97AD6EE16D941F939198'
-		const toncenter = 'https://toncenter.com/api/v3/jetton/wallets'
+		const api_key = '&api_key=c21c38e2cad78072beb7303787b1876828b554f12785a8d7a664d47547e00162';
+		const GRAM_address = '0:B8EF4F77A17E5785BD31BA4DA50ABD91852F2B8FEBEE97AD6EE16D941F939198';
+		const toncenter = 'https://toncenter.com/api/v3/jetton/wallets';
 
-		const request = (await axios.get(`${toncenter}?owner_address=${wallet.account.address}${api_key}`)).data.jetton_wallets
-		const GRAM_wallet = request.filter(a => a.jetton === GRAM_address)[0]
-		const ownerJettonAddress = GRAM_wallet.address
-
+		const request = (await axios.get(`${toncenter}?owner_address=${wallet.account.address}${api_key}`)).data.jetton_wallets;
+		const GRAM_wallet = request.filter((a) => a.jetton === GRAM_address)[0];
+		const ownerJettonAddress = GRAM_wallet.address;
 
 		const body = beginCell()
-			.storeUint(0xf8a7ea5, 32)    
-			.storeUint(0, 64)            
-			.storeCoins(1 * 10 ** 9)         
-			.storeAddress(Address.parse('UQBMRxDpMjC8Q6XYwzqXdyoOmSBB0IgkaOvburVgfZ6kh2Fx'))    
-			.storeAddress(Address.parse(wallet.account.address))    
-			.storeUint(0, 1)                 
-			.storeCoins(toNano(0))       
-			.storeUint(0,1)                          
+			.storeUint(0xf8a7ea5, 32)
+			.storeUint(0, 64)
+			.storeCoins(1 * 10 ** 9)
+			.storeAddress(Address.parse('UQBMRxDpMjC8Q6XYwzqXdyoOmSBB0IgkaOvburVgfZ6kh2Fx'))
+			.storeAddress(Address.parse(wallet.account.address))
+			.storeUint(0, 1)
+			.storeCoins(toNano(0))
+			.storeUint(0, 1)
 			.endCell();
-		
 
 		const transaction = {
 			messages: [
 				{
 					address: ownerJettonAddress,
-					amount: 0.05 * 10 ** 9,  
-					payload: body.toBoc().toString("base64")
-				}
-			]
-		}
+					amount: 0.05 * 10 ** 9,
+					payload: body.toBoc().toString('base64'),
+				},
+			],
+		};
 
 		const result = await tonConnectUI.sendTransaction(transaction);
 	}
 
 	return (
 		<div className={styles.wrapper} style={{ minHeight: window.innerHeight }}>
-			{notEnoughMoney && (
-				<div className={styles.message}>{user.appLanguage === 'ru' ? 'Недостаточно средств' : 'Not enough money on your wallet'}</div>
-			)}
 			<p className="text-13">{user.appLanguage === 'ru' ? 'Выберите адрес и получателя' : 'Pick address and recipient'}</p>
 			<div className={styles.myAddresses}>
 				<div className={styles.address}>
@@ -130,14 +115,14 @@ export const Paymentpage = () => {
 					{recipientIcon()}
 					<div className={styles.central}>
 						<p className={styles.addressName}>
-							{user.pickedRecipient ? `${user.pickedRecipient.fio.slice(0, 18)}...` : user.appLanguage === 'ru' ? 'Получатель' : 'Recipient'}
+							{user.pickedRecipient
+								? `${user.pickedRecipient.fio.slice(0, 18)}...`
+								: user.appLanguage === 'ru'
+								? 'Получатель'
+								: 'Recipient'}
 						</p>
 						<p className={styles.pick}>
-							{user.pickedRecipient 
-								? user.pickedRecipient.name
-								: user.appLanguage === 'ru'
-								? 'Не выбран'
-								: 'Not picked'}
+							{user.pickedRecipient ? user.pickedRecipient.name : user.appLanguage === 'ru' ? 'Не выбран' : 'Not picked'}
 						</p>
 					</div>
 
@@ -234,7 +219,7 @@ export const Paymentpage = () => {
 				</div>
 			</div>
 
-			<ButtonDefault onClick={pay}>{user.appLanguage === 'ru' ? 'Перейти к оплате' : 'Pay'}</ButtonDefault>
+			<ButtonDefault onClick={pay}> {user.appLanguage === 'ru' ? 'Перейти к оплате' : 'Pay'}</ButtonDefault>
 			<Nav />
 		</div>
 	);
