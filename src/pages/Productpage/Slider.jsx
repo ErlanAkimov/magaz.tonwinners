@@ -3,6 +3,7 @@ import styles from './productpage.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { likeToggler } from '../../redux/slice/userSlice';
+import Skeleton from 'react-loading-skeleton';
 
 export const Slider = ({ productData }) => {
 	const user = useSelector((state) => state.user);
@@ -52,7 +53,7 @@ export const Slider = ({ productData }) => {
 					</svg>
 				)}
 			</div>
-			{productData.images.map((banner, index) => {
+			{productData == undefined ? <Skeleton/>  : productData.images.map((banner, index) => {
 				return (
 					<SwiperSlide key={index} className={styles.swiperSlide}>
 						{banner.split('-')[1] === 'video' ? (

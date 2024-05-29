@@ -13,8 +13,10 @@ import { Properties } from '../properties/Properties';
 import { Sizes } from '../sizes/Sizes';
 import styles from './product.module.scss';
 import { Slider } from '../../Slider';
+import Skeleton from 'react-loading-skeleton';
+import s from '../skeleton/skeletonProduct.module.scss'
 
-export const Product = ({ productData }) => {
+export const Product = ({ productData, loading }) => {
 	const { open } = useTonConnectModal();
 	const wallet = useTonWallet();
 	const dispatch = useDispatch();
@@ -24,7 +26,8 @@ export const Product = ({ productData }) => {
 
 	// init данные
 	const [pickedSize, setPickedSize] = useState(null);
-	const productInCart = useSelector((state) => state.user.cart.filter((item) => item._id === productData._id)[0]?.counter);
+	const productInCart = useSelector((state) => state.user.cart.find((item) => item._id === productData?._id))?.counter;
+
 
 	useEffect(() => {
 		if (friendlyAddress && !user.wallets.includes(friendlyAddress)) {
@@ -33,14 +36,13 @@ export const Product = ({ productData }) => {
 	}, [friendlyAddress, dispatch, user.wallets]);
 	return (
 		<>
-			<Slider productData={productData} />
-
+		{loading ? <Skeleton className={s.skeleton_img} /> : <Slider productData={productData} />}
+			
 			<div className="wrapper">
-				<div className={styles.title}>
-					<h1>{productData.name}</h1>
-
-					<p className={styles.magaz}>{productData.seller_name}</p>
-				</div>
+			<div className={loading ? s.titleNoPadding : styles.title}>
+				{loading ? <Skeleton className={s.skeleton_name}/> : <h1>{productData.name}</h1>}
+				{loading ? <Skeleton className={s.skeleton_sellerName}/>  : <p className={styles.magaz}>{productData.seller_name}</p>}
+			</div>
 				<div className={styles.priceLine}>
 					<div>
 						<div className={styles.price}>
@@ -50,16 +52,18 @@ export const Product = ({ productData }) => {
 									fill="#06A5FF"
 								/>
 							</svg>
-							{productData.price} TON
+							{loading ? <Skeleton className={s.skeleton_price}/> : productData.price} TON
 						</div>
 
 						<div
 							className={styles.delInfo}
 							style={{
-								color: productData.deliveryFee > 0 ? '#EDA44E' : '#808080',
+								color: loading ? '#808080' : productData.deliveryFree > 0 ? '#EDA44E' : '#808080',
 							}}
-						>
-							<svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+							>
+							
+								<>
+								<svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<path
 									d="M6.87606 6.65596L7.21939 7.89796C7.54273 9.06796 7.70406 9.65329 8.17939 9.91929C8.65473 10.186 9.25806 10.0286 10.4647 9.71529L11.7447 9.38196C12.9514 9.06862 13.5547 8.91196 13.8294 8.45129C14.1041 7.98996 13.9427 7.40462 13.6187 6.23462L13.2761 4.99329C12.9527 3.82262 12.7907 3.23729 12.3161 2.97129C11.8401 2.70462 11.2367 2.86196 10.0301 3.17596L8.75006 3.50796C7.54339 3.82129 6.94006 3.97862 6.66606 4.43996C6.39139 4.90062 6.55273 5.48596 6.87606 6.65596Z"
 									fill={'#EDA44E'}
@@ -68,50 +72,89 @@ export const Product = ({ productData }) => {
 									d="M2.018 4.33394C2.03557 4.27062 2.06544 4.21138 2.10591 4.15962C2.14638 4.10786 2.19666 4.06458 2.25387 4.03226C2.31108 3.99994 2.3741 3.97921 2.43933 3.97126C2.50455 3.96331 2.57071 3.9683 2.634 3.98594L3.76934 4.3006C4.07023 4.38232 4.34482 4.5406 4.56634 4.76002C4.78786 4.97944 4.94875 5.2525 5.03334 5.5526L6.46734 10.7433L6.57267 11.1079C6.99784 11.2646 7.35612 11.5629 7.58734 11.9526L7.794 11.8886L13.7073 10.3519C13.7709 10.3354 13.8371 10.3315 13.9021 10.3406C13.9672 10.3496 14.0298 10.3714 14.0865 10.4046C14.1431 10.4378 14.1927 10.4819 14.2323 10.5343C14.2719 10.5867 14.3008 10.6464 14.3173 10.7099C14.3339 10.7735 14.3377 10.8397 14.3287 10.9047C14.3197 10.9698 14.2979 11.0324 14.2647 11.0891C14.2314 11.1457 14.1874 11.1953 14.135 11.2349C14.0826 11.2745 14.0229 11.3034 13.9593 11.3199L8.068 12.8506L7.848 12.9186C7.844 13.7653 7.25934 14.5399 6.37467 14.7693C5.31467 15.0453 4.22467 14.4346 3.94067 13.4066C3.65667 12.3779 4.286 11.3206 5.346 11.0453C5.39823 11.0318 5.45093 11.0202 5.504 11.0106L4.06934 5.8186C4.03072 5.68521 3.95823 5.56409 3.85893 5.46701C3.75963 5.36993 3.6369 5.3002 3.50267 5.2646L2.36667 4.94927C2.30337 4.93177 2.24413 4.90197 2.19234 4.86158C2.14056 4.82118 2.09724 4.77098 2.06486 4.71383C2.03248 4.65669 2.01168 4.59373 2.00364 4.52855C1.9956 4.46336 2.00048 4.39723 2.018 4.33394Z"
 									fill={'#EDA44E'}
 								/>
-							</svg>
+								</svg>
+								{user.appLanguage === 'ru' ? 'Бесплатная доставка' : 'Free Delivery'}
+								</>
+							
+							</div>
 
-							{user.appLanguage === 'ru' ? `Бесплатная доставка` : 'Free Delivery'}
-						</div>
 					</div>
 
 					<button
 						className={styles.orderNow}
 						onClick={() => {
-							if (productInCart > 0) {
+							if (productData) {
+							if (productInCart) {
+								console.log(productInCart);
 								navigate('/orders');
 								return;
 							}
-
 							dispatch(addToCart(productData));
 							navigate('/orders');
+							} else {
+							return <Skeleton  />;
+							}
 						}}
-					>
+						>
 						Order Now
 					</button>
 				</div>
-
-				<Sizes data={productData.sizes} pickedSize={pickedSize} setPickedSize={setPickedSize} />
-
-				{productData.category !== 'nft pack' && (
-					<div className={styles.productInfo}>
+				{loading ? <Skeleton /> : <Sizes data={productData.sizes} pickedSize={pickedSize} setPickedSize={setPickedSize} />}
+				
+				{loading ? (<div className={styles.productInfo}>
 						<div>
-							<p>{productData.sold}</p>
+							<p>{<Skeleton />}</p>
 							<p>Items Sold</p>
 						</div>
 						<div>
 							<p>
-								{productData.deliverMin} to {productData.deliverMax}
+								{<Skeleton  />} {<Skeleton /> }
+							</p>
+							<p>Weeks Arrival</p>
+						</div>
+					</div>) : (
+						productData.category !== 'nft pack' && (
+							<div className={styles.productInfo}>
+								<div>
+									<p>{loading ? <Skeleton width={200} /> :  productData.sold}</p>
+									<p>Items Sold</p>
+								</div>
+								<div>
+									<p>
+										{loading ? <Skeleton width={200} /> : productData.deliverMin} to {loading ? <Skeleton width={200} /> : productData.deliverMax}
+									</p>
+									<p>Weeks Arrival</p>
+								</div>
+							</div>
+						)
+					)}
+				{/* {productData.category !== 'nft pack' && (
+					<div className={styles.productInfo}>
+						<div>
+							<p>{loading ? <Skeleton width={200} /> :  productData.sold}</p>
+							<p>Items Sold</p>
+						</div>
+						<div>
+							<p>
+								{loading ? <Skeleton width={200} /> : productData.deliverMin} to {loading ? <Skeleton width={200} /> : productData.deliverMax}
 							</p>
 							<p>Weeks Arrival</p>
 						</div>
 					</div>
-				)}
+				)} */}
 
-				<Description text={productData.description} />
-				<Properties data={productData.properties} />
+				
+				{/* <Skeleton count={4} style={{marginBottom:'.6rem'}}/> */}
+				<Description text={loading ? '' : productData.description} />
+				<Skeleton height={100} width={200}/>
+				
+				{loading ? <Skeleton width={200} /> : (
+					<Properties data={productData.properties} />
+				)}
+				
 
 				{/* Counter для количества товаров в корзине */}
-				{productInCart > 0 ? (
+				{loading ? <Skeleton /> : productInCart > 0 ? (
 					<div className={styles.cartButton}>
 						<p onClick={() => navigate('/orders')} className={styles.counter}>
 							{user.appLanguage === 'ru' ? 'Перейти в корзину' : 'View Orders'}
@@ -121,11 +164,19 @@ export const Product = ({ productData }) => {
 					<ButtonDefault
 						marginTop={20}
 						onClick={() => {
-							wallet ? dispatch(addToCart({ ...productData, size: pickedSize })) : open();
+							if (loading) {
+							return <Skeleton width={200} />;
+							} else {
+							if (wallet) {
+								dispatch(addToCart({ ...productData, size: pickedSize }));
+							} else {
+								open();
+							}
+							}
 						}}
-					>
+						>
 						{wallet ? 'Buy Product' : 'Connect Wallet'}
-					</ButtonDefault>
+						</ButtonDefault>
 				)}
 			</div>
 		</>

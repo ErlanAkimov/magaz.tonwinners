@@ -1,0 +1,48 @@
+.skeleton_img {
+  aspect-ratio: 1;
+  background-color: rgb(255, 19, 19);
+  display: block; 
+  animation: shine 1s infinite linear;
+  margin: 0;
+  padding: 0;
+}
+.skeleton_name {
+  width: 120px;
+  height: 25px;
+  border-radius: 50px;
+  display: inline-block; 
+  animation: shine 1s infinite linear;
+}
+.titleNoPadding {
+  padding-top: 7px;
+  display: flex;
+  padding-left: 15px;
+  padding-right: 15px;
+  justify-content: space-between;
+}
+.skeleton_sellerName {
+  width: 80px;
+  height: 25px;
+  border-radius: 50px;
+  display: inline-block; 
+  animation: shine 1s infinite linear;
+}
+.skeleton_price {
+  width: 40px;
+  height: 25px;
+  border-radius: 10px;
+  display: inline-block; 
+  animation: shine 1s infinite linear;
+}
+
+@keyframes shine {
+  0% {
+    background-color: #ffffff;
+  }
+  50% {
+    background-color: #D7D7D7;
+  }
+  100% {
+    background-color: #ffffff;
+  }
+}
