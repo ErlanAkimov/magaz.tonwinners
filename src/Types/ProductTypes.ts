@@ -10,8 +10,8 @@ export interface ProductInterface {
 	seller: string;
 	seller_id: number;
 	seller_wallet: string;
-	likes: number;
-	comments: ProductCommentInterface[];
+	likes: number | null;
+	comments: ProductCommentInterface[] | null;
 }
 
 export interface ProductCommentInterface {
