@@ -15,17 +15,28 @@ function CustomProvider({ children }) {
 
 	useEffect(() => {
 		let body = {};
+		const url = new URL(window.location.href);
+		const tgWebAppStartParam = url.searchParams.get('tgWebAppStartParam');
 
-		if (Object.keys(window.Telegram.WebApp.initDataUnsafe).length === 0) {
-			if (localStorage.getItem('testerMark')) {
-				body.id = Number(localStorage.getItem('testerMark'))
-			} else {
-				body.id = 1
-			}
-		}
+		const referer = Number(tgWebAppStartParam);
+
+		// if (Object.keys(window.Telegram.WebApp.initDataUnsafe).length === 0) {
+		// 	if (localStorage.getItem('testerMark')) {
+		// 		body.id = Number(localStorage.getItem('testerMark'));
+		// 	} else {
+		// 		body.id = 322;
+		// 	}
+		// }
 
 		if (Object.keys(window.Telegram.WebApp.initDataUnsafe).length > 0) {
-			body = { ...window.Telegram.WebApp.initDataUnsafe.user };
+			body = {
+				...window.Telegram.WebApp.initDataUnsafe.user,
+				webAppLaunched: true,
+			};
+		}
+
+		if (referer) {
+			body.referer = referer;
 		}
 
 		axios.post(`https://magaz.tonwinners.com/api/user`, body).then((res) => {

@@ -12,7 +12,7 @@ export const Description: React.FC<{ text: string }> = ({ text }) => {
 	return (
 		<div className={styles.wrapper}>
 			<h3>Description</h3>
-			<p className={`${styles.description} ${isOpen ? styles.opened : null}`} dangerouslySetInnerHTML={{__html: text}} />
+			<p className={`${styles.description} ${isOpen ? styles.opened : null}`} dangerouslySetInnerHTML={{__html:text.replace(/\n/g, '<br />')}} />
 			{!isOpen && (
 				<div className={styles.readmore} onClick={handleOpen}>
 					Read more
