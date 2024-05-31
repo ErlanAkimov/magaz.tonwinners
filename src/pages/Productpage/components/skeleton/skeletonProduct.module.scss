@@ -1,20 +1,27 @@
 .skeleton_img {
-  aspect-ratio: 1;
+  aspect-ratio: 1 / 1;
   background-color: rgb(255, 19, 19);
-  display: block; 
+  display: flex; 
   animation: shine 1s infinite linear;
-  margin: 0;
-  padding: 0;
+  height: 100%;
+}
+.img_wrapper {
+  aspect-ratio: 1 /1;
+  display: flex;
+  animation: shine 1s infinite linear;
+  padding-bottom: 3px;
+  // background-color: rgb(255, 19, 19);
 }
 .skeleton_name {
-  width: 120px;
-  height: 25px;
+  width: 160px;
+  height: 23px;
   border-radius: 50px;
   display: inline-block; 
   animation: shine 1s infinite linear;
 }
 .titleNoPadding {
-  padding-top: 10px;
+  padding-top: 0px;
+  padding-bottom: 5px;
   display: flex;
   padding-left: 15px;
   padding-right: 15px;
@@ -22,19 +29,73 @@
 }
 .skeleton_sellerName {
   width: 80px;
-  height: 25px;
+  height: 23px;
   border-radius: 50px;
   display: inline-block; 
   animation: shine 1s infinite linear;
 }
 .skeleton_price {
   width: 40px;
-  height: 25px;
+  height: 18px;
   border-radius: 10px;
   display: inline-block; 
   animation: shine 1s infinite linear;
 }
-
+.wrapper_items {
+  position: relative;
+  padding-bottom: 10px;
+}
+.skeleton_sizes {
+  display: flex;
+  flex-direction: row;
+  background-color: red;
+  height: 20px;
+  width: 20px;
+}
+.skeleton_items {
+  width: 20px;
+  height: 22px;
+  border-radius: 10px;
+  display: flex; 
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: shine 1s infinite linear;
+}
+.skeleton_description {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border-radius: 10px;
+  span {
+    height: 20px;
+    animation: shine 1s infinite linear;
+  }
+}
+.skeleton_button {
+  animation: shine 1s infinite linear;
+  width: calc(100% - 20px);
+  height: 50px;
+  border-radius: 8px;
+  position: fixed;
+  bottom: 101px;
+  left: 10px;
+  z-index: 100;
+}
+.skeleton_withoutHeight {
+  height: 0px;
+  display: flex;
+}
+.skeletonNo2 {
+  margin-top: 8px;
+  height: 0px;
+  display: flex;
+}
+.shine {
+    animation: shine 1s infinite linear;
+    border-radius: 10px;
+}
 @keyframes shine {
   0% {
     background-color: #ffffff;
@@ -45,4 +106,10 @@
   100% {
     background-color: #ffffff;
   }
+}
+.skeleton {
+  background-color: #d3d3d3;
+  border-radius: 8px;
+  display: flex;
+
 }

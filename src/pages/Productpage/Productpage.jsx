@@ -27,7 +27,6 @@ function Productpage() {
 
 		setProducts(otherProducts)
 		setProductData(data);
-		console.log(data)
 		setLoading(false)
 	};
 

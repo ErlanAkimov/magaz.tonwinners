@@ -15,6 +15,7 @@ import styles from './product.module.scss';
 import { Slider } from '../../Slider';
 import Skeleton from 'react-loading-skeleton';
 import s from '../skeleton/skeletonProduct.module.scss'
+import SkeletonSizes from '../skeleton/SkeletonSizes';
 
 export const Product = ({ productData, loading }) => {
 	const { open } = useTonConnectModal();
@@ -36,11 +37,12 @@ export const Product = ({ productData, loading }) => {
 	}, [friendlyAddress, dispatch, user.wallets]);
 	return (
 		<>
-		{loading ? <Skeleton className={s.skeleton_img} /> : <Slider productData={productData} />}
+		{!loading? (<Slider productData={productData} />) : (<div><Skeleton className={s.skeleton_img} style={{ aspectRatio: '1/1' }}/></div>)}
 			
 			<div className="wrapper">
 			<div className={loading ? s.titleNoPadding : styles.title}>
 				{loading ? <Skeleton className={s.skeleton_name}/> : <h1>{productData.name}</h1>}
+				{/* {!loading ? <Skeleton height={"50px"} width={"30px"} className={s.skeleton} /> : <h1>{productData.name}</h1>} */}
 				{loading ? <Skeleton className={s.skeleton_sellerName}/>  : <p className={styles.magaz}>{productData.seller_name}</p>}
 			</div>
 				<div className={styles.priceLine}>
@@ -61,7 +63,6 @@ export const Product = ({ productData, loading }) => {
 								color: loading ? '#808080' : productData.deliveryFree > 0 ? '#EDA44E' : '#808080',
 							}}
 							>
-							
 								<>
 								<svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<path
@@ -85,31 +86,27 @@ export const Product = ({ productData, loading }) => {
 						onClick={() => {
 							if (productData) {
 							if (productInCart) {
-								console.log(productInCart);
 								navigate('/orders');
 								return;
 							}
 							dispatch(addToCart(productData));
 							navigate('/orders');
-							} else {
-							return <Skeleton  />;
 							}
 						}}
 						>
 						Order Now
 					</button>
 				</div>
-				{loading ? <Skeleton /> : <Sizes data={productData.sizes} pickedSize={pickedSize} setPickedSize={setPickedSize} />}
+
+				{loading ? <SkeletonSizes /> : <Sizes data={productData.sizes} pickedSize={pickedSize} setPickedSize={setPickedSize} />}
 				
 				{loading ? (<div className={styles.productInfo}>
 						<div>
-							<p>{<Skeleton />}</p>
+							<p className={s.wrapper_items}>{<Skeleton className={s.skeleton_items} />}</p>
 							<p>Items Sold</p>
 						</div>
 						<div>
-							<p>
-								{<Skeleton  />} {<Skeleton /> }
-							</p>
+							<p className={s.wrapper_items}>{<Skeleton  className={s.skeleton_items} />}</p>
 							<p>Weeks Arrival</p>
 						</div>
 					</div>) : (
@@ -128,44 +125,29 @@ export const Product = ({ productData, loading }) => {
 							</div>
 						)
 					)}
-				{/* {productData.category !== 'nft pack' && (
-					<div className={styles.productInfo}>
-						<div>
-							<p>{loading ? <Skeleton width={200} /> :  productData.sold}</p>
-							<p>Items Sold</p>
-						</div>
-						<div>
-							<p>
-								{loading ? <Skeleton width={200} /> : productData.deliverMin} to {loading ? <Skeleton width={200} /> : productData.deliverMax}
-							</p>
-							<p>Weeks Arrival</p>
-						</div>
-					</div>
-				)} */}
 
 				
-				{/* <Skeleton count={4} style={{marginBottom:'.6rem'}}/> */}
-				<Description text={loading ? '' : productData.description} />
-				<Skeleton height={100} width={200}/>
+				<Description text={loading ? '' : productData.description} loading={loading}/>
 				
-				{loading ? <Skeleton width={200} /> : (
+				{loading ? <p className={s.skeletonNo2} ><Skeleton /></p> : (
 					<Properties data={productData.properties} />
 				)}
 				
 
 				{/* Counter для количества товаров в корзине */}
-				{loading ? <Skeleton /> : productInCart > 0 ? (
+				{loading ? <Skeleton className={s.skeleton_button} /> : productInCart > 0 ? (
 					<div className={styles.cartButton}>
 						<p onClick={() => navigate('/orders')} className={styles.counter}>
 							{user.appLanguage === 'ru' ? 'Перейти в корзину' : 'View Orders'}
 						</p>
 					</div>
 				) : (
+					
 					<ButtonDefault
 						marginTop={20}
 						onClick={() => {
 							if (loading) {
-							return <Skeleton width={200} />;
+							return <Skeleton />;
 							} else {
 							if (wallet) {
 								dispatch(addToCart({ ...productData, size: pickedSize }));

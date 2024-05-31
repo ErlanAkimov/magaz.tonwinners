@@ -6,7 +6,7 @@ import Skeleton from "react-loading-skeleton";
 export const SkeletonProduct = () => {
     return (
 		<>
-		  <Skeleton  />
+		  <Skeleton />
 		  <div className="wrapper">
 			<div className={styles.title}>
 			  <h1><Skeleton width="50%" /></h1>
