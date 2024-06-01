@@ -1,115 +1,43 @@
-.skeleton_img {
-  aspect-ratio: 1 / 1;
-  background-color: rgb(255, 19, 19);
-  display: flex; 
-  animation: shine 1s infinite linear;
-  height: 100%;
-}
-.img_wrapper {
-  aspect-ratio: 1 /1;
-  display: flex;
-  animation: shine 1s infinite linear;
-  padding-bottom: 3px;
-  // background-color: rgb(255, 19, 19);
-}
-.skeleton_name {
-  width: 160px;
-  height: 23px;
-  border-radius: 50px;
-  display: inline-block; 
-  animation: shine 1s infinite linear;
-}
-.titleNoPadding {
-  padding-top: 0px;
-  padding-bottom: 5px;
-  display: flex;
-  padding-left: 15px;
-  padding-right: 15px;
-  justify-content: space-between;
-}
-.skeleton_sellerName {
-  width: 80px;
-  height: 23px;
-  border-radius: 50px;
-  display: inline-block; 
-  animation: shine 1s infinite linear;
-}
-.skeleton_price {
-  width: 40px;
-  height: 18px;
-  border-radius: 10px;
-  display: inline-block; 
-  animation: shine 1s infinite linear;
-}
-.wrapper_items {
-  position: relative;
-  padding-bottom: 10px;
-}
 .skeleton_sizes {
-  display: flex;
-  flex-direction: row;
-  background-color: red;
-  height: 20px;
-  width: 20px;
+  span {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    margin-top: 10px;
+    gap: 3px;
+  }
+  overflow: hidden;
+  width: 200vw;
+  padding-left: 10px;
 }
-.skeleton_items {
-  width: 20px;
-  height: 22px;
-  border-radius: 10px;
-  display: flex; 
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: shine 1s infinite linear;
+.skeleton_itemsRow {
+  display: flex;
+  gap: 3px;
+}
+.skeleton_properties {
+  span {
+     display: flex;
+    justify-content: space-between;
+    column-gap: 4px;
+    padding-inline: 15px;
+    margin-top: 8px;
+  }
+ 
 }
 .skeleton_description {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  border-radius: 10px;
-  span {
-    height: 20px;
-    animation: shine 1s infinite linear;
-  }
+  margin-top: 3px;
+  line-height: 22px;
 }
 .skeleton_button {
-  animation: shine 1s infinite linear;
-  width: calc(100% - 20px);
-  height: 50px;
-  border-radius: 8px;
+  width: calc(100% - 30px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   position: fixed;
   bottom: 101px;
-  left: 10px;
   z-index: 100;
-}
-.skeleton_withoutHeight {
-  height: 0px;
-  display: flex;
-}
-.skeletonNo2 {
-  margin-top: 8px;
-  height: 0px;
-  display: flex;
-}
-.shine {
-    animation: shine 1s infinite linear;
-    border-radius: 10px;
-}
-@keyframes shine {
-  0% {
-    background-color: #ffffff;
-  }
-  50% {
-    background-color: #D7D7D7;
-  }
-  100% {
-    background-color: #ffffff;
-  }
-}
-.skeleton {
-  background-color: #d3d3d3;
-  border-radius: 8px;
-  display: flex;
-
+  font-size: 17px;
+  line-height: 26px;
+  margin-inline: 15px;
+  height: 50px;
 }

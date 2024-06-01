@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './description.module.scss';
 import Skeleton from 'react-loading-skeleton';
+import "react-loading-skeleton/dist/skeleton.css";
 import s from '../skeleton/skeletonProduct.module.scss'
 
 export const Description: React.FC<{ text: string, loading: boolean }> = ({ text, loading }) => {
@@ -16,9 +17,7 @@ export const Description: React.FC<{ text: string, loading: boolean }> = ({ text
 			<h3>Description</h3>
 			{loading ? (
 			<>
-			<p className={s.skeleton_description}><Skeleton height={10} className={s.skeleton_des}/></p>
-			<p className={s.skeleton_description}><Skeleton height={10} className={s.skeleton_des}/></p>
-			<p className={s.skeleton_description}><Skeleton height={10} className={s.skeleton_des}/></p>
+			 	<div className={s.skeleton_description}><Skeleton count={3}/></div>
 			</>) : (
 				<p className={`${styles.description} ${isOpen ? styles.opened : null}`} dangerouslySetInnerHTML={{__html: text}} />
 			)}

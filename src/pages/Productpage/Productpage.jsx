@@ -24,7 +24,7 @@ function Productpage() {
 		setLoading(true)
 		const data = (await axios.get(`${api_server}/api/product?id=${productId}`)).data;
 		const otherProducts = (await axios.get(`${api_server}/api/get-other-products?id=${productId}`)).data
-
+		console.log(data)
 		setProducts(otherProducts)
 		setProductData(data);
 		setLoading(false)
