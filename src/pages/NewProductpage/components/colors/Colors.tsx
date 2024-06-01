@@ -3,10 +3,10 @@ import ContentLoader from "react-content-loader";
 
 import styles from "./colors.module.scss";
 
-import { variationInterface } from "../../../../Types/ProductTypes";
+import { ProductVariationInterface } from "../../../../Types/ProductTypes";
 
 interface Props {
-    variations: variationInterface[];
+    variations: ProductVariationInterface[];
     onChange: (variation: number) => void;
     currentVariation: number;
 }
