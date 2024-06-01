@@ -98,7 +98,7 @@ export const Product = ({ data }) => {
                 onChange={setSize}
             />
             <Line />
-            <SocialFeedback likes={data.likes} />
+            <SocialFeedback likes={data.likes} comments={data.comments} />
             <Description text={data.description} />
             <Line />
             <Banner />

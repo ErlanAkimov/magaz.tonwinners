@@ -79,6 +79,26 @@ const data = {
         seller_id: 12345,
         seller_wallet: "TON_wallet_address_2",
         likes: 50,
+        comments: [
+            {
+                user: "user-1",
+                date: "25.05.2024",
+                text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, iure?",
+                rating: 5,
+            },
+            {
+                user: "user-2",
+                date: "25.05.2024",
+                text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, iure?  consectetur adipisicing elit. Nam, iure?",
+                rating: 3,
+            },
+            {
+                user: "user-3",
+                date: "25.05.2024",
+                text: "Lorem ipsum dolor sit amet",
+                rating: 4,
+            },
+        ],
     },
     otherProducts: [
         {

@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { likeToggler } from "../redux/slice/userSlice";
 
-import { LikeIcon } from "/src/icons/like/LikeIcon";
+import { LikeIcon } from "/src/components/icons";
 
 export const LikeToggler = ({ ...props }) => {
     const user = useSelector((state) => state.user);

@@ -1,14 +1,10 @@
 import ContentLoader from "react-content-loader";
 
+import { LikeIcon } from "/src/components/icons";
+
 import styles from "./socialfeedback.module.scss";
 
-import { LikeIcon } from "/src/icons/like/LikeIcon";
-
-interface Props {
-    likes: number;
-}
-
-export const SocialFeedback = ({ likes }: Props) => {
+export const SocialFeedback = ({ likes, comments }) => {
     if (!likes) {
         return <Skeleton />;
     }
@@ -17,10 +13,10 @@ export const SocialFeedback = ({ likes }: Props) => {
         <div className={styles.root}>
             <div className={[styles.item, styles.active].join(" ")}>
                 <LikeIcon isActive />
-                <span>{likes}</span>
+                <span>{likes || 0}</span>
             </div>
             <div className={styles.item}>
-                <span>17 reviews</span>
+                <span>{comments?.length || 0} reviews</span>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     xmlnsXlink="http://www.w3.org/1999/xlink"

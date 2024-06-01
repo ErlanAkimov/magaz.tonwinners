@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { likeToggler } from "/src/redux/slice/userSlice";
 
-import { LikeIcon } from "/src/icons/like/LikeIcon";
+import { LikeIcon } from "/src/components/icons";
 
 import styles from "./like.module.scss";
 
