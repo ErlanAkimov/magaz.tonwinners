@@ -3,7 +3,6 @@ import { OtherProducts } from "./components/otherproducts/OtherProducts";
 import { Nav } from "/src/components/Nav/Nav";
 
 import styles from "./productpage.module.scss";
-import { Skeleton } from "./components/skeleton/Skeleton";
 
 const data = {
     product: {
