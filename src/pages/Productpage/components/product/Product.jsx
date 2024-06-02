@@ -37,14 +37,14 @@ export const Product = ({ productData, loading }) => {
 	}, [friendlyAddress, dispatch, user.wallets]);
 	return (
 		<>
-		{loading ? <Skeleton style={{ aspectRatio: '1/1' }}/> : (<Slider productData={productData} />)}
+		{loading ? <Skeleton style={{ aspectRatio: '1/1', position: 'relative'}} /> : (<Slider productData={productData} />)}
 				
 			<div className="wrapper">
 
 				<div className={styles.title}>
 					{loading ? (
 					<>	
-						<Skeleton height={18} width={170}/>
+						<Skeleton height={18} width={150}/>
 						<Skeleton height={28} width={90}/>
 					</>
 					) : (
@@ -109,7 +109,7 @@ export const Product = ({ productData, loading }) => {
 					</button>
 				</div>
 				
-				{/* {loading ? <div className={s.skeleton_sizes}><Skeleton width={44} height={40} count={10} /></div> : <Sizes data={productData.sizes} pickedSize={pickedSize} setPickedSize={setPickedSize} />} */}
+				{loading ? <div className={s.skeleton_sizes}><Skeleton width={44} height={40} count={10} /></div> : <Sizes data={productData.sizes} pickedSize={pickedSize} setPickedSize={setPickedSize} />}
 				
 				{loading ? (
 					<div className={styles.productInfo}>
@@ -146,7 +146,7 @@ export const Product = ({ productData, loading }) => {
 				
 				
 				{/* Counter для количества товаров в корзине */}
-				{!loading ? (
+				{loading ? (
 					<Skeleton className={s.skeleton_button}/>
 					) : productInCart > 0 ? (
 					<div className={styles.cartButton}>

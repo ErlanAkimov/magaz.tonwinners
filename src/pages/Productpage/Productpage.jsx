@@ -7,8 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { api_server } from '../../main';
 import { useParams } from 'react-router-dom';
-import { SkeletonProduct } from './components/skeleton/SkeletonProduct';
-import Skeleton from 'react-loading-skeleton';
+
 
 
 function Productpage() {
