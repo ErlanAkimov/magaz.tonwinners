@@ -1,25 +1,14 @@
 import styles from "./priceandorderbutton.module.scss";
 import ContentLoader from "react-content-loader";
 
-export const PriceAndOrderButton = ({
-    addToCart,
-    price,
-    deliveryFee,
-    user,
-}) => {
+export const PriceAndOrderButton = ({ addToCart, price, deliveryFee, user }) => {
     return (
         <div className={styles.priceLine}>
             <div>
                 {price ? (
                     <>
                         <div className={styles.price}>
-                            <svg
-                                width="20"
-                                height="20"
-                                viewBox="0 0 20 20"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M10 0C4.4775 0 0 4.4775 0 10C0 15.5225 4.4775 20 10 20C15.5225 20 20 15.5225 20 10C20 4.4775 15.5225 0 10 0ZM6.585 5.58083H13.415C14.6692 5.58083 15.4667 6.9375 14.8358 8.03083L10.62 15.335C10.557 15.4436 10.4666 15.5338 10.3578 15.5965C10.249 15.6592 10.1256 15.6922 10 15.6922C9.87442 15.6922 9.75104 15.6592 9.64223 15.5965C9.53342 15.5338 9.44299 15.4436 9.38 15.335L5.16583 8.03083C4.53417 6.93583 5.33 5.58083 6.585 5.58083ZM10.6217 6.8275V13.1442L11.54 11.3708L13.7533 7.4075C13.7872 7.3483 13.8049 7.2812 13.8045 7.21299C13.8042 7.14478 13.7858 7.07786 13.7513 7.01902C13.7168 6.96017 13.6674 6.91147 13.6081 6.87784C13.5487 6.84421 13.4815 6.82685 13.4133 6.8275H10.6217ZM6.58333 6.82917C6.51527 6.82843 6.44821 6.84567 6.38895 6.87915C6.32968 6.91263 6.28031 6.96117 6.24581 7.01985C6.21131 7.07853 6.19292 7.14527 6.19248 7.21334C6.19205 7.28141 6.20959 7.34838 6.24333 7.4075L8.45833 11.3692L9.37667 13.1442V6.82917H6.58333Z"
                                     fill="#06A5FF"
@@ -36,13 +25,7 @@ export const PriceAndOrderButton = ({
                                 gap: "5px",
                             }}
                         >
-                            <svg
-                                width="17"
-                                height="17"
-                                viewBox="0 0 17 17"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
+                            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M6.87606 6.65596L7.21939 7.89796C7.54273 9.06796 7.70406 9.65329 8.17939 9.91929C8.65473 10.186 9.25806 10.0286 10.4647 9.71529L11.7447 9.38196C12.9514 9.06862 13.5547 8.91196 13.8294 8.45129C14.1041 7.98996 13.9427 7.40462 13.6187 6.23462L13.2761 4.99329C12.9527 3.82262 12.7907 3.23729 12.3161 2.97129C11.8401 2.70462 11.2367 2.86196 10.0301 3.17596L8.75006 3.50796C7.54339 3.82129 6.94006 3.97862 6.66606 4.43996C6.39139 4.90062 6.55273 5.48596 6.87606 6.65596Z"
                                     fill={"#EDA44E"}
@@ -52,9 +35,7 @@ export const PriceAndOrderButton = ({
                                     fill={"#EDA44E"}
                                 />
                             </svg>
-                            {user.appLanguage === "ru"
-                                ? `Бесплатная доставка`
-                                : "Free Delivery"}
+                            {user.appLanguage === "ru" ? `Бесплатная доставка` : "Free Delivery"}
                         </div>
                     </>
                 ) : (
@@ -72,20 +53,8 @@ const Skeleton = () => {
     const defaultAttributes = { rx: "5px", ry: "5px" };
 
     return (
-        <ContentLoader
-            speed={2}
-            width={"120px"}
-            height={"38px"}
-            backgroundColor="#f3f3f3"
-            foregroundColor="#ecebeb"
-        >
-            <rect
-                y={"0"}
-                x={"0"}
-                width={"120px"}
-                height={"42px"}
-                {...defaultAttributes}
-            />
+        <ContentLoader speed={2} width={"120px"} height={"38px"} backgroundColor="#f3f3f3" foregroundColor="#ecebeb">
+            <rect y={"0"} x={"0"} width={"120px"} height={"42px"} {...defaultAttributes} />
         </ContentLoader>
     );
 };

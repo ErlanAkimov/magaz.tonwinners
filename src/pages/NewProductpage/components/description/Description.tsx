@@ -4,6 +4,7 @@ import ContentLoader from "react-content-loader";
 
 export const Description: React.FC<{ text: string }> = ({ text }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+
     const handleOpen = () => {
         setIsOpen(true);
     };

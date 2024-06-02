@@ -13,62 +13,28 @@ interface Props {
 
 export const Colors = ({ variations, onChange, currentVariation }: Props) => {
     return (
-        <Swiper
-            slidesPerView={3.6}
-            spaceBetween={6}
-            style={{ padding: "0 15px" }}
-        >
-            {variations ? (
-                variations?.map(({ name, product_card_images }, index) => (
-                    <SwiperSlide key={index} onClick={() => onChange(index)}>
-                        <div
-                            className={[
-                                `${styles.item} ${
-                                    index === currentVariation
-                                        ? styles.active
-                                        : ""
-                                }`,
-                            ].join(" ")}
-                        >
-                            <img
-                                src={product_card_images[0]}
-                                className={styles.img}
-                            />
-                            <span className={styles.color}>{name}</span>
+        <Swiper slidesPerView={3.6} spaceBetween={6} style={{ padding: "0 15px", marginTop: "26px" }}>
+            {(variations || Array(3).fill(null)).map((variation, index) => (
+                <SwiperSlide key={index} onClick={() => onChange(index)}>
+                    {variation ? (
+                        <div className={`${styles.item} ${index === currentVariation && styles.active}`}>
+                            <img src={variation.product_card_images[0]} className={styles.img} />
+                            <span className={styles.color}>{variation.name}</span>
                         </div>
-                    </SwiperSlide>
-                ))
-            ) : (
-                <Skeleton />
-            )}
+                    ) : (
+                        <Skeleton key={index} />
+                    )}
+                </SwiperSlide>
+            ))}
         </Swiper>
     );
 };
 
 const Skeleton = () => {
-    const defaultAttributes = { rx: "5px", ry: "5px" };
+    const defaultAttributes = { rx: "10px", ry: "10px" };
     return (
-        <ContentLoader
-            speed={2}
-            width={"100vw"}
-            height={"74px"}
-            backgroundColor="#f3f3f3"
-            foregroundColor="#ecebeb"
-        >
-            <rect
-                y={"20px"}
-                x={"0"}
-                width={"126px"}
-                height={"48px"}
-                {...defaultAttributes}
-            />
-            <rect
-                y={"20px"}
-                x={"calc(126px + 6px)"}
-                width={"126px"}
-                height={"48px"}
-                {...defaultAttributes}
-            />
+        <ContentLoader speed={2} width={"100%"} height={"48.69px"} backgroundColor="#f3f3f3" foregroundColor="#ecebeb">
+            <rect y={"0"} x={"0"} width={"100%"} height={"48.69px"} {...defaultAttributes} />
         </ContentLoader>
     );
 };

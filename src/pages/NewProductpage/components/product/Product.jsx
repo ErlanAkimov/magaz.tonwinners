@@ -25,21 +25,19 @@ export const Product = ({ data }) => {
     const [size, setSize] = useState(0);
     const [tonConnectUI] = useTonConnectUI();
     const user = useSelector((state) => state.user);
-    const productInCart = useSelector(
-        (state) =>
-            state.user.cart.filter((item) => item._id === productId)[0]?.counter
-    );
+    const productInCart = useSelector((state) => state.user.cart.filter((item) => item._id === productId)[0]?.counter);
 
-    const addToCartHandler = (product) => {
-        () => {
-            if (productInCart > 0) {
-                navigate("/orders");
-                return;
-            }
+    const addToCartHandler = () => {
+        const { images } = data.variations[currentVariation];
 
-            dispatch(addToCart(product));
-            navigate("/orders");
-        };
+        dispatch(addToCart({ ...data, images }));
+
+        // if (productInCart > 0) {
+        //     navigate("/orders");
+        //     return;
+        // }
+        // dispatch(addToCart());
+        // navigate("/orders");
     };
 
     const setCurrentVariationHandler = (index) => {
@@ -76,27 +74,11 @@ export const Product = ({ data }) => {
 
     return (
         <>
-            <Slider
-                variations={data.variations}
-                currentVariation={currentVariation}
-                id={productId}
-            />
+            <Slider variations={data.variations} currentVariation={currentVariation} id={productId} />
             <Title name={data.name} seller={data.seller} />
-            <PriceAndOrderButton
-                addToCart={addToCartHandler}
-                user={user}
-                price={data.variations[currentVariation].types[size].price}
-            />
-            <Colors
-                variations={data.variations}
-                onChange={setCurrentVariationHandler}
-                currentVariation={currentVariation}
-            />
-            <Sizes
-                data={data.variations[currentVariation].types}
-                currentSize={size}
-                onChange={setSize}
-            />
+            <PriceAndOrderButton addToCart={addToCartHandler} user={user} price={data.variations[currentVariation].types[size].price} />
+            <Colors variations={data.variations} onChange={setCurrentVariationHandler} currentVariation={currentVariation} />
+            <Sizes data={data.variations[currentVariation].types} currentSize={size} onChange={setSize} />
             <Line />
             <SocialFeedback likes={data.likes} comments={data.comments} />
             <Description text={data.description} />

@@ -18,6 +18,8 @@ function CustomProvider({ children }) {
         const url = new URL(window.location.href);
         const tgWebAppStartParam = url.searchParams.get("tgWebAppStartParam");
 
+        console.log(window.Telegram);
+
         const referer = Number(tgWebAppStartParam);
 
         if (Object.keys(window.Telegram.WebApp.initDataUnsafe).length === 0) {
