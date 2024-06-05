@@ -29,6 +29,10 @@ function Productpage() {
 		window.Telegram.WebApp.BackButton.isVisible = true
 			window.Telegram.WebApp.BackButton.onClick(() => {
 			window.history.back()
+
+			return () => {
+				window.Telegram.WebApp.BackButton.onClick(null)
+			}
 		})
 	}, [productId])
 
