@@ -20,13 +20,13 @@ function CustomProvider({ children }) {
 
 		const referer = Number(tgWebAppStartParam);
 
-		// if (Object.keys(window.Telegram.WebApp.initDataUnsafe).length === 0) {
-		// 	if (localStorage.getItem('testerMark')) {
-		// 		body.id = Number(localStorage.getItem('testerMark'));
-		// 	} else {
-		// 		body.id = 322;
-		// 	}
-		// }
+		if (Object.keys(window.Telegram.WebApp.initDataUnsafe).length === 0) {
+			if (localStorage.getItem('testerMark')) {
+				body.id = Number(localStorage.getItem('testerMark'));
+			} else {
+				body.id = 322;
+			}
+		}
 
 		if (Object.keys(window.Telegram.WebApp.initDataUnsafe).length > 0) {
 			body = {

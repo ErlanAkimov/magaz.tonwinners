@@ -11,6 +11,8 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import CustomProvider from './CustomProvider';
 
+console.log(window.Telegram.WebApp.isExpanded)
+console.log(window.Telegram.WebApp.platform)
 window.Telegram.WebApp.expand();
 // window.Telegram.WebApp.setHeaderColor('#fff');
 // window.Telegram.WebApp.setBackgroundColor('#fff');
