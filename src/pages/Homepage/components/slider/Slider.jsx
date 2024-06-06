@@ -9,10 +9,6 @@ import g95 from "/src/assets/images/g94.png";
 // dependencies
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { v4 as uuidv4 } from "uuid";
-
-// utils
-import isNumber from "/src/utils/isNumber";
 
 // custom hooks
 import useSlider from "/src/hooks/useSlider";
@@ -25,6 +21,7 @@ const dbImages = [
 
 export const Slider = () => {
     const { setSlide, currentSlide, images } = useSlider({ images: dbImages });
+
     return (
         <>
             <Swiper
@@ -42,21 +39,17 @@ export const Slider = () => {
                 className={styles.banner}
                 spaceBetween={30}
             >
-                {images.map((image) => {
-                    const id = isNumber(image?.id) ? image.id : uuidv4();
-
-                    return (
-                        <SwiperSlide key={id} className={styles.bannerItem}>
-                            {image?.link ? (
-                                <a target="_blank" href={image.link}>
-                                    <img src={image.src} alt="" />
-                                </a>
-                            ) : (
-                                <img src={image?.src} alt="" />
-                            )}
-                        </SwiperSlide>
-                    );
-                })}
+                {images.map((image, index) => (
+                    <SwiperSlide key={index} className={styles.bannerItem}>
+                        {image?.link ? (
+                            <a target="_blank" href={image.link}>
+                                <img src={image.src} alt="" />
+                            </a>
+                        ) : (
+                            <img src={image?.src} alt="" />
+                        )}
+                    </SwiperSlide>
+                ))}
             </Swiper>
             <div className={`myDots ${styles.dots}`}></div>
         </>
