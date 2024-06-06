@@ -1,0 +1,27 @@
+.priceLine {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: 15px;
+
+    .price {
+        display: flex;
+        align-items: center;
+        column-gap: 4px;
+        font-size: 24px;
+        line-height: 16px;
+        font-weight: 700;
+    }
+
+    .orderNow {
+        padding: 0px 12px;
+        border-radius: 8px;
+        height: 42px;
+        font-size: 16px;
+        font-family: "H_neue";
+        color: white;
+        font-weight: 500;
+        background-color: rgba(41, 144, 255, 1);
+    }
+}

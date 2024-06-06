@@ -1,0 +1,48 @@
+.root {
+    padding-inline: 15px;
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr;
+    gap: 7px;
+
+    .item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 20.5px 0;
+
+        border: 1px solid rgb(242, 242, 242);
+        border-radius: 10px;
+
+        transition: 0.2s;
+        cursor: pointer;
+
+        &:not(:first-child):hover {
+            border: 1px solid rgb(0, 122, 255);
+
+            span {
+                color: rgb(0, 122, 255);
+            }
+
+            svg path {
+                stroke: rgb(0, 122, 255);
+            }
+        }
+
+        &.active {
+            border: 1px solid rgb(0, 122, 255);
+
+            span {
+                color: rgb(0, 122, 255);
+            }
+        }
+
+        span {
+            color: rgb(112, 117, 121);
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 20px;
+            letter-spacing: -0.23px;
+        }
+    }
+}
