@@ -13,35 +13,17 @@ export const NftCard = ({ data }) => {
         <div className={styles.root} onMouseEnter={() => setIsVisible(true)} onMouseLeave={() => setIsVisible(false)}>
             <div className={`${styles.rating} ${isVisible && styles.active}`}>
                 <p>
-                    R: <span>{data?.important}</span>/5555
+                    R: <span>{data?.rarityFrom}</span>/5555
+                    {/* Поле поставил для примера, не уверен что верно 'rarityFrom' */}
                 </p>
             </div>
-            <div className={styles.top}>
-                <Swiper
-                    className={styles.imgBlock}
-                    onSlideChange={(s) => setImageIndex(s.activeIndex)}
-                    onClick={() => navigate(`/bundles/${data._id}`)}
-                >
-                    {data.images
-                        .filter((name) => name.split("-")[1] !== "video")
-                        .map((image, index) => {
-                            return (
-                                <SwiperSlide key={index}>
-                                    <img loading="lazy" style={{ userSelect: "none" }} src={image} alt="" />
-                                </SwiperSlide>
-                            );
-                        })}
-                </Swiper>
+            <div className={styles.top} onClick={() => navigate(`/bundles/${data.nft_address}`)}>
+                <div className={styles.img}>
+                    <img src={data.image.sized} />
+                </div>
                 <div className={styles.marker}>
                     <img src={"/src/assets/images/marker.svg"} />
                 </div>
-            </div>
-            <div className={styles.dots}>
-                {data.images
-                    .filter((name) => name.split("-")[1] !== "video")
-                    .map((image, index) => (
-                        <div key={index} className={styles.dot} style={{ backgroundColor: imageIndex === index && "#a9a1a1" }} />
-                    ))}
             </div>
             <div className={styles.info}>
                 <p className={styles.name}>{data.name}</p>

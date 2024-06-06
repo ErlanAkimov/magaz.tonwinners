@@ -17,9 +17,9 @@ import { Slider } from "../../Slider";
 export const Product = ({ productData }) => {
     const { open } = useTonConnectModal();
     const wallet = useTonWallet();
+    const friendlyAddress = useTonAddress();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const friendlyAddress = useTonAddress();
     const user = useSelector((state) => state.user);
 
     // init данные
