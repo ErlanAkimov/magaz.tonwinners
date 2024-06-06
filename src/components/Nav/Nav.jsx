@@ -5,12 +5,19 @@ import { useSelector } from 'react-redux';
 
 export const Nav = () => {
 	const [page, setPage] = useState();
+	const [padding, setPadding] = useState(0)
 	const user = useSelector((state) => state.user);
 	useEffect(() => {
 		setPage(window.location.pathname);
+		setPadding(Number(localStorage.getItem('p34')))
 	}, []);
+
+	useEffect(() => {
+		console.log(padding)
+	}, [padding])
+
 	return (
-		<div className={styles.wrapper}>
+		<div className={styles.wrapper} style={{paddingBottom: padding}}>
 			<Link to="/" className={styles.item}>
 				<div className={styles.item}>
 					<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">

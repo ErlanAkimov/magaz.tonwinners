@@ -6,49 +6,36 @@ import { Loader } from "./components/Loader";
 import { api_server } from "./main";
 import { initProductsList } from "./redux/slice/productsSlice";
 import PropTypes from "prop-types";
+import { useParams } from "react-router-dom";
 
 function CustomProvider({ children }) {
     const dispatch = useDispatch();
+    const { tgWebAppStartParam } = useParams();
     const [loading, setLoading] = useState(true);
     const [userLoaded, setUserLoaded] = useState(false);
     const [productLoaded, setProductLoaded] = useState(true);
 
     useEffect(() => {
-        let body = {};
-        const url = new URL(window.location.href);
-        const tgWebAppStartParam = url.searchParams.get("tgWebAppStartParam");
+        const body = {
+            ...window.Telegram.WebApp.initDataUnsafe.user,
+            webAppLaunched: true,
+            referer: tgWebAppStartParam ? tgWebAppStartParam : 0,
+        };
 
-        console.log(window.Telegram);
+        console.log(tgWebAppStartParam);
 
-        const referer = Number(tgWebAppStartParam);
+        if (tgWebAppStartParam) {
+            localStorage.setItem("p34", 10);
+        } else {
+            localStorage.setItem("p34", 34);
+        }
 
-        if (Object.keys(window.Telegram.WebApp.initDataUnsafe).length === 0) {
-            if (localStorage.getItem("testerMark")) {
-                body.id = Number(localStorage.getItem("testerMark"));
-            } else {
-                body.id = 322;
+        axios.post(`https://magaz.tonwinners.com/api/user`, body).then((res) => {
+            if (res.data !== "no user") {
+                dispatch(setUser(res.data));
+                setUserLoaded(true);
             }
-        }
-
-        if (Object.keys(window.Telegram.WebApp.initDataUnsafe).length > 0) {
-            body = {
-                ...window.Telegram.WebApp.initDataUnsafe.user,
-                webAppLaunched: true,
-            };
-        }
-
-        if (referer) {
-            body.referer = referer;
-        }
-
-        axios
-            .post(`https://magaz.tonwinners.com/api/user`, body)
-            .then((res) => {
-                if (res.data !== "no user") {
-                    dispatch(setUser(res.data));
-                    setUserLoaded(true);
-                }
-            });
+        });
     }, [dispatch]);
 
     useEffect(() => {
