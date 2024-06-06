@@ -20,7 +20,6 @@ export default () => {
     };
 
     useEffect(() => {
-        // prettier-ignore
         const params = products?.length ? { limit: products?.length } : {};
 
         inView && fetchProducts(params);

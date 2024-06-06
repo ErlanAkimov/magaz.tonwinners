@@ -6,6 +6,7 @@ import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 
 // components
 import { ProductCard } from "/src/components/ProductCard/ProductCard";
+import { NftCard } from "/src/components/NftCard/NftCard";
 
 export const Products = () => {
     const { ref, products } = useInfiniteScroll();
@@ -15,9 +16,9 @@ export const Products = () => {
             <h2 className={styles.catalogTitle}>New from MAGAZ</h2>
             <div className={styles.catalog}>
                 {products &&
-                    products.map((data, index) => (
-                        <ProductCard key={index} data={data} />
-                    ))}
+                    products.map((data, index) =>
+                        data.category === "nft_bundle" ? <NftCard key={index} data={data} /> : <ProductCard key={index} data={data} />
+                    )}
                 <div ref={ref} />
             </div>
         </>
