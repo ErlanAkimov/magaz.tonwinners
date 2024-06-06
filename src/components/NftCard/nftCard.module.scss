@@ -21,8 +21,15 @@
         letter-spacing: -0.84px;
         color: rgb(215, 213, 213);
 
+        transition: 0.2s;
+        opacity: 0;
+
         span {
             color: #fff;
+        }
+
+        &.active {
+            opacity: 1;
         }
     }
 

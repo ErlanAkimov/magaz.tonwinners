@@ -11,7 +11,7 @@ export const NftCard = ({ data }) => {
 
     return (
         <div className={styles.root} onMouseEnter={() => setIsVisible(true)} onMouseLeave={() => setIsVisible(false)}>
-            <div className={styles.rating}>
+            <div className={`${styles.rating} ${isVisible && styles.active}`}>
                 <p>
                     R: <span>{data?.important}</span>/5555
                 </p>
