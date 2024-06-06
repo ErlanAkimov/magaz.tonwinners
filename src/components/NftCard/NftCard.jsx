@@ -16,17 +16,26 @@ export const NftCard = ({ data }) => {
                     R: <span>{data?.important}</span>/5555
                 </p>
             </div>
-            <Swiper className={styles.imgBlock} onSlideChange={(s) => setImageIndex(s.activeIndex)} onClick={() => navigate(`/bundles/${data._id}`)}>
-                {data.images
-                    .filter((name) => name.split("-")[1] !== "video")
-                    .map((image, index) => {
-                        return (
-                            <SwiperSlide key={index}>
-                                <img loading="lazy" style={{ userSelect: "none" }} src={image} alt="" />
-                            </SwiperSlide>
-                        );
-                    })}
-            </Swiper>
+            <div className={styles.top}>
+                <Swiper
+                    className={styles.imgBlock}
+                    onSlideChange={(s) => setImageIndex(s.activeIndex)}
+                    onClick={() => navigate(`/bundles/${data._id}`)}
+                >
+                    {data.images
+                        .filter((name) => name.split("-")[1] !== "video")
+                        .map((image, index) => {
+                            return (
+                                <SwiperSlide key={index}>
+                                    <img loading="lazy" style={{ userSelect: "none" }} src={image} alt="" />
+                                </SwiperSlide>
+                            );
+                        })}
+                </Swiper>
+                <div className={styles.marker}>
+                    <img src={"/src/assets/images/marker.svg"} />
+                </div>
+            </div>
             <div className={styles.dots}>
                 {data.images
                     .filter((name) => name.split("-")[1] !== "video")
