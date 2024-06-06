@@ -1,0 +1,44 @@
+.cartButton {
+  width: calc(100% - 30px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #23ca70;
+  position: fixed;
+  bottom: 101px;
+  z-index: 100;
+  font-size: 17px;
+  line-height: 26px;
+  margin-inline: 15px;
+
+  height: 50px;
+  border-radius: 8px;
+
+  button {
+    background: transparent;
+    padding-inline: 18px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .counter {
+    color: white;
+    font-weight: 600;
+    text-align: center;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .controlBtn {
+    color: #23ca70;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    width: 24px;
+    height: 24px;
+  }
+}

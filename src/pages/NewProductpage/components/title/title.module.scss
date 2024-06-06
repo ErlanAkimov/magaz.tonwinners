@@ -1,0 +1,29 @@
+.title {
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: 15px;
+
+    .magaz {
+        font-size: 16px;
+        font-weight: 500;
+        // line-height: 28px;x
+        font-family: "ClashDisplay-medium";
+        font-weight: 500;
+    }
+    h1 {
+        font-family: "H_neue";
+        font-weight: 700;
+        font-size: 16px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 70%;
+        white-space: nowrap;
+    }
+
+    span {
+        color: rgba(170, 170, 170, 1);
+        font-weight: 400;
+    }
+}
