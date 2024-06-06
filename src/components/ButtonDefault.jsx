@@ -8,7 +8,8 @@ export const ButtonDefault = ({ onClick, children, propStyles }) => {
 		fontSize: 17,
 		fontWeight: 600,
 		position: 'fixed',
-		bottom: 101,
+		bottom: 67,
+		marginBottom: 'env(safe-area-inset-bottom)',
 		left: 10,
 		zIndex: 100,
 		...propStyles

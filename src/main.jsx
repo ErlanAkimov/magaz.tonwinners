@@ -21,7 +21,7 @@ console.log(window.Telegram.WebApp.platform);
 
 export const api_server = 'https://magaz.tonwinners.com';
 
-if (window.Telegram.WebApp.platform !== 'unknown') {
+// if (window.Telegram.WebApp.platform !== 'unknown') {
 	ReactDOM.createRoot(document.getElementById('root')).render(
 		<Provider store={store}>
 			<TonConnectUIProvider manifestUrl={`${api_server}/tonconnect-manifest.json`}>
@@ -31,4 +31,4 @@ if (window.Telegram.WebApp.platform !== 'unknown') {
 			</TonConnectUIProvider>
 		</Provider>,
 	);
-}
+// }

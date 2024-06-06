@@ -1,15 +1,23 @@
-.wrapper {
+.outWrapper {
+	display: flex;
+	background-color: #fff;
 	position: fixed;
-	z-index: 300;
 	bottom: 0;
 	left: 0;
+	z-index: 300;
+	width: 100%;
+	padding-bottom: env(safe-area-inset-bottom);
+}
+
+.wrapper {
+	height: 57px;
 	border-top: 1px solid rgba(0, 0, 0, 0.15);
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 10px;
 	width: 100%;
 	background-color: #fff;
+
 }
 
 .ordersCounter {

@@ -26,14 +26,6 @@ function Productpage() {
 
 	useEffect(() => {
 		fetch().then(() => window.scrollTo(0,0))
-		window.Telegram.WebApp.BackButton.isVisible = true
-			window.Telegram.WebApp.BackButton.onClick(() => {
-			window.history.back()
-
-			return () => {
-				window.Telegram.WebApp.BackButton.onClick(null)
-			}
-		})
 	}, [productId])
 
 	return (

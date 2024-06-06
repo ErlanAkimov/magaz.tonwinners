@@ -7,14 +7,8 @@ import { Nav } from "../../components/Nav/Nav";
 import { Slider } from "./components/slider/Slider";
 import { WalletConnectionButton } from "./components/walletconnectionbutton/WalletConnectionButton";
 import { Products } from "./components/products/Products";
-import { useEffect } from "react";
 
 function Homepage() {
-
-    useEffect(() => {
-        window.Telegram.WebApp.BackButton.isVisible = false
-    }, [])
-
     return (
         <div className={styles.wrapper}>
             <Nav />
