@@ -11,12 +11,22 @@ import { Orderspage } from './pages/Cart/Orderspage';
 import { Paymentpage } from './pages/Paymentpage/Payment.page';
 import { CreateNewRecipient } from './pages/CreateNewRecipient/CreateNewRecipitent';
 import { ChangeRecipient } from './pages/ChangeRecipient/ChangeRecipient';
+import { Bundlepage } from './pages/Bundlepage/Bundlepage'
+import { Nftpage } from './pages/Nftpage/Nftpage'
 
 export const router = createBrowserRouter([
 	{
 		path: '/',
 		element: <Homepage />,
 	},
+    {
+        path: "/bundles",
+        element: <Bundlepage />,
+    },
+    {
+        path: "/bundles/:bundleId",
+        element: <Nftpage />,
+    },
 	{
 		path: '/categories',
 		element: <Categoriespage />,

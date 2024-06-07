@@ -1,0 +1,8 @@
+.catalog {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(2, calc(50% - 10px));
+    flex-grow: 1;
+    align-content: baseline;
+    gap: 2px;
+}
