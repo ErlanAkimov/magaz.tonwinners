@@ -1,5 +1,9 @@
 .root {
     position: relative;
+    background-color: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    align-self: flex-start;
 
     .rating {
         display: inline-block;
@@ -38,8 +42,9 @@
         cursor: pointer;
 
         .marker {
-            background: rgb(0, 22, 255);
             border-radius: 100%;
+            border: 0.5px solid rgb(255, 255, 255);
+            background: rgb(0, 22, 255);
             width: 23.3px;
             height: 23.3px;
 
@@ -47,7 +52,7 @@
             align-items: center;
             justify-content: center;
             position: absolute;
-            right: 15px;
+            right: 10px;
             bottom: calc(-23.3px / 2);
             z-index: 10;
         }
@@ -56,8 +61,6 @@
             img {
                 max-width: 100%;
                 object-fit: cover;
-
-                border-radius: 16px 16px 0 0;
             }
         }
     }
@@ -78,7 +81,8 @@
     }
 
     .info {
-        margin-top: 4px;
+        padding: 10px 10px 20px;
+
         .name {
             color: #5e5353;
             font-size: 14px;

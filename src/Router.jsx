@@ -12,11 +12,20 @@ import { Paymentpage } from "./pages/Paymentpage/Payment.page";
 import { CreateNewRecipient } from "./pages/CreateNewRecipient/CreateNewRecipitent";
 import { ChangeRecipient } from "./pages/ChangeRecipient/ChangeRecipient";
 import { Nftpage } from "./pages/Nftpage/Nftpage";
+import { Bundlepage } from "./pages/Bundlepage/Bundlepage";
 
 export const router = createBrowserRouter([
     {
         path: "/",
         element: <Homepage />,
+    },
+    {
+        path: "/bundles",
+        element: <Bundlepage />,
+    },
+    {
+        path: "/bundles/:bundleId",
+        element: <Nftpage />,
     },
     {
         path: "/categories",
@@ -25,10 +34,6 @@ export const router = createBrowserRouter([
     {
         path: "/product/:productId",
         element: <Productpage />,
-    },
-    {
-        path: "/bundles/:bundleId",
-        element: <Nftpage />,
     },
 
     // Saved Addresses

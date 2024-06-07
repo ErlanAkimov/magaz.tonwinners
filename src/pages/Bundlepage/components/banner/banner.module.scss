@@ -1,0 +1,31 @@
+.root {
+    border-radius: 16px 16px 0px 0px;
+    background: rgb(11, 76, 153);
+
+    position: fixed;
+    bottom: 57px; // height Nav
+
+    z-index: 10;
+
+    padding: 20px 10px calc(10px + 50px + 36px); // 50px height ButtonDefault, 36px - padding
+
+    .title {
+        color: rgb(255, 255, 255);
+        font-family: "SF Pro";
+        font-size: 17px;
+        font-weight: 500;
+        line-height: 22px;
+        letter-spacing: -0.4px;
+    }
+
+    .desc {
+        margin-top: 2px;
+
+        color: rgb(255, 255, 255);
+        font-family: "SF Pro";
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 20px;
+        letter-spacing: -0.23px;
+    }
+}
