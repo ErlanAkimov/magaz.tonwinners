@@ -14,10 +14,7 @@ export const Products = () => {
         <>
             <h2 className={styles.catalogTitle}>New from MAGAZ</h2>
             <div className={styles.catalog}>
-                {products &&
-                    products.map((data, index) => (
-                        <ProductCard key={index} data={data} />
-                    ))}
+                {products && products.map((data, index) => <ProductCard key={index} data={data} />)}
                 <div ref={ref} />
             </div>
         </>
