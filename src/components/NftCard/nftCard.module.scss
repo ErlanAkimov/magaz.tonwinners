@@ -1,0 +1,105 @@
+.root {
+    position: relative;
+    background-color: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    align-self: flex-start;
+
+    .rating {
+        display: inline-block;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+
+        z-index: 10;
+
+        border-radius: 16px;
+        background: rgba(1, 1, 1, 0.5);
+        padding: 4px 8px 4px 8px;
+
+        font-family: "Inter";
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 16px;
+        letter-spacing: -0.84px;
+        color: rgb(215, 213, 213);
+
+        transition: 0.2s;
+        opacity: 0;
+
+        span {
+            color: #fff;
+        }
+
+        &.active {
+            opacity: 1;
+        }
+    }
+
+    .top {
+        position: relative;
+
+        cursor: pointer;
+
+        .marker {
+            border-radius: 100%;
+            border: 0.5px solid rgb(255, 255, 255);
+            background: rgb(0, 22, 255);
+            width: 23.3px;
+            height: 23.3px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            right: 10px;
+            bottom: calc(-23.3px / 2);
+            z-index: 10;
+        }
+
+        .img {
+            img {
+                max-width: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+
+    .dots {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        margin-top: 8px;
+
+        .dot {
+            width: 4px;
+            aspect-ratio: 1;
+            border-radius: 100px;
+            background-color: #d9d9d9;
+        }
+    }
+
+    .info {
+        padding: 10px 10px 20px;
+
+        .name {
+            color: #5e5353;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 14px;
+            letter-spacing: -0.4px;
+        }
+
+        .desc {
+            color: #979090;
+            font-size: 12px;
+            line-height: 12px;
+            letter-spacing: -0.4px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+    }
+}
