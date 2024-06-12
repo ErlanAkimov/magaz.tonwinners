@@ -24,19 +24,7 @@ export const Categoriespage = () => {
 			setCategories(res.data);
 		});
 	}, []);
-
-	useEffect(() => {
-		if (pickedCategory) {
-			function cats() {
-				window.Telegram.WebApp.offEvent('backButtonClicked', cats);
-				setPickedCategory(null);
-			}
-			window.Telegram.WebApp.BackButton.show();
-			Telegram.WebApp.onEvent('backButtonClicked', cats);
-		} else {
-			window.Telegram.WebApp.BackButton.hide();
-		}
-	}, [pickedCategory]);
+	
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.bread}>

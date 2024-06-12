@@ -11,13 +11,11 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import CustomProvider from "./CustomProvider";
 
-// console.log(window.Telegram.WebApp.isExpanded)
-// console.log(window.Telegram.WebApp.platform)
 window.Telegram.WebApp.expand();
 window.Telegram.WebApp.setHeaderColor("#fff");
 window.Telegram.WebApp.setBackgroundColor("#fff");
 window.Telegram.WebApp.enableClosingConfirmation();
-// console.log(window.Telegram.WebApp.platform);
+window.Telegram.WebApp.BackButton.show();
 
 export const api_server = "https://magaz.tonwinners.com";
 

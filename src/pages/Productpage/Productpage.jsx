@@ -1,39 +1,42 @@
-import styles from "./productpage.module.scss";
+import styles from './productpage.module.scss';
 
-import { Nav } from "/src/components/Nav/Nav";
-import { Product } from "./components/product/Product";
-import { OtherProducts } from "./components/otherproducts/OtherProducts";
-import { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import { api_server } from "../../main";
-import { useParams } from "react-router-dom";
+import { Nav } from '/src/components/Nav/Nav';
+import { Product } from './components/product/Product';
+import { OtherProducts } from './components/otherproducts/OtherProducts';
+import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import { api_server } from '../../main';
+import { useParams } from 'react-router-dom';
+import useTelegramBackButton from '../../hooks/useTelegramBackButton';
 
 function Productpage() {
-    const { productId } = useParams();
-    const pageRef = useRef();
+	const { productId } = useParams();
+	const pageRef = useRef();
 
-    // Хранилище для данных
-    const [productData, setProductData] = useState(null);
-    const [products, setProducts] = useState(null);
+    // useTelegramBackButton(() => window.history.back());
 
-    const fetch = async () => {
-        const data = (await axios.get(`${api_server}/api/product?id=${productId}`)).data;
-        const otherProducts = (await axios.get(`${api_server}/api/get-other-products?id=${productId}`)).data;
+	// Хранилище для данных
+	const [productData, setProductData] = useState(null);
+	const [products, setProducts] = useState(null);
 
-        setProducts(otherProducts);
-        setProductData(data);
-    };
+	const fetch = async () => {
+		const data = (await axios.get(`${api_server}/api/product?id=${productId}`)).data;
+		const otherProducts = (await axios.get(`${api_server}/api/get-other-products?id=${productId}`)).data;
 
-    useEffect(() => {
-        fetch().then(() => window.scrollTo(0, 0));
-    }, [productId]);
+		setProducts(otherProducts);
+		setProductData(data);
+	};
 
-    return (
-        <div ref={pageRef} className={styles.wrapper}>
-            {productData && <Product productData={productData} />}
-            <OtherProducts products={products} />
-            <Nav />
-        </div>
-    );
+	useEffect(() => {
+		fetch().then(() => window.scrollTo(0, 0));
+	}, [productId]);
+
+	return (
+		<div ref={pageRef} className={styles.wrapper}>
+			{productData && <Product productData={productData} />}
+			<OtherProducts products={products} />
+			<Nav />
+		</div>
+	);
 }
 export default Productpage;

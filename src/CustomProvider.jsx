@@ -7,13 +7,15 @@ import { api_server } from "./main";
 import { initProductsList } from "./redux/slice/productsSlice";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
+import useTelegramBackButton from "./hooks/useTelegramBackButton";
 
 function CustomProvider({ children }) {
     const dispatch = useDispatch();
     const { tgWebAppStartParam } = useParams();
     const [loading, setLoading] = useState(true);
     const [userLoaded, setUserLoaded] = useState(false);
-    const [productLoaded, setProductLoaded] = useState(true);
+
+    useTelegramBackButton(() => window.history.back())
 
     useEffect(() => {
         const body = {
@@ -21,8 +23,6 @@ function CustomProvider({ children }) {
             webAppLaunched: true,
             referer: tgWebAppStartParam ? tgWebAppStartParam : 0,
         };
-
-        console.log(tgWebAppStartParam);
 
         if (tgWebAppStartParam) {
             localStorage.setItem("p34", 10);
@@ -39,13 +39,12 @@ function CustomProvider({ children }) {
     }, [dispatch]);
 
     useEffect(() => {
-        if (userLoaded && productLoaded) {
+        if (userLoaded) {
             setTimeout(() => {
                 setLoading(false);
             }, 300);
         }
-    }, [userLoaded, productLoaded]);
-
+    }, [userLoaded]);
     return <>{loading ? <Loader /> : children}</>;
 }
 
